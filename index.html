@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Chargers">
+<meta name="theme-color" content="#ECEDEA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181D" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACSUlEQVR4nO3dMUokUQBF0eph1iAmbkBD978EQ13PBILI6AVButsn58RF8fjc6oqKPt3c3h3wmT/XHsDPJQ6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImD9PfaA87l5fnpK5fdPzxe5j6L/HKQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB+n0C/6p6Yufllze+scs23H82Cze201k+LUyUcaxs/Oj1Ti2Tnxr7ZvJOBbPenHzXhyLp/xqbvleHFzMWBxzD99/tvaPxcEliYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SGNx3D88XnvCt2ztH4uDS9qLY+vhe29u+V4cx+ApH5ubJ+M41s56a+2b1TiOnRNf2fnR6eb27tobvuvl+enaEz63m8Wr3xAHZzL8WuHcxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEH6B6ptL93x/iMaAAAAAElFTkSuQmCC">
+<title>Chargers</title>
+<style>
+:root{
+  --paper:#ECEDEA; --card:#F6F6F4; --ink:#16181D; --mute:#7C8089;
+  --rule:#D6D7D2; --rule-soft:#E3E4E0; --thread:#A63D3D;
+  --sel:#16181D; --sel-ink:#ECEDEA; --go:#3F8F5F;
+  --label:'Avenir Next Condensed','Avenir Next','Helvetica Neue',ui-sans-serif,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,ui-sans-serif,sans-serif;
+  --data:ui-monospace,'SF Mono',Menlo,'Roboto Mono',monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{--paper:#16181D;--card:#1D2026;--ink:#E7E8E4;--mute:#8B8F98;
+    --rule:#2C3038;--rule-soft:#23262D;--thread:#D97C7C;--sel:#E7E8E4;--sel-ink:#16181D;--go:#5FBF85}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.35;
+  -webkit-text-size-adjust:100%;padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+.num{font-family:var(--data);font-variant-numeric:tabular-nums}
+
+header{position:sticky;top:0;z-index:40;background:var(--paper);
+  padding:calc(10px + env(safe-area-inset-top)) 16px 0;border-bottom:1px solid var(--rule)}
+.masthead{display:flex;align-items:baseline;gap:10px}
+.masthead h1{font-family:var(--label);text-transform:uppercase;letter-spacing:.15em;font-size:14px;
+  font-weight:600;margin:0}
+.masthead .count{margin-left:auto;font-family:var(--data);font-size:12px;color:var(--mute)}
+.navrow{padding:11px 0 10px}
+.navrow-row{display:flex;align-items:center;gap:10px}
+.navrow-row+.navrow-row{margin-top:8px}
+.navrow2{display:none}
+.navrow2.on{display:flex}
+.navstrip{display:flex;align-items:center;gap:6px;flex:1;min-width:0;overflow-x:auto;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.navstrip::-webkit-scrollbar{display:none}
+.nav{font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:600;
+  color:var(--mute);border:1px solid var(--rule);border-radius:2px;padding:5px 9px;background:var(--card);
+  flex:none;white-space:nowrap}
+.nav .num{opacity:.7;font-size:10px}
+.nav.here{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
+.navrow .sp{flex:none;display:flex;gap:14px;align-items:center}
+.navrow .sp button{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:12px;
+  font-weight:600;color:var(--mute)}
+.navrow .sp button.toggle{font-size:16px;letter-spacing:0;line-height:1}
+.back{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:600}
+
+main{padding:0 16px}
+section{padding:18px 0 4px}
+.eyebrow{font-family:var(--label);text-transform:uppercase;letter-spacing:.16em;font-size:10.5px;
+  color:var(--mute);font-weight:600;margin:0 0 9px}
+
+.toolbar{display:flex;align-items:center;gap:6px;margin-top:14px;flex-wrap:wrap}
+.seg{display:flex;border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.seg button{padding:6px 11px;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;
+  font-size:11px;font-weight:600;color:var(--mute);background:var(--card)}
+.seg button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink)}
+.toolbar .right{margin-left:auto;display:flex;gap:6px}
+.chip{border:1px solid var(--rule);border-radius:2px;padding:5px 9px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:600;color:var(--mute);
+  display:inline-flex;align-items:center;gap:6px;background:var(--card)}
+.chip[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
+.chip .n{font-family:var(--data);letter-spacing:0;opacity:.65}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px}
+.chipgroup{margin-top:12px}
+.filterpanel{border:1px solid var(--rule-soft);border-radius:2px;padding:4px 12px 14px;margin-top:10px;
+  background:var(--card)}
+.filterpanel input[type=search]{width:100%;background:var(--paper);border:1px solid var(--rule-soft);
+  border-radius:2px;padding:9px 10px;font-size:15px;margin-top:12px}
+.filtertoggle{display:flex;align-items:center;gap:8px;margin-top:14px}
+.filtertoggle .clear{margin-left:auto;font-family:var(--label);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--thread);font-weight:600}
+
+.g1,.g2{display:flex;align-items:baseline;gap:8px}
+.g1{border-bottom:1.5px solid var(--ink);padding-bottom:6px;margin:30px 0 0}
+.g1 h2{font-family:var(--label);text-transform:uppercase;letter-spacing:.15em;font-size:17px;margin:0;
+  font-weight:600}
+.g2{margin:20px 0 2px;padding-bottom:5px;border-bottom:1px solid var(--rule)}
+.g2 h3{font-family:var(--label);text-transform:uppercase;letter-spacing:.13em;font-size:14px;margin:0;
+  font-weight:600;color:var(--ink)}
+.g1 .n{margin-left:auto;font-family:var(--data);font-size:16px}
+.g2 .n{margin-left:auto;font-family:var(--data);font-size:14px}
+.d2{padding-left:11px}
+
+.item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule-soft);
+  width:100%;text-align:left}
+.glyph{width:30px;height:30px;flex:none;border:1px solid var(--rule);border-radius:2px;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;font-family:var(--label);font-size:10px;
+  font-weight:700;letter-spacing:0;color:var(--mute);background:var(--card)}
+.item .body{flex:1;min-width:0;display:block}
+.item .l1{display:block;font-size:15px;letter-spacing:-.01em}
+.item .l1 .lead{font-weight:600}
+.item .l2{display:block;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;
+  font-size:10.5px;color:var(--mute);margin-top:4px;font-weight:600}
+.item .qty{font-family:var(--data);font-size:17px;flex:none;padding-top:2px;min-width:22px;text-align:right}
+.flag{color:var(--thread)}
+.retired .body,.retired .qty,.retired .glyph{opacity:.42}
+.needsdata{color:var(--thread)}
+
+.note{font-size:12.5px;color:var(--mute);margin-top:10px;line-height:1.45}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px 4px;text-align:right;border-bottom:1px solid var(--rule-soft)}
+th{font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;color:var(--mute);
+  font-weight:600;border-bottom:1px solid var(--rule)}
+td.k,th.k{text-align:left}
+td.k{font-size:14px}
+td.n{font-family:var(--data);font-size:14px}
+
+.prog{margin-top:16px;border:1px solid var(--rule);border-radius:2px;background:var(--card);padding:13px 13px 12px}
+.prog .bar{height:6px;background:var(--rule-soft);position:relative;overflow:hidden}
+.prog .bar i{position:absolute;top:0;bottom:0;left:0;background:var(--ink);transition:width .25s ease}
+.prog .figs{display:flex;align-items:baseline;gap:8px;margin-top:10px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.11em;font-size:11px;font-weight:600;color:var(--mute);flex-wrap:wrap;gap:14px}
+.prog .figs b{font-family:var(--data);font-size:19px;letter-spacing:0;color:var(--ink);font-weight:400}
+.prog .figs .out{margin-left:auto;color:var(--thread)}
+.prog .figs .out b{color:var(--thread)}
+
+.roomchip{border:1px solid var(--rule);border-radius:2px;padding:6px 10px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:600;color:var(--mute);
+  background:var(--card);white-space:nowrap}
+.roomchip[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
+.roomchip.done{border-color:var(--go);color:var(--go)}
+.roomchip.done[aria-pressed="true"]{background:var(--go);border-color:var(--go);color:#0E1A12}
+.roomscroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  padding-bottom:2px}
+.roomscroll::-webkit-scrollbar{display:none}
+
+.arow{display:flex;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule-soft)}
+.arow .body{flex:1;min-width:0;text-align:left}
+.arow .l1{display:block;font-size:14.5px;letter-spacing:-.01em;font-weight:600}
+.arow .l2{display:block;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;
+  font-size:10px;color:var(--mute);margin-top:3px;font-weight:600}
+.stepper{display:flex;align-items:center;border:1px solid var(--rule-soft);border-radius:2px;
+  background:var(--card);flex:none}
+.stepper button{flex:none;width:34px;height:34px;font-size:17px;font-family:var(--data)}
+.stepper .v{flex:none;min-width:26px;text-align:center;font-family:var(--data);font-size:15px}
+.stepper.lg button{width:46px;height:44px;font-size:20px}
+.stepper.lg .v{min-width:32px;font-size:17px}
+
+.bigbtn.go{background:var(--go);border-color:var(--go);color:#0E1A12}
+.bigbtn{width:100%;border:1px solid var(--ink);border-radius:2px;padding:14px;margin-top:16px;
+  font-family:var(--label);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:600;
+  background:var(--sel);color:var(--sel-ink)}
+.ghostbtn.danger{color:var(--thread);border-color:var(--thread)}
+.ghostbtn{width:100%;border:1px solid var(--rule);border-radius:2px;padding:13px;margin-top:9px;
+  font-family:var(--label);text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;font-weight:600;
+  color:var(--mute)}
+.smallbtn{border:1px solid var(--rule);border-radius:2px;padding:7px 10px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;font-weight:600;color:var(--mute);
+  background:var(--card)}
+.smallbtn.danger{color:var(--thread);border-color:var(--thread)}
+
+.scrim{position:fixed;inset:0;background:rgba(10,11,14,.42);z-index:60;opacity:0;pointer-events:none;
+  transition:opacity .18s ease}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--paper);border-top:1px solid var(--rule);
+  border-radius:10px 10px 0 0;max-height:88vh;max-height:88dvh;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:0 16px calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(101%);transition:transform .22s cubic-bezier(.32,.72,0,1)}
+.sheet.on{transform:translateY(0)}
+.sheethead{position:sticky;top:0;background:var(--paper);display:flex;align-items:center;padding:14px 0 12px;
+  border-bottom:1px solid var(--rule);margin-bottom:4px}
+.sheethead h3{font-family:var(--label);text-transform:uppercase;letter-spacing:.16em;font-size:12px;margin:0;
+  font-weight:600}
+.sheethead button{font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:600}
+.sheethead .done{margin-left:auto;color:var(--ink)}
+.sheethead .cancel{color:var(--mute);margin-right:14px}
+.f{padding:12px 0 0}
+.f label{display:block;font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;
+  color:var(--mute);font-weight:600;margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;background:var(--card);border:1px solid var(--rule-soft);
+  border-radius:2px;padding:10px;font-size:16px}
+.f textarea{font-family:var(--data);font-size:13px}
+.f2{display:flex;gap:10px}
+.f2>*{flex:1;min-width:0}
+.rowbtns{display:flex;gap:10px;margin-top:20px}
+.rowbtns button{flex:1;border:1px solid var(--rule);border-radius:2px;padding:12px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.12em;font-size:11.5px;font-weight:600}
+.rowbtns .danger{color:var(--thread);border-color:var(--thread)}
+.hint{font-size:12px;color:var(--mute);margin-top:6px}
+.menu button{display:block;width:100%;text-align:left;padding:15px 0;border-bottom:1px solid var(--rule-soft);
+  font-size:15px}
+.menu button small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+.empty{padding:44px 0;text-align:center;color:var(--mute);font-size:14px}
+.empty b{display:block;font-family:var(--label);text-transform:uppercase;letter-spacing:.14em;font-size:12px;
+  color:var(--ink);margin-bottom:6px}
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  background:var(--sel);color:var(--sel-ink);padding:9px 16px;border-radius:2px;z-index:90;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:600;opacity:0;transition:opacity .2s;
+  pointer-events:none;max-width:80vw;text-align:center}
+.toast.on{opacity:1}
+
+.plist{margin-top:6px}
+.prow{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px dotted var(--rule-soft)}
+.prow select,.prow input{background:var(--card);border:1px solid var(--rule-soft);border-radius:2px;
+  padding:8px;font-size:14px}
+.prow .rsel{flex:1.3;min-width:0}
+.prow .ssel{flex:1;min-width:0}
+.prow button.rm{flex:none;color:var(--thread);font-size:18px;padding:0 4px}
+.addrow{margin-top:8px}
+
+.portpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.portpick button{border:1px solid var(--rule);border-radius:2px;padding:6px 10px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;color:var(--mute);background:var(--card)}
+.portpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
+
+.kitcard{border:1px solid var(--rule);border-radius:2px;padding:12px 13px;margin-top:10px;background:var(--card)}
+.kitcard h4{margin:0;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:13px}
+.kitcard .loc{font-family:var(--data);font-size:11.5px;color:var(--mute);margin-top:3px}
+.kitcard .members{margin-top:9px;display:flex;flex-direction:column;gap:5px}
+.kitmember{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.kitmember .ok{color:var(--go)}
+.kitmember .missing{color:var(--thread)}
+.kitstatus{margin-top:9px;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;
+  font-weight:700;padding:3px 7px;border-radius:2px;display:inline-block}
+.kitstatus.ok{background:var(--go);color:#0E1A12}
+.kitstatus.bad{border:1px solid var(--thread);color:var(--thread)}
+
+.roomgroup{margin-top:22px}
+.roomgroup h3{font-family:var(--label);text-transform:uppercase;letter-spacing:.13em;font-size:13px;margin:0 0 8px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.spotrow{display:flex;align-items:center;gap:8px;padding:6px 0;padding-left:14px;font-size:13px;color:var(--mute)}
+.spotrow button{color:var(--thread);font-size:12px;margin-left:auto}
+.roomrow{display:flex;align-items:center;gap:8px;padding:6px 0}
+.roomrow .name{flex:1;font-size:14.5px}
+.roomrow button{color:var(--mute);font-size:12px}
+.roomrow button.danger{color:var(--thread)}
+.reftable{margin-top:8px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--thread);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="masthead">
+    <h1 id="hdrTitle">Chargers &amp; Cables</h1>
+    <span class="count num" id="hdrCount"></span>
+  </div>
+  <div class="navrow" id="navrow"></div>
+</header>
+
+<main><div id="view"></div></main>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ============================== storage ============================== */
+const KEY = "chargers.v1";
+const Store = {
+  mode:"memory", mem:null,
+  async init(){
+    if (typeof window !== "undefined" && window.storage && window.storage.get){ this.mode = "host"; return; }
+    try { localStorage.setItem("__t","1"); localStorage.removeItem("__t"); this.mode = "local"; }
+    catch(e){ this.mode = "memory"; }
+  },
+  async load(){
+    try{
+      if (this.mode === "host"){ const r = await window.storage.get(KEY); return r ? JSON.parse(r.value) : null; }
+      if (this.mode === "local"){ const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; }
+      return this.mem;
+    }catch(e){ return this.mode === "memory" ? this.mem : null; }
+  },
+  async save(data){
+    try{
+      if (this.mode === "host"){ await window.storage.set(KEY, JSON.stringify(data)); return true; }
+      if (this.mode === "local"){ localStorage.setItem(KEY, JSON.stringify(data)); return true; }
+      this.mem = data; return true;
+    }catch(e){ this.mem = data; return false; }
+  }
+};
+
+/* ============================== github sync ============================== */
+const GH = {
+  owner:"a2k-uk", repo:"chargers", path:"chargers.json", branch:"main",
+  tokenKey:"chargers.ghpat", sha:null,
+  getToken(){ try{ return localStorage.getItem(this.tokenKey) || ""; }catch(e){ return ""; } },
+  setToken(t){ try{ if (t) localStorage.setItem(this.tokenKey, t); else localStorage.removeItem(this.tokenKey); }catch(e){} },
+  get connected(){ return !!this.getToken(); },
+  api(){ return "https://api.github.com/repos/" + this.owner + "/" + this.repo + "/contents/" + this.path; },
+  b64encode(str){
+    const bytes = new TextEncoder().encode(str);
+    let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b));
+    return btoa(bin);
+  },
+  b64decode(str){
+    const bin = atob(str.replace(/\s/g, ""));
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  },
+  async pull(){
+    const token = this.getToken(); if (!token) return null;
+    const res = await fetch(this.api() + "?ref=" + this.branch, {
+      headers:{ Authorization:"token " + token, Accept:"application/vnd.github+json" }
+    });
+    if (res.status === 404){ this.sha = null; return null; }
+    if (!res.ok) throw new Error("read failed (" + res.status + ")");
+    const j = await res.json();
+    this.sha = j.sha;
+    return JSON.parse(this.b64decode(j.content));
+  },
+  async push(data){
+    const token = this.getToken(); if (!token) return false;
+    const body = {
+      message:"Update chargers data — " + new Date().toISOString(),
+      content:this.b64encode(JSON.stringify(data, null, 1)),
+      branch:this.branch
+    };
+    if (this.sha) body.sha = this.sha;
+    const res = await fetch(this.api(), {
+      method:"PUT",
+      headers:{ Authorization:"token " + token, Accept:"application/vnd.github+json", "Content-Type":"application/json" },
+      body:JSON.stringify(body)
+    });
+    if (res.status === 409){ await this.pull().catch(() => {}); throw new Error("conflict"); }
+    if (!res.ok) throw new Error("write failed (" + res.status + ")");
+    const j = await res.json();
+    this.sha = j.content.sha;
+    return true;
+  }
+};
+let ghStatus = "", ghTimer = null, ghSyncing = false;
+function snapshot(){
+  return { v:1, rooms, spots, types, placements, kits, toFind, audit, history, categories,
+    ui:{tiers:[], view:ui.groupView} };
+}
+async function persist(){
+  await Store.save(snapshot());
+  if (GH.connected){
+    if (ghTimer) clearTimeout(ghTimer);
+    ghTimer = setTimeout(() => ghPush(snapshot()), 1500);
+  }
+}
+async function ghPush(data){
+  if (ghSyncing) return; ghSyncing = true;
+  try{
+    await GH.push(data);
+    ghStatus = "Last synced " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+  }catch(e){
+    ghStatus = e.message === "conflict" ? "Cloud copy changed elsewhere — tap Sync now to refresh"
+      : "Cloud save failed — kept on this device";
+    toast("Cloud sync failed — your change is still saved locally");
+  }
+  ghSyncing = false;
+  if (ui.screen === "data") render();
+}
+async function ghManualSync(){
+  if (!GH.connected) return;
+  toast("Checking GitHub…");
+  try{
+    const cloud = await GH.pull();
+    if (cloud) adoptCloud(cloud);
+    ghStatus = cloud ? "Last synced " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}) : "Nothing on GitHub yet";
+    toast(cloud ? "Synced with GitHub" : "Nothing on GitHub yet");
+  }catch(e){
+    ghStatus = "Sync failed — " + e.message;
+    toast("Could not reach GitHub");
+  }
+  render();
+}
+function adoptCloud(cloud){
+  rooms = cloud.rooms || rooms;
+  spots = cloud.spots || spots;
+  types = cloud.types || types;
+  placements = cloud.placements || placements;
+  kits = cloud.kits || kits;
+  toFind = cloud.toFind || toFind;
+  audit = cloud.audit || null;
+  history = cloud.history || [];
+  categories = (cloud.categories && cloud.categories.length) ? cloud.categories : categories;
+  Store.save(snapshot());
+}
+
+/* ============================== data ============================== */
+function uid(){ return Math.random().toString(36).slice(2,9); }
+const DEFAULT_CATEGORIES = [
+  {key:"adapter", label:"Plug Adapters"},
+  {key:"laptop", label:"Laptop Chargers"},
+  {key:"cable", label:"Cables"},
+  {key:"other", label:"Other Hardware"}
+];
+let categories = [];
+function catLabel(k){ const c = categories.find(c => c.key === k); return c ? c.label : k; }
+function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") || uid(); }
+const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","MagSafe/Wireless","UK 3-Pin","Other"];
+const CABLE_STYLES = ["Coiled","Woven / braided","Flat","Plain"];
+const DEVICE_REF = [
+  {device:"iPhone 15", note:"20W recommended / 27W max"},
+  {device:"iPhone 15 Pro", note:"20W recommended / 27W max"},
+  {device:"iPad Pro 3rd gen", note:"20W recommended / 27W max"},
+  {device:"AirPods Pro 2", note:"5W"}
+];
+
+let rooms = [], spots = [], types = [], placements = [], kits = [], toFind = [], audit = null, history = [];
+let ui = {
+  screen:"items", navExpanded:false,
+  groupView:"type",            // type | room
+  catFilter:"all",
+  q:"", showFilters:false,
+  filters:{ connector:[], room:[] },
+  auditRoom:null
+};
+
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function el(id){ return document.getElementById(id); }
+function room(id){ return rooms.find(r => r.id === id); }
+function roomName(id){ const r = room(id); return r ? r.name : "—"; }
+function spot(id){ return spots.find(s => s.id === id); }
+function spotName(id){ const s = spot(id); return s ? s.name : ""; }
+function type(id){ return types.find(t => t.id === id); }
+function activeTypes(){ return types.filter(t => !t.retired); }
+function placementsFor(typeId){ return placements.filter(p => p.typeId === typeId); }
+function totalQty(typeId){ return placementsFor(typeId).reduce((s,p) => s + p.qty, 0); }
+function realRooms(){ return rooms.filter(r => !r.system); }
+function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
+
+function connectorsText(t){
+  if (t.category === "cable") return (t.input || "?") + " → " + (t.outputs && t.outputs.length ? t.outputs.join(" / ") : "?");
+  return (t.ports && t.ports.length) ? t.ports.join(" + ") : "—";
+}
+function profilesText(t){
+  if (t.category === "cable") return t.wattage ? t.wattage + "W" : "";
+  return (t.profiles || []).map(p => p.v + "V/" + p.a + "A/" + p.w + "W").join(" · ");
+}
+function typeGlyph(t){
+  if (t.category === "cable") return "CBL";
+  if (t.category === "laptop") return "LAP";
+  if (t.kind && /wireless/i.test(t.kind)) return "WLS";
+  return "ADP";
+}
+function typeLead(t){ return (t.kind || catLabel(t.category)) + (t.label ? " — " + t.label : ""); }
+function typeMeta(t){
+  const bits = [connectorsText(t)];
+  const pf = profilesText(t); if (pf) bits.push(pf);
+  if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
+  if (t.brand) bits.push(t.brand);
+  if (t.colour) bits.push(t.colour);
+  return bits.filter(Boolean).join(" · ");
+}
+function missingFields(t){
+  const bits = [];
+  if (t.category === "cable"){
+    if (!t.input) bits.push("input connector");
+    if (!t.outputs || !t.outputs.length) bits.push("output connector");
+  } else {
+    if (!t.ports || !t.ports.length) bits.push("connector");
+  }
+  if (totalQty(t.id) <= 0) bits.push("location");
+  return bits;
+}
+
+/* ============================== search/filter ============================== */
+function typeMatches(t){
+  if (ui.catFilter !== "all" && t.category !== ui.catFilter) return false;
+  if (ui.filters.connector.length){
+    const tc = t.category === "cable" ? [t.input].concat(t.outputs||[]) : (t.ports||[]);
+    if (!ui.filters.connector.some(c => tc.indexOf(c) > -1)) return false;
+  }
+  if (ui.filters.room.length){
+    const tr = placementsFor(t.id).map(p => p.roomId);
+    if (!ui.filters.room.some(r => tr.indexOf(r) > -1)) return false;
+  }
+  if (ui.q){
+    const hay = [t.kind,t.label,t.brand,t.colour,t.notes,connectorsText(t)].join(" ").toLowerCase();
+    if (hay.indexOf(ui.q.toLowerCase()) < 0) return false;
+  }
+  return true;
+}
+function filteredTypes(){ return activeTypes().filter(typeMatches); }
+function filterCount(){ return ui.filters.connector.length + ui.filters.room.length + (ui.q ? 1 : 0); }
+
+/* ============================== nav ============================== */
+const SCREENS1 = [["items","Items"],["stocktake","Stocktake"],["kits","Kits"]];
+const SCREENS2 = [["tofind","To Find"],["rooms","Rooms"],["archive","Archive"],["data","Data"]];
+function renderNav(){
+  const mk = (key,label) => '<button class="nav' + (ui.screen === key ? " here" : "") + '" data-nav="' + key + '">' + esc(label) + '</button>';
+  let h = '<div class="navrow-row"><div class="navstrip">' + SCREENS1.map(s => mk(s[0],s[1])).join("") + '</div>';
+  h += '<div class="sp"><button class="toggle" id="navToggle">' + (ui.navExpanded ? "︿" : "﹀") + '</button></div></div>';
+  h += '<div class="navrow-row navrow2' + (ui.navExpanded ? " on" : "") + '"><div class="navstrip">' + SCREENS2.map(s => mk(s[0],s[1])).join("") + '</div></div>';
+  el("navrow").innerHTML = h;
+  el("navToggle").onclick = () => { ui.navExpanded = !ui.navExpanded; render(); };
+  el("navrow").querySelectorAll("[data-nav]").forEach(b => b.onclick = () => { ui.screen = b.dataset.nav; ui.auditRoom = null; render(); });
+}
+
+/* ============================== toast / sheet ============================== */
+let toastTimer = null;
+function toast(msg){
+  const t = el("toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), 2200);
+}
+function openSheet(html){
+  el("sheet").innerHTML = html;
+  el("scrim").classList.add("on"); el("sheet").classList.add("on");
+  document.body.style.position = "fixed"; document.body.style.width = "100%";
+  el("scrim").onclick = closeSheet;
+}
+function closeSheet(){
+  el("scrim").classList.remove("on"); el("sheet").classList.remove("on");
+  document.body.style.position = ""; document.body.style.width = "";
+}
+
+/* ============================== items screen ============================== */
+function screenItems(){
+  let h = '<section>';
+  h += '<div class="eyebrow">Inventory</div>';
+  h += '<div class="chiprow">';
+  h += '<button class="chip' + (ui.catFilter==="all"?"":"") + '" aria-pressed="' + (ui.catFilter==="all") + '" data-cat="all">All<span class="n">' + activeTypes().length + '</span></button>';
+  categories.forEach(c => {
+    const n = activeTypes().filter(t => t.category === c.key).length;
+    h += '<button class="chip" aria-pressed="' + (ui.catFilter===c.key) + '" data-cat="' + c.key + '">' + esc(c.label) + '<span class="n">' + n + '</span></button>';
+  });
+  h += '</div>';
+
+  h += '<div class="toolbar">';
+  h += '<div class="seg"><button aria-pressed="' + (ui.groupView==="type") + '" data-view="type">By Type</button>' +
+       '<button aria-pressed="' + (ui.groupView==="room") + '" data-view="room">By Room</button></div>';
+  h += '<div class="right">';
+  h += '<button class="chip" id="filterToggle" aria-pressed="' + ui.showFilters + '">Filter' + (filterCount() ? '<span class="n">' + filterCount() + '</span>' : '') + '</button>';
+  h += '<button class="chip" id="addType">+ Add</button>';
+  h += '</div></div>';
+
+  if (ui.showFilters){
+    h += '<div class="filterpanel">';
+    h += '<input type="search" id="qbox" placeholder="Search brand, notes, connector…" value="' + esc(ui.q) + '">';
+    h += '<div class="chipgroup"><div class="eyebrow" style="margin-top:12px">Connector</div><div class="chiprow">' +
+      CONNECTORS.map(c => '<button class="chip" aria-pressed="' + (ui.filters.connector.indexOf(c) > -1) + '" data-fconn="' + esc(c) + '">' + esc(c) + '</button>').join("") + '</div></div>';
+    h += '<div class="chipgroup"><div class="eyebrow" style="margin-top:12px">Room</div><div class="chiprow">' +
+      rooms.map(r => '<button class="chip" aria-pressed="' + (ui.filters.room.indexOf(r.id) > -1) + '" data-froom="' + r.id + '">' + esc(r.name) + '</button>').join("") + '</div></div>';
+    if (filterCount()) h += '<div class="filtertoggle"><button class="clear" id="clearFilters">Clear filters</button></div>';
+    h += '</div>';
+  }
+
+  const list = filteredTypes();
+  if (!list.length){
+    h += '<div class="empty"><b>Nothing here</b>Try a different category or clear your filters.</div>';
+  } else if (ui.groupView === "type"){
+    h += renderByType(list);
+  } else {
+    h += renderByRoom(list);
+  }
+  h += '</section>';
+  el("view").innerHTML = h;
+
+  el("view").querySelectorAll("[data-cat]").forEach(b => b.onclick = () => { ui.catFilter = b.dataset.cat; render(); });
+  el("view").querySelectorAll("[data-view]").forEach(b => b.onclick = () => { ui.groupView = b.dataset.view; render(); });
+  el("filterToggle").onclick = () => { ui.showFilters = !ui.showFilters; render(); };
+  const qb = el("qbox"); if (qb) qb.oninput = () => { ui.q = qb.value; renderListOnly(); };
+  el("view").querySelectorAll("[data-fconn]").forEach(b => b.onclick = () => {
+    const c = b.dataset.fconn, i = ui.filters.connector.indexOf(c);
+    if (i > -1) ui.filters.connector.splice(i,1); else ui.filters.connector.push(c);
+    render();
+  });
+  el("view").querySelectorAll("[data-froom]").forEach(b => b.onclick = () => {
+    const r = b.dataset.froom, i = ui.filters.room.indexOf(r);
+    if (i > -1) ui.filters.room.splice(i,1); else ui.filters.room.push(r);
+    render();
+  });
+  const cf = el("clearFilters"); if (cf) cf.onclick = () => { ui.filters = {connector:[],room:[]}; ui.q = ""; render(); };
+  el("addType").onclick = () => openTypeSheet(null);
+  bindItemRows();
+}
+function renderListOnly(){
+  const list = filteredTypes();
+  const holder = el("view").querySelector(".itemresults");
+  if (holder) holder.outerHTML = '<div class="itemresults">' + (ui.groupView === "type" ? renderByType(list) : renderByRoom(list)) + '</div>';
+  bindItemRows();
+}
+function bindItemRows(){
+  el("view").querySelectorAll("[data-type]").forEach(b => b.onclick = () => openTypeSheet(b.dataset.type));
+}
+function itemRow(t){
+  const gap = missingFields(t).length > 0;
+  return '<button class="item' + (gap ? " needsdata" : "") + '" data-type="' + t.id + '">' +
+    '<span class="glyph">' + typeGlyph(t) + '</span>' +
+    '<span class="body"><span class="l1"><span class="lead">' + esc(typeLead(t)) + '</span></span>' +
+    '<span class="l2">' + esc(typeMeta(t)) + (gap ? " · Needs: " + esc(missingFields(t).join(", ")) : "") + '</span></span>' +
+    '<span class="qty">' + totalQty(t.id) + '</span></button>';
+}
+function renderByType(list){
+  let h = '<div class="itemresults">';
+  const cats = categories.filter(c => list.some(t => t.category === c.key));
+  cats.forEach(c => {
+    const g = list.filter(t => t.category === c.key).sort((a,b) => typeLead(a).localeCompare(typeLead(b)));
+    h += '<div class="g1"><h2>' + esc(c.label) + '</h2><span class="n">' + g.reduce((s,t)=>s+totalQty(t.id),0) + '</span></div>';
+    h += g.map(itemRow).join("");
+  });
+  h += '</div>';
+  return h;
+}
+function renderByRoom(list){
+  const ids = list.map(t => t.id);
+  let h = '<div class="itemresults">';
+  ["Downstairs","Upstairs","Other"].forEach(zone => {
+    const zoneRooms = rooms.filter(r => r.zone === zone && placements.some(p => ids.indexOf(p.typeId) > -1 && p.roomId === r.id));
+    if (!zoneRooms.length) return;
+    h += '<div class="g1"><h2>' + esc(zone) + '</h2></div>';
+    zoneRooms.forEach(r => {
+      const rp = placements.filter(p => p.roomId === r.id && ids.indexOf(p.typeId) > -1);
+      const total = rp.reduce((s,p)=>s+p.qty,0);
+      h += '<div class="g2"><h3>' + esc(r.name) + '</h3><span class="n">' + total + '</span></div>';
+      rp.forEach(p => {
+        const t = type(p.typeId); if (!t) return;
+        h += '<button class="item" data-type="' + t.id + '">' +
+          '<span class="glyph">' + typeGlyph(t) + '</span>' +
+          '<span class="body"><span class="l1"><span class="lead">' + esc(typeLead(t)) + '</span></span>' +
+          '<span class="l2">' + esc(connectorsText(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span>' +
+          '<span class="qty">' + p.qty + '</span></button>';
+      });
+    });
+  });
+  h += '</div>';
+  return h;
+}
+
+/* ============================== type edit sheet ============================== */
+let draft = null; // {type:{...}, placements:[...], isNew:bool}
+function openTypeSheet(id){
+  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", ports:[], profiles:[],
+    input:"", outputs:[], length_m:null, material:"", wattage:null, brand:"", colour:"", notes:"", retired:false };
+  draft = { type: Object.assign({}, t), plc: id ? placementsFor(id).map(p => Object.assign({}, p)) : [], isNew: !id };
+  renderTypeSheet();
+}
+function profilesToText(pf){ return (pf||[]).map(p => p.v + "V/" + p.a + "A/" + p.w + "W").join("\n"); }
+function textToProfiles(s){
+  return String(s||"").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
+    const m = l.match(/([\d.]+)\s*V\s*\/\s*([\d.]+)\s*A\s*\/\s*([\d.]+)\s*W/i);
+    return m ? {v:+m[1], a:+m[2], w:+m[3]} : null;
+  }).filter(Boolean);
+}
+function renderTypeSheet(){
+  const d = draft.type;
+  let h = '<div class="sheethead"><button class="cancel" id="tCancel">Cancel</button><h3>' + (draft.isNew ? "Add item" : "Edit item") + '</h3>' +
+    '<button class="done" id="tSave">Save</button></div>';
+
+  h += '<div class="f"><label for="d_cat">Category</label><select id="d_cat">' +
+    categories.map(c => '<option value="' + c.key + '"' + (d.category===c.key?" selected":"") + '>' + esc(c.label) + '</option>').join("") + '</select></div>';
+
+  h += '<div class="f2"><div class="f"><label for="d_kind">Kind</label><input id="d_kind" value="' + esc(d.kind) + '" placeholder="e.g. Plug Adapter"></div>' +
+    '<div class="f"><label for="d_label">Distinguishing feature</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div></div>';
+
+  if (d.category === "cable"){
+    h += '<div class="f2"><div class="f"><label for="d_input">Input connector</label><select id="d_input">' +
+      '<option value="">—</option>' + CONNECTORS.map(c => '<option value="' + c + '"' + (d.input===c?" selected":"") + '>' + c + '</option>').join("") + '</select></div>' +
+      '<div class="f"><label>Length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div></div>';
+    h += '<div class="f"><label>Output connector(s)</label><div class="portpick" id="d_outputs">' +
+      CONNECTORS.map(c => '<button aria-pressed="' + ((d.outputs||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
+    h += '<div class="f"><label>Style</label><div class="portpick" id="d_style">' +
+      CABLE_STYLES.map(s => '<button data-style="' + esc(s) + '">' + esc(s) + '</button>').join("") + '</div>' +
+      '<input id="d_material" style="margin-top:8px" value="' + esc(d.material) + '" placeholder="e.g. Coiled, Woven — or describe it your way"></div>';
+    h += '<div class="f"><label>Wattage</label><input id="d_watt" type="number" value="' + (d.wattage==null?"":d.wattage) + '"></div>';
+  } else {
+    h += '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
+      CONNECTORS.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
+    h += '<div class="f"><label for="d_profiles">Power profiles (one per line, e.g. 5V/3A/15W)</label><textarea id="d_profiles" rows="3">' + esc(profilesToText(d.profiles)) + '</textarea></div>';
+  }
+
+  h += '<div class="f2"><div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>' +
+    '<div class="f"><label>Colour</label><input id="d_colour" value="' + esc(d.colour) + '"></div></div>';
+  h += '<div class="f"><label>Notes</label><textarea id="d_notes" rows="2">' + esc(d.notes) + '</textarea></div>';
+
+  h += '<div class="f"><label>Placements</label><div class="plist" id="plist">' + draft.plc.map(placementRow).join("") + '</div>' +
+    '<button class="smallbtn addrow" id="addPlacement">+ Add placement</button></div>';
+
+  h += '<div class="f"><label for="d_retired">Status</label><div class="seg"><button aria-pressed="' + (!d.retired) + '" data-ret="0">Active</button>' +
+    '<button aria-pressed="' + (!!d.retired) + '" data-ret="1">Retired</button></div></div>';
+
+  if (!draft.isNew) h += '<button class="ghostbtn danger" id="tDelete">Delete this item</button>';
+  h += '<div style="height:14px"></div>';
+  openSheet(h);
+  bindTypeSheet();
+}
+function placementRow(p, i){
+  return '<div class="prow" data-i="' + i + '">' +
+    '<select class="rsel" data-f="roomId">' + rooms.map(r => '<option value="' + r.id + '"' + (p.roomId===r.id?" selected":"") + '>' + esc(r.name) + '</option>').join("") + '</select>' +
+    '<input class="ssel" data-f="spot" placeholder="Spot (optional)" value="' + esc(spotName(p.spotId) || p._spotName || "") + '">' +
+    '<div class="stepper" data-st="1"><button data-d="-1">−</button><span class="v">' + p.qty + '</span><button data-d="1">+</button></div>' +
+    '<button class="rm" data-rm="1">×</button></div>';
+}
+function bindTypeSheet(){
+  const d = draft.type;
+  el("tCancel").onclick = closeSheet;
+  el("d_cat").onchange = () => { d.category = el("d_cat").value; syncDraftFields(); renderTypeSheet(); };
+  ["d_kind","d_label","d_brand","d_colour","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  const inp = el("d_input"); if (inp) inp.onchange = () => syncDraftFields();
+  const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
+  const wat = el("d_watt"); if (wat) wat.oninput = () => syncDraftFields();
+  const pf = el("d_profiles"); if (pf) pf.oninput = () => syncDraftFields();
+  const portsBox = el("d_ports") || el("d_outputs");
+  if (portsBox) portsBox.querySelectorAll("[data-port]").forEach(b => b.onclick = () => {
+    const key = el("d_ports") ? "ports" : "outputs";
+    const arr = d[key] || (d[key] = []);
+    const c = b.dataset.port, i = arr.indexOf(c);
+    if (i > -1) arr.splice(i,1); else arr.push(c);
+    b.setAttribute("aria-pressed", i === -1);
+  });
+  const styleBox = el("d_style");
+  if (styleBox) styleBox.querySelectorAll("[data-style]").forEach(b => b.onclick = () => {
+    el("d_material").value = b.dataset.style; syncDraftFields();
+  });
+  el("plist").querySelectorAll(".prow").forEach(row => {
+    const i = +row.dataset.i;
+    row.querySelector('[data-f="roomId"]').onchange = e => { draft.plc[i].roomId = e.target.value; };
+    row.querySelector('[data-f="spot"]').oninput = e => { draft.plc[i]._spotName = e.target.value; draft.plc[i].spotId = null; };
+    row.querySelectorAll("[data-d]").forEach(b => b.onclick = () => {
+      draft.plc[i].qty = Math.max(0, draft.plc[i].qty + (+b.dataset.d));
+      row.querySelector(".v").textContent = draft.plc[i].qty;
+    });
+    row.querySelector("[data-rm]").onclick = () => { draft.plc.splice(i,1); renderTypeSheet(); };
+  });
+  el("addPlacement").onclick = () => { draft.plc.push({id:uid(), typeId:d.id, roomId:rooms[0].id, spotId:null, qty:1}); renderTypeSheet(); };
+  el("view").querySelectorAll("[data-ret]").forEach(b => b.onclick = () => { d.retired = b.dataset.ret === "1"; renderTypeSheet(); });
+  el("tSave").onclick = saveTypeSheet;
+  const del = el("tDelete"); if (del) del.onclick = deleteTypeSheet;
+}
+function syncDraftFields(){
+  const d = draft.type;
+  d.kind = el("d_kind") ? el("d_kind").value : d.kind;
+  d.label = el("d_label") ? el("d_label").value : d.label;
+  d.brand = el("d_brand") ? el("d_brand").value : d.brand;
+  d.colour = el("d_colour") ? el("d_colour").value : d.colour;
+  d.notes = el("d_notes") ? el("d_notes").value : d.notes;
+  if (d.category === "cable"){
+    d.input = el("d_input") ? el("d_input").value : d.input;
+    d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
+    d.material = el("d_material") ? el("d_material").value : d.material;
+    d.wattage = el("d_watt") && el("d_watt").value !== "" ? +el("d_watt").value : null;
+  } else {
+    d.profiles = el("d_profiles") ? textToProfiles(el("d_profiles").value) : d.profiles;
+  }
+}
+function resolveSpot(p){
+  if (p._spotName === undefined) return p.spotId;
+  const name = p._spotName.trim();
+  if (!name) return null;
+  let s = spots.find(s => s.roomId === p.roomId && s.name.toLowerCase() === name.toLowerCase());
+  if (!s){ s = {id:uid(), roomId:p.roomId, name}; spots.push(s); }
+  return s.id;
+}
+function saveTypeSheet(){
+  syncDraftFields();
+  const d = draft.type;
+  if (!d.kind && !d.label){ toast("Give it at least a kind or a description"); return; }
+  const idx = types.findIndex(t => t.id === d.id);
+  if (idx > -1) types[idx] = d; else types.push(d);
+  draft.plc.forEach(p => { p.spotId = resolveSpot(p); delete p._spotName; });
+  placements = placements.filter(p => p.typeId !== d.id).concat(draft.plc.filter(p => p.qty > 0));
+  persist(); closeSheet(); render(); toast("Saved");
+}
+function deleteTypeSheet(){
+  if (!confirm("Delete this item and all its placements? This cannot be undone.")) return;
+  types = types.filter(t => t.id !== draft.type.id);
+  placements = placements.filter(p => p.typeId !== draft.type.id);
+  toFind = toFind.filter(f => f.typeId !== draft.type.id);
+  kits.forEach(k => { k.typeIds = k.typeIds.filter(id => id !== draft.type.id); });
+  persist(); closeSheet(); render(); toast("Deleted");
+}
+
+/* ============================== stocktake ============================== */
+function auditBaseline(){
+  const b = {};
+  activeTypes().forEach(t => { b[t.id] = totalQty(t.id); });
+  return b;
+}
+function startAudit(){
+  audit = { started:new Date().toISOString(), roomsDone:[], baseline:auditBaseline() };
+  ui.auditRoom = realRooms()[0] ? realRooms()[0].id : null;
+  persist(); render();
+}
+function screenStocktake(){
+  let h = "";
+  if (!audit){
+    h += '<div class="empty" style="padding:32px 0 10px"><b>No stock-take running</b>Work through a room at a time. Whatever you can’t confirm stays as-is until you find it.</div>';
+    h += '<button class="bigbtn go" id="stStart">Start a stock-take</button>';
+    if (history.length) h += '<p class="note" style="text-align:center">History and past snapshots are on the Data screen.</p>';
+    el("view").innerHTML = h;
+    el("stStart").onclick = startAudit;
+    return;
+  }
+  const rr = realRooms();
+  const done = audit.roomsDone.length, tot = rr.length;
+  h += '<div class="prog"><div class="bar"><i style="width:' + (tot?done/tot*100:0).toFixed(1) + '%"></i></div>' +
+    '<div class="figs"><span><b>' + done + ' / ' + tot + '</b> rooms checked</span></div></div>';
+
+  h += '<div class="roomscroll" style="margin-top:14px">' + rr.map(r =>
+    '<button class="roomchip' + (audit.roomsDone.indexOf(r.id) > -1 ? " done" : "") + '" aria-pressed="' + (ui.auditRoom===r.id) + '" data-room="' + r.id + '">' + esc(r.name) + '</button>'
+  ).join("") + '</div>';
+
+  const rid = ui.auditRoom || (rr[0] && rr[0].id);
+  if (rid){
+    const rp = placements.filter(p => p.roomId === rid);
+    h += '<div class="eyebrow" style="margin-top:20px">In ' + esc(roomName(rid)) + '</div>';
+    if (!rp.length) h += '<p class="note">Nothing expected here yet.</p>';
+    rp.forEach(p => {
+      const t = type(p.typeId); if (!t) return;
+      h += '<div class="arow"><span class="body"><span class="l1">' + esc(typeLead(t)) + '</span>' +
+        '<span class="l2">' + esc(connectorsText(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + '</span></span>' +
+        '<div class="stepper" data-pid="' + p.id + '"><button data-d="-1">−</button><span class="v">' + p.qty + '</span><button data-d="1">+</button></div></div>';
+    });
+    h += '<button class="smallbtn addrow" id="stAdd">+ Found something else here</button>';
+    h += '<button class="ghostbtn" id="stMarkDone">' + (audit.roomsDone.indexOf(rid) > -1 ? "Marked checked ✓" : "Mark room checked") + '</button>';
+  }
+
+  h += '<button class="bigbtn go" id="stFinish">Finish stock-take</button>';
+  h += '<button class="ghostbtn danger" id="stAbandon">Abandon stock-take</button>';
+  el("view").innerHTML = h;
+
+  el("view").querySelectorAll("[data-room]").forEach(b => b.onclick = () => { ui.auditRoom = b.dataset.room; render(); });
+  el("view").querySelectorAll("[data-pid]").forEach(box => {
+    box.querySelectorAll("[data-d]").forEach(b => b.onclick = () => {
+      const p = placements.find(x => x.id === box.dataset.pid); if (!p) return;
+      p.qty = Math.max(0, p.qty + (+b.dataset.d));
+      box.querySelector(".v").textContent = p.qty;
+      persist();
+    });
+  });
+  const add = el("stAdd"); if (add) add.onclick = () => openAuditAddSheet(rid);
+  const md = el("stMarkDone"); if (md) md.onclick = () => {
+    if (audit.roomsDone.indexOf(rid) < 0) audit.roomsDone.push(rid);
+    persist(); render();
+  };
+  el("stFinish").onclick = finishAudit;
+  el("stAbandon").onclick = () => { if (confirm("Abandon this stock-take? Counts already adjusted stay as they are.")){ audit = null; persist(); render(); } };
+}
+function openAuditAddSheet(roomId){
+  const candidates = activeTypes().filter(t => !placements.some(p => p.typeId === t.id && p.roomId === roomId));
+  let h = '<div class="sheethead"><button class="cancel" id="aaCancel">Cancel</button><h3>Found in ' + esc(roomName(roomId)) + '</h3></div>';
+  if (!candidates.length){ h += '<p class="note">Every known item type already has a placement here — edit its count above, or add a brand new item from the Items screen.</p>'; }
+  h += '<div class="menu">' + candidates.map(t => '<button data-pick="' + t.id + '">' + esc(typeLead(t)) + '<small>' + esc(connectorsText(t)) + '</small></button>').join("") + '</div>';
+  openSheet(h);
+  el("aaCancel").onclick = closeSheet;
+  document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
+    placements.push({id:uid(), typeId:b.dataset.pick, roomId, spotId:null, qty:1});
+    persist(); closeSheet(); render();
+  });
+}
+function finishAudit(){
+  const before = audit.baseline;
+  const after = {};
+  activeTypes().forEach(t => { after[t.id] = totalQty(t.id); });
+  const found = [];
+  Object.keys(before).forEach(tid => {
+    const drop = before[tid] - (after[tid] || 0);
+    if (drop > 0){
+      const t = type(tid);
+      const already = toFind.find(f => f.typeId === tid && !f.resolved);
+      if (!already) toFind.push({id:uid(), typeId:tid, note:"Count dropped by " + drop + " during the " + fmtDate(new Date()) + " stock-take", added:new Date().toISOString().slice(0,10)});
+      found.push((t ? typeLead(t) : tid) + " (−" + drop + ")");
+    }
+  });
+  history.push({
+    id:uid(), finished:new Date().toISOString(),
+    summary:{ roomsChecked:audit.roomsDone.length, totalRooms:realRooms().length, shortfalls:found },
+    snapshot:{ rooms, spots, types, placements, kits, toFind }
+  });
+  audit = null; ui.auditRoom = null;
+  persist(); render();
+  toast(found.length ? "Finished — " + found.length + " item(s) added to To Find" : "Finished — all accounted for");
+}
+function fmtDate(d){
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+}
+
+/* ============================== kits ============================== */
+function kitStatus(k){
+  const missing = k.typeIds.filter(tid => {
+    const p = placements.find(p => p.typeId === tid && p.roomId === k.roomId && (!k.spotId || p.spotId === k.spotId));
+    return !p || p.qty <= 0;
+  });
+  return missing;
+}
+function screenKits(){
+  let h = '<div class="toolbar"><div class="right" style="margin-left:0"><button class="chip" id="addKit">+ Add kit</button></div></div>';
+  if (!kits.length){
+    h += '<div class="empty"><b>No kits yet</b>A kit is a named set of items that should always live together — e.g. a charger and two cables that belong in the Study.</div>';
+  }
+  kits.forEach(k => {
+    const missing = kitStatus(k);
+    h += '<div class="kitcard" data-kit="' + k.id + '"><h4>' + esc(k.name) + '</h4>' +
+      '<div class="loc">' + esc(roomName(k.roomId)) + (k.spotId ? " · " + esc(spotName(k.spotId)) : "") + '</div>';
+    h += '<div class="members">' + k.typeIds.map(tid => {
+      const t = type(tid); if (!t) return "";
+      const bad = missing.indexOf(tid) > -1;
+      return '<div class="kitmember"><span>' + esc(typeLead(t)) + '</span><span class="' + (bad?"missing":"ok") + '">' + (bad?"Missing":"Present") + '</span></div>';
+    }).join("") + '</div>';
+    h += '<span class="kitstatus ' + (missing.length ? "bad" : "ok") + '">' + (missing.length ? missing.length + " missing" : "Complete") + '</span>';
+    h += '</div>';
+  });
+  el("view").innerHTML = h;
+  el("addKit").onclick = () => openKitSheet(null);
+  el("view").querySelectorAll("[data-kit]").forEach(c => c.onclick = () => openKitSheet(c.dataset.kit));
+}
+let kitDraft = null;
+function openKitSheet(id){
+  const k = id ? kits.find(k => k.id === id) : {id:uid(), name:"", roomId:rooms[0].id, spotId:null, typeIds:[]};
+  kitDraft = Object.assign({}, k, {typeIds:(k.typeIds||[]).slice(), _spotName: spotName(k.spotId) || ""});
+  renderKitSheet(id);
+}
+function renderKitSheet(id){
+  const k = kitDraft;
+  let h = '<div class="sheethead"><button class="cancel" id="kCancel">Cancel</button><h3>' + (id ? "Edit kit" : "Add kit") + '</h3>' +
+    '<button class="done" id="kSave">Save</button></div>';
+  h += '<div class="f"><label>Name</label><input id="k_name" value="' + esc(k.name) + '" placeholder="e.g. Study desk set"></div>';
+  h += '<div class="f2"><div class="f"><label>Room</label><select id="k_room">' +
+    rooms.map(r => '<option value="' + r.id + '"' + (k.roomId===r.id?" selected":"") + '>' + esc(r.name) + '</option>').join("") + '</select></div>' +
+    '<div class="f"><label>Spot (optional)</label><input id="k_spot" value="' + esc(k._spotName) + '"></div></div>';
+  h += '<div class="f"><label>Members</label><div class="menu">' + activeTypes().map(t =>
+    '<button data-member="' + t.id + '" style="display:flex;justify-content:space-between;align-items:center">' +
+    '<span>' + esc(typeLead(t)) + '<small>' + esc(connectorsText(t)) + '</small></span>' +
+    '<span>' + (k.typeIds.indexOf(t.id) > -1 ? "✓" : "") + '</span></button>'
+  ).join("") + '</div></div>';
+  if (id) h += '<button class="ghostbtn danger" id="kDelete">Delete kit</button>';
+  h += '<div style="height:14px"></div>';
+  openSheet(h);
+  el("kCancel").onclick = closeSheet;
+  el("k_name").oninput = () => { k.name = el("k_name").value; };
+  el("k_room").onchange = () => { k.roomId = el("k_room").value; };
+  el("k_spot").oninput = () => { k._spotName = el("k_spot").value; };
+  document.querySelectorAll("[data-member]").forEach(b => b.onclick = () => {
+    const tid = b.dataset.member, i = k.typeIds.indexOf(tid);
+    if (i > -1) k.typeIds.splice(i,1); else k.typeIds.push(tid);
+    renderKitSheet(id);
+  });
+  el("kSave").onclick = () => {
+    if (!k.name.trim()){ toast("Give the kit a name"); return; }
+    let spotId = null;
+    const name = (k._spotName||"").trim();
+    if (name){
+      let s = spots.find(s => s.roomId === k.roomId && s.name.toLowerCase() === name.toLowerCase());
+      if (!s){ s = {id:uid(), roomId:k.roomId, name}; spots.push(s); }
+      spotId = s.id;
+    }
+    const rec = {id:k.id, name:k.name.trim(), roomId:k.roomId, spotId, typeIds:k.typeIds};
+    const idx = kits.findIndex(x => x.id === k.id);
+    if (idx > -1) kits[idx] = rec; else kits.push(rec);
+    persist(); closeSheet(); render(); toast("Saved");
+  };
+  const del = el("kDelete"); if (del) del.onclick = () => {
+    if (!confirm("Delete this kit?")) return;
+    kits = kits.filter(x => x.id !== k.id);
+    persist(); closeSheet(); render(); toast("Deleted");
+  };
+}
+
+/* ============================== to find ============================== */
+function screenToFind(){
+  const open = toFind.filter(f => !f.resolved);
+  let h = '<div class="toolbar"><div class="right" style="margin-left:0"><button class="chip" id="addToFind">+ Add manually</button></div></div>';
+  if (!open.length){
+    h += '<div class="empty"><b>Nothing missing</b>Everything is accounted for.</div>';
+  }
+  open.forEach(f => {
+    const t = type(f.typeId);
+    h += '<div class="arow"><span class="body"><span class="l1">' + esc(t ? typeLead(t) : "Unknown item") + '</span>' +
+      '<span class="l2">' + esc(f.note) + ' · Added ' + esc(f.added) + '</span></span>' +
+      '<button class="smallbtn" data-found="' + f.id + '">Found it</button></div>';
+  });
+  el("view").innerHTML = h;
+  el("addToFind").onclick = openToFindAddSheet;
+  el("view").querySelectorAll("[data-found]").forEach(b => b.onclick = () => openFoundSheet(b.dataset.found));
+}
+function openToFindAddSheet(){
+  let h = '<div class="sheethead"><button class="cancel" id="fCancel">Cancel</button><h3>Add to To Find</h3></div>';
+  h += '<div class="menu">' + activeTypes().map(t => '<button data-pick="' + t.id + '">' + esc(typeLead(t)) + '<small>' + esc(connectorsText(t)) + '</small></button>').join("") + '</div>';
+  openSheet(h);
+  el("fCancel").onclick = closeSheet;
+  document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
+    toFind.push({id:uid(), typeId:b.dataset.pick, note:"Reported missing", added:new Date().toISOString().slice(0,10)});
+    persist(); closeSheet(); render(); toast("Added");
+  });
+}
+function openFoundSheet(id){
+  const f = toFind.find(x => x.id === id); if (!f) return;
+  let h = '<div class="sheethead"><button class="cancel" id="gCancel">Cancel</button><h3>Found it</h3></div>';
+  h += '<div class="f"><label>Which room?</label><select id="g_room">' + rooms.map(r => '<option value="' + r.id + '">' + esc(r.name) + '</option>').join("") + '</select></div>';
+  h += '<button class="bigbtn go" id="gSave">Add back to inventory</button>';
+  h += '<button class="ghostbtn danger" id="gDrop">Just remove from this list</button>';
+  openSheet(h);
+  el("gCancel").onclick = closeSheet;
+  el("gSave").onclick = () => {
+    const roomId = el("g_room").value;
+    const existing = placements.find(p => p.typeId === f.typeId && p.roomId === roomId && !p.spotId);
+    if (existing) existing.qty += 1; else placements.push({id:uid(), typeId:f.typeId, roomId, spotId:null, qty:1});
+    toFind = toFind.filter(x => x.id !== id);
+    persist(); closeSheet(); render(); toast("Back in the inventory");
+  };
+  el("gDrop").onclick = () => {
+    toFind = toFind.filter(x => x.id !== id);
+    persist(); closeSheet(); render(); toast("Removed");
+  };
+}
+
+/* ============================== rooms ============================== */
+function screenRooms(){
+  let h = '<div class="toolbar"><div class="right" style="margin-left:0"><button class="chip" id="addRoom">+ Add room</button></div></div>';
+  ["Downstairs","Upstairs","Other"].forEach(zone => {
+    const zr = rooms.filter(r => r.zone === zone);
+    if (!zr.length) return;
+    h += '<div class="roomgroup"><h3>' + esc(zone) + '</h3>';
+    zr.forEach(r => {
+      h += '<div class="roomrow"><span class="name">' + esc(r.name) + '</span>' +
+        '<button class="smallbtn" data-rename="' + r.id + '">Rename</button>' +
+        (r.system ? "" : '<button class="smallbtn danger" data-delroom="' + r.id + '">Delete</button>') + '</div>';
+      spotsIn(r.id).forEach(s => {
+        h += '<div class="spotrow">' + esc(s.name) + '<button data-delspot="' + s.id + '">Remove</button></div>';
+      });
+      h += '<div class="spotrow"><button class="smallbtn" data-addspot="' + r.id + '" style="margin-left:auto">+ Spot</button></div>';
+    });
+    h += '</div>';
+  });
+  el("view").innerHTML = h;
+  el("addRoom").onclick = () => {
+    const name = prompt("Room name"); if (!name) return;
+    const zone = prompt("Zone (Downstairs / Upstairs / Other)", "Downstairs") || "Downstairs";
+    rooms.push({id:uid(), name:name.trim(), zone:zone.trim()});
+    persist(); render();
+  };
+  el("view").querySelectorAll("[data-rename]").forEach(b => b.onclick = () => {
+    const r = room(b.dataset.rename); const name = prompt("Rename room", r.name); if (!name) return;
+    r.name = name.trim(); persist(); render();
+  });
+  el("view").querySelectorAll("[data-delroom]").forEach(b => b.onclick = () => {
+    const rid = b.dataset.delroom;
+    if (placements.some(p => p.roomId === rid)){ toast("Move or remove its placements first"); return; }
+    if (!confirm("Delete this room?")) return;
+    rooms = rooms.filter(r => r.id !== rid);
+    spots = spots.filter(s => s.roomId !== rid);
+    persist(); render();
+  });
+  el("view").querySelectorAll("[data-addspot]").forEach(b => b.onclick = () => {
+    const name = prompt("Spot name"); if (!name) return;
+    spots.push({id:uid(), roomId:b.dataset.addspot, name:name.trim()});
+    persist(); render();
+  });
+  el("view").querySelectorAll("[data-delspot]").forEach(b => b.onclick = () => {
+    const sid = b.dataset.delspot;
+    if (placements.some(p => p.spotId === sid)){ toast("Move or remove its placements first"); return; }
+    spots = spots.filter(s => s.id !== sid);
+    persist(); render();
+  });
+}
+
+/* ============================== archive ============================== */
+function screenArchive(){
+  const list = types.filter(t => t.retired);
+  let h = "";
+  if (!list.length) h += '<div class="empty"><b>Nothing retired</b></div>';
+  list.forEach(t => {
+    h += '<div class="item retired"><span class="glyph">' + typeGlyph(t) + '</span>' +
+      '<span class="body"><span class="l1">' + esc(typeLead(t)) + '</span><span class="l2">' + esc(typeMeta(t)) + '</span></span>' +
+      '<button class="smallbtn" data-restore="' + t.id + '">Restore</button></div>';
+  });
+  el("view").innerHTML = h;
+  el("view").querySelectorAll("[data-restore]").forEach(b => b.onclick = () => {
+    const t = type(b.dataset.restore); t.retired = false; persist(); render(); toast("Restored");
+  });
+}
+
+/* ============================== data screen ============================== */
+function screenData(){
+  let h = '<div class="eyebrow">Cloud sync</div>';
+  if (GH.connected){
+    h += '<p class="note">Connected. ' + esc(ghStatus || "Not yet synced this session.") + '</p>';
+    h += '<button class="ghostbtn" id="syncNow">Sync now</button>';
+    h += '<button class="ghostbtn danger" id="disconnect">Disconnect</button>';
+  } else {
+    h += '<p class="note">Paste a fine-grained GitHub personal access token with contents read/write on a2k-uk/chargers. It’s stored only in this browser’s local storage.</p>';
+    h += '<div class="f"><input id="patInput" type="password" placeholder="github_pat_…"></div>';
+    h += '<button class="bigbtn go" id="connect">Connect</button>';
+  }
+
+  h += '<div class="eyebrow" style="margin-top:26px">Hardware categories</div>';
+  categories.forEach(c => {
+    const inUse = types.some(t => t.category === c.key);
+    h += '<div class="roomrow"><span class="name">' + esc(c.label) + '</span>' +
+      '<button class="smallbtn" data-catrename="' + c.key + '">Rename</button>' +
+      (inUse ? "" : '<button class="smallbtn danger" data-catdel="' + c.key + '">Delete</button>') + '</div>';
+  });
+  h += '<button class="smallbtn addrow" id="addCat">+ Add category</button>';
+
+  h += '<div class="eyebrow" style="margin-top:26px">Needs details</div>';
+  const gaps = activeTypes().filter(t => missingFields(t).length);
+  if (!gaps.length) h += '<p class="note">Nothing missing.</p>';
+  gaps.forEach(t => h += '<div class="arow"><span class="body"><span class="l1">' + esc(typeLead(t)) + '</span><span class="l2">Needs: ' + esc(missingFields(t).join(", ")) + '</span></span><button class="smallbtn" data-editgap="' + t.id + '">Edit</button></div>');
+
+  h += '<div class="eyebrow" style="margin-top:26px">Stock-take history</div>';
+  if (!history.length) h += '<p class="note">No finished stock-takes yet.</p>';
+  history.slice().reverse().forEach(hst => {
+    h += '<div class="arow"><span class="body"><span class="l1">' + esc(fmtDate(new Date(hst.finished))) + '</span>' +
+      '<span class="l2">' + hst.summary.roomsChecked + ' / ' + hst.summary.totalRooms + ' rooms · ' +
+      (hst.summary.shortfalls.length ? hst.summary.shortfalls.length + " shortfall(s)" : "all accounted for") + '</span></span>' +
+      '<button class="smallbtn" data-restore-audit="' + hst.id + '">Restore</button></div>';
+  });
+
+  h += '<div class="eyebrow" style="margin-top:26px">Device reference</div>';
+  h += '<table class="reftable"><tr><th class="k">Device</th><th>Charging</th></tr>' +
+    DEVICE_REF.map(d => '<tr><td class="k">' + esc(d.device) + '</td><td>' + esc(d.note) + '</td></tr>').join("") + '</table>';
+
+  el("view").innerHTML = h;
+  const pat = el("patInput");
+  const cn = el("connect"); if (cn) cn.onclick = () => {
+    if (!pat.value.trim()){ toast("Paste a token first"); return; }
+    GH.setToken(pat.value.trim());
+    ghManualSync();
+  };
+  const sn = el("syncNow"); if (sn) sn.onclick = ghManualSync;
+  const dc = el("disconnect"); if (dc) dc.onclick = () => { if (confirm("Disconnect cloud sync on this device?")){ GH.setToken(""); render(); } };
+  el("addCat").onclick = () => {
+    const label = prompt("Category name"); if (!label) return;
+    categories.push({key:slugify(label) + "-" + uid().slice(0,3), label:label.trim()});
+    persist(); render();
+  };
+  el("view").querySelectorAll("[data-catrename]").forEach(b => b.onclick = () => {
+    const c = categories.find(c => c.key === b.dataset.catrename);
+    const label = prompt("Rename category", c.label); if (!label) return;
+    c.label = label.trim(); persist(); render();
+  });
+  el("view").querySelectorAll("[data-catdel]").forEach(b => b.onclick = () => {
+    if (!confirm("Delete this category?")) return;
+    categories = categories.filter(c => c.key !== b.dataset.catdel);
+    persist(); render();
+  });
+  el("view").querySelectorAll("[data-editgap]").forEach(b => b.onclick = () => openTypeSheet(b.dataset.editgap));
+  el("view").querySelectorAll("[data-restore-audit]").forEach(b => b.onclick = () => {
+    const hst = history.find(x => x.id === b.getAttribute("data-restore-audit"));
+    if (!hst) return;
+    if (!confirm("Revert to the snapshot from " + fmtDate(new Date(hst.finished)) + "? This replaces the current inventory, rooms and kits.")) return;
+    rooms = hst.snapshot.rooms; spots = hst.snapshot.spots; types = hst.snapshot.types;
+    placements = hst.snapshot.placements; kits = hst.snapshot.kits; toFind = hst.snapshot.toFind;
+    persist(); render(); toast("Restored");
+  });
+}
+
+/* ============================== render ============================== */
+function render(){
+  renderNav();
+  el("hdrCount").textContent = activeTypes().length + " types · " + activeTypes().reduce((s,t)=>s+totalQty(t.id),0) + " items";
+  if (ui.screen === "items") screenItems();
+  else if (ui.screen === "stocktake") screenStocktake();
+  else if (ui.screen === "kits") screenKits();
+  else if (ui.screen === "tofind") screenToFind();
+  else if (ui.screen === "rooms") screenRooms();
+  else if (ui.screen === "archive") screenArchive();
+  else if (ui.screen === "data") screenData();
+}
+
+/* ============================== boot ============================== */
+async function boot(){
+  await Store.init();
+  const saved = await Store.load();
+  if (saved){
+    rooms = saved.rooms || []; spots = saved.spots || []; types = saved.types || [];
+    placements = saved.placements || []; kits = saved.kits || []; toFind = saved.toFind || [];
+    audit = saved.audit || null; history = saved.history || [];
+    categories = (saved.categories && saved.categories.length) ? saved.categories : [];
+  }
+  if (!rooms.length){
+    try{
+      const res = await fetch("chargers.json", {cache:"no-store"});
+      if (res.ok){
+        const seed = await res.json();
+        rooms = seed.rooms; spots = seed.spots; types = seed.types; placements = seed.placements;
+        kits = seed.kits || []; toFind = seed.toFind || []; history = seed.history || [];
+        categories = (seed.categories && seed.categories.length) ? seed.categories : categories;
+        await Store.save(snapshot());
+      }
+    }catch(e){}
+  }
+  if (!categories.length) categories = DEFAULT_CATEGORIES.slice();
+  if (GH.connected){
+    try{ const cloud = await GH.pull(); if (cloud) adoptCloud(cloud); }catch(e){}
+  }
+  render();
+}
+boot();
+</script>
+</body>
+</html>
