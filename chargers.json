@@ -656,6 +656,26 @@
    "brand": "Apple",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "8d7px1h",
+   "category": "cable",
+   "kind": "",
+   "label": "Retractable",
+   "qty": 2,
+   "ports": [],
+   "profiles": [],
+   "input": "USB-C",
+   "outputs": [
+    "USB-C",
+    "Lightning",
+    "Micro-USB"
+   ],
+   "length_m": 1,
+   "year": null,
+   "brand": "SDBaux",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -850,6 +870,12 @@
    "typeId": "t11",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "sp3eti8",
+   "typeId": "8d7px1h",
+   "roomId": "andy-rucksack",
+   "spotId": null
   }
  ],
  "kits": [],
