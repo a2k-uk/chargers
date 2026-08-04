@@ -427,6 +427,10 @@ let categories = [];
 function catLabel(k){ const c = categories.find(c => c.key === k); return c ? c.label : k; }
 function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") || uid(); }
 const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","Wireless","Other"];
+/* Laptop chargers have their own port shapes — Thunderbolt charging is physically a
+   USB-C connector so it isn't listed separately. */
+const LAPTOP_PORTS = ["USB-C","MagSafe","DC Barrel","Other"];
+const ALL_CONNECTORS = CONNECTORS.concat(LAPTOP_PORTS.filter(c => CONNECTORS.indexOf(c) === -1));
 /* Fixed palette rather than free text — avoids "Black" vs "Blak" fragmenting the data.
    "Other" reveals a plain text field underneath for anything genuinely uncommon. */
 const COLOUR_SWATCHES = [
@@ -714,7 +718,7 @@ function screenItems(){
     h += '<div class="filterpanel">';
     h += '<input type="search" id="qbox" placeholder="Search brand, notes, connector…" value="' + esc(ui.q) + '">';
     h += '<div class="chipgroup"><div class="eyebrow" style="margin-top:12px">Connector</div><div class="chiprow">' +
-      CONNECTORS.map(c => '<button class="chip" aria-pressed="' + (ui.filters.connector.indexOf(c) > -1) + '" data-fconn="' + esc(c) + '">' + esc(c) + '</button>').join("") + '</div></div>';
+      ALL_CONNECTORS.map(c => '<button class="chip" aria-pressed="' + (ui.filters.connector.indexOf(c) > -1) + '" data-fconn="' + esc(c) + '">' + esc(c) + '</button>').join("") + '</div></div>';
     h += '<div class="chipgroup"><div class="eyebrow" style="margin-top:12px">Room</div><div class="chiprow">' +
       rooms.map(r => '<button class="chip" aria-pressed="' + (ui.filters.room.indexOf(r.id) > -1) + '" data-froom="' + r.id + '">' + esc(r.name) + '</button>').join("") + '</div></div>';
     if (filterCount()) h += '<div class="filtertoggle"><button class="clear" id="clearFilters">Clear filters</button></div>';
@@ -807,7 +811,7 @@ function renderByRoom(list){
 let draft = null; // {type:{...}, placements:[...], isNew:bool}
 function openTypeSheet(id){
   const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", qty:0, ports:[], profiles:[],
-    input:"", outputs:[], length_m:null, brand:"", colour:"", notes:"" };
+    input:"", outputs:[], length_m:null, year:null, brand:"", colour:"", notes:"" };
   draft = { type: Object.assign({}, t), plc: id ? placementsFor(id).map(p => Object.assign({}, p)) : [], isNew: !id };
   renderTypeSheet();
 }
@@ -846,11 +850,13 @@ function renderTypeSheet(){
     h += '<div class="f"><label>Output connector(s)</label><div class="portpick" id="d_outputs">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.outputs||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
   } else {
+    const portList = d.category === "laptop" ? LAPTOP_PORTS : CONNECTORS;
     const portsHTML = '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
-      CONNECTORS.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
+      portList.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
     h += '<div class="f2">' + colourHTML + portsHTML + '</div>';
     if (d.category === "laptop"){
-      h += '<div class="f"><label>Cable length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div>';
+      h += '<div class="f2"><div class="f"><label>Cable length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div>' +
+        '<div class="f"><label>Year</label><input id="d_year" type="number" inputmode="numeric" placeholder="yyyy" maxlength="4" value="' + (d.year==null?"":d.year) + '"></div></div>';
     }
     h += '<div class="f"><label>Power profiles</label><div class="plist" id="proflist">' +
       (d.profiles||[]).map(profileRow).join("") + '</div>' +
@@ -915,6 +921,7 @@ function bindTypeSheet(){
   const colourOther = el("d_colour_other"); if (colourOther) colourOther.oninput = () => { d.colour = colourOther.value; };
   const inp = el("d_input"); if (inp) inp.onchange = () => { syncDraftFields(); refreshSheetTitle(); };
   const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
+  const year = el("d_year"); if (year) year.oninput = () => syncDraftFields();
   const portsBox = el("d_ports") || el("d_outputs");
   if (portsBox) portsBox.querySelectorAll("[data-port]").forEach(b => b.onclick = () => {
     const key = el("d_ports") ? "ports" : "outputs";
@@ -982,6 +989,7 @@ function syncDraftFields(){
   d.brand = el("d_brand") ? el("d_brand").value : d.brand;
   d.notes = el("d_notes") ? el("d_notes").value : d.notes;
   d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
+  d.year = el("d_year") && el("d_year").value !== "" ? +el("d_year").value : null;
   if (d.category === "cable"){
     d.input = el("d_input") ? el("d_input").value : d.input;
   }
