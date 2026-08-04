@@ -466,6 +466,23 @@ function placedQty(typeId){ return placementsFor(typeId).length; }
 function ownedQty(typeId){ const t = type(typeId); return (t && t.qty) ? t.qty : placedQty(typeId); }
 function realRooms(){ return rooms.filter(r => !r.system); }
 function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
+/* Downstairs, then Upstairs, then whatever other zones exist (in the order they first
+   appear) — used everywhere a room picker groups rooms under a zone heading. */
+function zoneOrder(){
+  const seen = [];
+  ["Downstairs","Upstairs"].forEach(z => { if (rooms.some(r => r.zone === z)) seen.push(z); });
+  rooms.forEach(r => { if (seen.indexOf(r.zone) < 0) seen.push(r.zone); });
+  return seen;
+}
+function roomOptionsHTML(selectedId){
+  return zoneOrder().map(zone => {
+    const zr = rooms.filter(r => r.zone === zone);
+    if (!zr.length) return "";
+    return '<optgroup label="' + esc(zone) + '">' +
+      zr.map(r => '<option value="' + r.id + '"' + (r.id === selectedId ? " selected" : "") + '>' + esc(r.name) + '</option>').join("") +
+      '</optgroup>';
+  }).join("");
+}
 
 function connectorsText(t){
   if (t.category === "cable") return (t.input || "?") + " → " + (t.outputs && t.outputs.length ? t.outputs.join(" / ") : "?");
@@ -730,7 +747,10 @@ function renderByType(list){
   let h = '<div class="itemresults">';
   const cats = categories.filter(c => list.some(t => t.category === c.key));
   cats.forEach(c => {
-    const g = list.filter(t => t.category === c.key).sort((a,b) => typeLead(a).localeCompare(typeLead(b)));
+    const g = list.filter(t => t.category === c.key).sort((a,b) =>
+      ownedQty(b.id) - ownedQty(a.id) ||
+      (a.brand||"").localeCompare(b.brand||"") ||
+      typeLead(a).localeCompare(typeLead(b)));
     h += '<div class="g1"><h2>' + esc(c.label) + '</h2><span class="n">' + g.reduce((s,t)=>s+ownedQty(t.id),0) + '</span></div>';
     h += g.map(itemRow).join("");
   });
@@ -829,7 +849,7 @@ function renderTypeSheet(){
 }
 function placementRow(p, i){
   return '<div class="prow" data-i="' + i + '">' +
-    '<select class="rsel" data-f="roomId">' + rooms.map(r => '<option value="' + r.id + '"' + (p.roomId===r.id?" selected":"") + '>' + esc(r.name) + '</option>').join("") + '</select>' +
+    '<select class="rsel" data-f="roomId">' + roomOptionsHTML(p.roomId) + '</select>' +
     '<input class="ssel" data-f="spot" placeholder="Spot (optional)" value="' + esc(spotName(p.spotId) || p._spotName || "") + '">' +
     '<button class="rm" data-rm="1">×</button></div>';
 }
@@ -1110,7 +1130,7 @@ function renderKitSheet(id){
     '<button class="done" id="kSave">Save</button></div>';
   h += '<div class="f"><label>Name</label><input id="k_name" value="' + esc(k.name) + '" placeholder="e.g. Study desk set"></div>';
   h += '<div class="f2"><div class="f"><label>Room</label><select id="k_room">' +
-    rooms.map(r => '<option value="' + r.id + '"' + (k.roomId===r.id?" selected":"") + '>' + esc(r.name) + '</option>').join("") + '</select></div>' +
+    roomOptionsHTML(k.roomId) + '</select></div>' +
     '<div class="f"><label>Spot (optional)</label><input id="k_spot" value="' + esc(k._spotName) + '"></div></div>';
   h += '<div class="f"><label>Members</label><div class="menu">' + types.map(t =>
     '<button data-member="' + t.id + '" style="display:flex;justify-content:space-between;align-items:center">' +
@@ -1180,7 +1200,7 @@ function openToFindAddSheet(){
 function openFoundSheet(id){
   const f = toFind.find(x => x.id === id); if (!f) return;
   let h = '<div class="sheethead"><button class="cancel" id="gCancel">Cancel</button><h3>Found it</h3></div>';
-  h += '<div class="f"><label>Which room?</label><select id="g_room">' + rooms.map(r => '<option value="' + r.id + '">' + esc(r.name) + '</option>').join("") + '</select></div>';
+  h += '<div class="f"><label>Which room?</label><select id="g_room">' + roomOptionsHTML() + '</select></div>';
   h += '<button class="bigbtn go" id="gSave">Add back to inventory</button>';
   h += '<button class="ghostbtn danger" id="gDrop">Just remove from this list</button>';
   openSheet(h);
