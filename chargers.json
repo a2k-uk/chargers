@@ -311,19 +311,6 @@
    "year": null
   },
   {
-   "id": "t13",
-   "category": "cable",
-   "kind": "",
-   "label": "Needs details",
-   "qty": 2,
-   "input": "",
-   "outputs": [],
-   "length_m": null,
-   "brand": "",
-   "colour": "",
-   "notes": "See listing: https://www.amazon.co.uk/dp/B0D263H8MW"
-  },
-  {
    "id": "t14",
    "category": "cable",
    "kind": "",
@@ -675,18 +662,6 @@
   {
    "id": "p15",
    "typeId": "t7",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p21-1",
-   "typeId": "t13",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p21-2",
-   "typeId": "t13",
    "roomId": "unassigned",
    "spotId": null
   },
