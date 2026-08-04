@@ -426,7 +426,6 @@ let categories = [];
 function catLabel(k){ const c = categories.find(c => c.key === k); return c ? c.label : k; }
 function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") || uid(); }
 const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","Wireless","Other"];
-const CABLE_STYLES = ["Coiled","Woven / braided","Flat","Plain"];
 /* Fixed palette rather than free text — avoids "Black" vs "Blak" fragmenting the data.
    "Other" reveals a plain text field underneath for anything genuinely uncommon. */
 const COLOUR_SWATCHES = [
@@ -482,7 +481,6 @@ function cableConnectorSummary(t){
   return (t.input || "?") + " → " + outText;
 }
 function maxWattage(t){
-  if (t.category === "cable") return t.wattage || null;
   const profs = t.profiles || [];
   return profs.length ? Math.max.apply(null, profs.map(p => p.w)) : null;
 }
@@ -766,7 +764,7 @@ function renderByRoom(list){
 let draft = null; // {type:{...}, placements:[...], isNew:bool}
 function openTypeSheet(id){
   const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", photo:"", qty:0, ports:[], profiles:[],
-    input:"", outputs:[], length_m:null, material:"", wattage:null, brand:"", colour:"", notes:"" };
+    input:"", outputs:[], length_m:null, brand:"", colour:"", notes:"" };
   draft = { type: Object.assign({}, t), plc: id ? placementsFor(id).map(p => Object.assign({}, p)) : [], isNew: !id };
   renderTypeSheet();
 }
@@ -805,10 +803,6 @@ function renderTypeSheet(){
       '<div class="f"><label>Length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div></div>';
     h += '<div class="f"><label>Output connector(s)</label><div class="portpick" id="d_outputs">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.outputs||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
-    h += '<div class="f"><label>Style</label><div class="portpick" id="d_style">' +
-      CABLE_STYLES.map(s => '<button data-style="' + esc(s) + '">' + esc(s) + '</button>').join("") + '</div>' +
-      '<input id="d_material" style="margin-top:8px" value="' + esc(d.material) + '" placeholder="e.g. Coiled, Woven — or describe it your way"></div>';
-    h += '<div class="f"><label>Wattage</label><input id="d_watt" type="number" value="' + (d.wattage==null?"":d.wattage) + '"></div>';
   } else {
     h += '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
@@ -866,7 +860,7 @@ function bindTypeSheet(){
     syncDraftFields(); renderTypeSheet();
   };
   const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
-  ["d_kind","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  ["d_kind","d_notes"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
   const brandEl = el("d_brand"); if (brandEl) brandEl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const lbl = el("d_label"); if (lbl) lbl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const colourBox = el("d_colourpick");
@@ -879,7 +873,6 @@ function bindTypeSheet(){
   const colourOther = el("d_colour_other"); if (colourOther) colourOther.oninput = () => { d.colour = colourOther.value; };
   const inp = el("d_input"); if (inp) inp.onchange = () => { syncDraftFields(); refreshSheetTitle(); };
   const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
-  const wat = el("d_watt"); if (wat) wat.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const portsBox = el("d_ports") || el("d_outputs");
   if (portsBox) portsBox.querySelectorAll("[data-port]").forEach(b => b.onclick = () => {
     const key = el("d_ports") ? "ports" : "outputs";
@@ -889,10 +882,6 @@ function bindTypeSheet(){
     b.setAttribute("aria-pressed", i === -1);
     if (key === "ports") refreshIconPreview();
     refreshSheetTitle();
-  });
-  const styleBox = el("d_style");
-  if (styleBox) styleBox.querySelectorAll("[data-style]").forEach(b => b.onclick = () => {
-    el("d_material").value = b.dataset.style; syncDraftFields();
   });
   const proflist = el("proflist");
   if (proflist) proflist.querySelectorAll(".profrow").forEach(row => {
@@ -954,8 +943,6 @@ function syncDraftFields(){
   d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
   if (d.category === "cable"){
     d.input = el("d_input") ? el("d_input").value : d.input;
-    d.material = el("d_material") ? el("d_material").value : d.material;
-    d.wattage = el("d_watt") && el("d_watt").value !== "" ? +el("d_watt").value : null;
   }
   /* profiles are mutated directly by the profile-row handlers, not re-derived here */
 }
