@@ -292,6 +292,7 @@ td.n{font-family:var(--data);font-size:14px}
 
 /* ============================== storage ============================== */
 const KEY = "chargers.v1";
+const BACKUP_KEY = "chargers.v1.presync";
 const Store = {
   mode:"memory", mem:null,
   async init(){
@@ -405,6 +406,10 @@ async function ghManualSync(){
   render();
 }
 function adoptCloud(cloud){
+  /* A cloud pull fully overwrites local data with no merge — take a one-slot safety
+     backup of whatever was here first, so an accidental clobber (e.g. connecting sync
+     on a device with unsynced local edits) is recoverable from the Data screen. */
+  try{ localStorage.setItem(BACKUP_KEY, JSON.stringify(snapshot())); }catch(e){}
   rooms = cloud.rooms || rooms;
   spots = cloud.spots || spots;
   types = cloud.types || types;
@@ -1315,6 +1320,12 @@ function screenData(){
     h += '<div class="f"><input id="patInput" type="password" placeholder="github_pat_…"></div>';
     h += '<button class="bigbtn go" id="connect">Connect</button>';
   }
+  let hasBackup = false;
+  try{ hasBackup = !!localStorage.getItem(BACKUP_KEY); }catch(e){}
+  if (hasBackup){
+    h += '<p class="hint" style="margin-top:10px">A backup of this device’s data from just before its last cloud sync is available.</p>';
+    h += '<button class="ghostbtn" id="restoreBackup">Restore last local backup</button>';
+  }
 
   h += '<div class="eyebrow" style="margin-top:26px">Hardware categories</div>';
   categories.forEach(c => {
@@ -1352,6 +1363,16 @@ function screenData(){
   };
   const sn = el("syncNow"); if (sn) sn.onclick = ghManualSync;
   const dc = el("disconnect"); if (dc) dc.onclick = () => { if (confirm("Disconnect cloud sync on this device?")){ GH.setToken(""); render(); } };
+  const rb = el("restoreBackup"); if (rb) rb.onclick = () => {
+    if (!confirm("Restore this device’s data from just before its last cloud sync? This replaces what’s currently shown.")) return;
+    try{
+      const b = JSON.parse(localStorage.getItem(BACKUP_KEY));
+      rooms = b.rooms || []; spots = b.spots || []; types = b.types || []; placements = b.placements || [];
+      kits = b.kits || []; toFind = b.toFind || []; audit = b.audit || null; history = b.history || [];
+      categories = (b.categories && b.categories.length) ? b.categories : categories;
+      persist(); render(); toast("Restored");
+    }catch(e){ toast("Could not read that backup"); }
+  };
   el("addCat").onclick = () => {
     const label = prompt("Category name"); if (!label) return;
     categories.push({key:slugify(label) + "-" + uid().slice(0,3), label:label.trim()});
