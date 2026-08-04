@@ -750,36 +750,6 @@
    "spotId": "tj3m3f8"
   },
   {
-   "id": "p19-1",
-   "typeId": "t11",
-   "roomId": "study",
-   "spotId": "r5zqo28"
-  },
-  {
-   "id": "p19-2",
-   "typeId": "t11",
-   "roomId": "master-bedroom",
-   "spotId": "tl30d74"
-  },
-  {
-   "id": "p19-3",
-   "typeId": "t11",
-   "roomId": "kitchen",
-   "spotId": "k7vykid"
-  },
-  {
-   "id": "h31p47l",
-   "typeId": "t11",
-   "roomId": "living-area-foot-stools",
-   "spotId": null
-  },
-  {
-   "id": "xe4h5br",
-   "typeId": "t11",
-   "roomId": "living-area-foot-stools",
-   "spotId": null
-  },
-  {
    "id": "pt1d084",
    "typeId": "zgueayu",
    "roomId": "hallway-drawer",
@@ -867,6 +837,36 @@
    "id": "j4upf25",
    "typeId": "epy6ct7",
    "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "p19-1",
+   "typeId": "t11",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "p19-2",
+   "typeId": "t11",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
+  },
+  {
+   "id": "p19-3",
+   "typeId": "t11",
+   "roomId": "kitchen",
+   "spotId": "k7vykid"
+  },
+  {
+   "id": "h31p47l",
+   "typeId": "t11",
+   "roomId": "living-area-foot-stools",
+   "spotId": null
+  },
+  {
+   "id": "xe4h5br",
+   "typeId": "t11",
+   "roomId": "living-area-foot-stools",
    "spotId": null
   }
  ],
