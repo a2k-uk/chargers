@@ -436,9 +436,10 @@ function connectorsText(t){
   if (t.category === "cable") return (t.input || "?") + " → " + (t.outputs && t.outputs.length ? t.outputs.join(" / ") : "?");
   return (t.ports && t.ports.length) ? t.ports.join(" + ") : "—";
 }
-function profilesText(t){
-  if (t.category === "cable") return t.wattage ? t.wattage + "W" : "";
-  return (t.profiles || []).map(p => p.v + "V/" + p.a + "A/" + p.w + "W").join(" · ");
+function maxWattage(t){
+  if (t.category === "cable") return t.wattage || null;
+  const profs = t.profiles || [];
+  return profs.length ? Math.max.apply(null, profs.map(p => p.w)) : null;
 }
 function typeGlyph(t){
   if (t.category === "cable") return "CBL";
@@ -447,10 +448,17 @@ function typeGlyph(t){
   return "ADP";
 }
 function typeLead(t){ return (t.kind || catLabel(t.category)) + (t.label ? " — " + t.label : ""); }
-function typeMeta(t){
-  const bits = [connectorsText(t)];
-  const pf = profilesText(t); if (pf) bits.push(pf);
+/* Headline: the primary at-a-glance metric — output connector + peak wattage.
+   Full volt/amp/watt profiles live in the edit sheet, not the list view. */
+function headline(t){
+  const w = maxWattage(t);
+  return connectorsText(t) + (w ? " · " + w + "W" : "");
+}
+function subtitle(t){
+  const bits = [t.kind || catLabel(t.category)];
+  if (t.label) bits.push(t.label);
   if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
+  if (t.material) bits.push(t.material);
   if (t.brand) bits.push(t.brand);
   if (t.colour) bits.push(t.colour);
   return bits.filter(Boolean).join(" · ");
@@ -590,8 +598,8 @@ function itemRow(t){
   const gap = missingFields(t).length > 0;
   return '<button class="item' + (gap ? " needsdata" : "") + '" data-type="' + t.id + '">' +
     '<span class="glyph">' + typeGlyph(t) + '</span>' +
-    '<span class="body"><span class="l1"><span class="lead">' + esc(typeLead(t)) + '</span></span>' +
-    '<span class="l2">' + esc(typeMeta(t)) + (gap ? " · Needs: " + esc(missingFields(t).join(", ")) : "") + '</span></span>' +
+    '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
+    '<span class="l2">' + esc(subtitle(t)) + (gap ? " · Needs: " + esc(missingFields(t).join(", ")) : "") + '</span></span>' +
     '<span class="qty">' + totalQty(t.id) + '</span></button>';
 }
 function renderByType(list){
@@ -620,8 +628,8 @@ function renderByRoom(list){
         const t = type(p.typeId); if (!t) return;
         h += '<button class="item" data-type="' + t.id + '">' +
           '<span class="glyph">' + typeGlyph(t) + '</span>' +
-          '<span class="body"><span class="l1"><span class="lead">' + esc(typeLead(t)) + '</span></span>' +
-          '<span class="l2">' + esc(connectorsText(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span>' +
+          '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
+          '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span>' +
           '<span class="qty">' + p.qty + '</span></button>';
       });
     });
@@ -810,8 +818,8 @@ function screenStocktake(){
     if (!rp.length) h += '<p class="note">Nothing expected here yet.</p>';
     rp.forEach(p => {
       const t = type(p.typeId); if (!t) return;
-      h += '<div class="arow"><span class="body"><span class="l1">' + esc(typeLead(t)) + '</span>' +
-        '<span class="l2">' + esc(connectorsText(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + '</span></span>' +
+      h += '<div class="arow"><span class="body"><span class="l1">' + esc(headline(t)) + '</span>' +
+        '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + '</span></span>' +
         '<div class="stepper" data-pid="' + p.id + '"><button data-d="-1">−</button><span class="v">' + p.qty + '</span><button data-d="1">+</button></div></div>';
     });
     h += '<button class="smallbtn addrow" id="stAdd">+ Found something else here</button>';
@@ -843,7 +851,7 @@ function openAuditAddSheet(roomId){
   const candidates = activeTypes().filter(t => !placements.some(p => p.typeId === t.id && p.roomId === roomId));
   let h = '<div class="sheethead"><button class="cancel" id="aaCancel">Cancel</button><h3>Found in ' + esc(roomName(roomId)) + '</h3></div>';
   if (!candidates.length){ h += '<p class="note">Every known item type already has a placement here — edit its count above, or add a brand new item from the Items screen.</p>'; }
-  h += '<div class="menu">' + candidates.map(t => '<button data-pick="' + t.id + '">' + esc(typeLead(t)) + '<small>' + esc(connectorsText(t)) + '</small></button>').join("") + '</div>';
+  h += '<div class="menu">' + candidates.map(t => '<button data-pick="' + t.id + '">' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></button>').join("") + '</div>';
   openSheet(h);
   el("aaCancel").onclick = closeSheet;
   document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
@@ -899,7 +907,7 @@ function screenKits(){
     h += '<div class="members">' + k.typeIds.map(tid => {
       const t = type(tid); if (!t) return "";
       const bad = missing.indexOf(tid) > -1;
-      return '<div class="kitmember"><span>' + esc(typeLead(t)) + '</span><span class="' + (bad?"missing":"ok") + '">' + (bad?"Missing":"Present") + '</span></div>';
+      return '<div class="kitmember"><span>' + esc(headline(t)) + '</span><span class="' + (bad?"missing":"ok") + '">' + (bad?"Missing":"Present") + '</span></div>';
     }).join("") + '</div>';
     h += '<span class="kitstatus ' + (missing.length ? "bad" : "ok") + '">' + (missing.length ? missing.length + " missing" : "Complete") + '</span>';
     h += '</div>';
@@ -924,7 +932,7 @@ function renderKitSheet(id){
     '<div class="f"><label>Spot (optional)</label><input id="k_spot" value="' + esc(k._spotName) + '"></div></div>';
   h += '<div class="f"><label>Members</label><div class="menu">' + activeTypes().map(t =>
     '<button data-member="' + t.id + '" style="display:flex;justify-content:space-between;align-items:center">' +
-    '<span>' + esc(typeLead(t)) + '<small>' + esc(connectorsText(t)) + '</small></span>' +
+    '<span>' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></span>' +
     '<span>' + (k.typeIds.indexOf(t.id) > -1 ? "✓" : "") + '</span></button>'
   ).join("") + '</div></div>';
   if (id) h += '<button class="ghostbtn danger" id="kDelete">Delete kit</button>';
@@ -969,8 +977,8 @@ function screenToFind(){
   }
   open.forEach(f => {
     const t = type(f.typeId);
-    h += '<div class="arow"><span class="body"><span class="l1">' + esc(t ? typeLead(t) : "Unknown item") + '</span>' +
-      '<span class="l2">' + esc(f.note) + ' · Added ' + esc(f.added) + '</span></span>' +
+    h += '<div class="arow"><span class="body"><span class="l1">' + esc(t ? headline(t) : "Unknown item") + '</span>' +
+      '<span class="l2">' + (t ? esc(subtitle(t)) + " · " : "") + esc(f.note) + ' · Added ' + esc(f.added) + '</span></span>' +
       '<button class="smallbtn" data-found="' + f.id + '">Found it</button></div>';
   });
   el("view").innerHTML = h;
@@ -979,7 +987,7 @@ function screenToFind(){
 }
 function openToFindAddSheet(){
   let h = '<div class="sheethead"><button class="cancel" id="fCancel">Cancel</button><h3>Add to To Find</h3></div>';
-  h += '<div class="menu">' + activeTypes().map(t => '<button data-pick="' + t.id + '">' + esc(typeLead(t)) + '<small>' + esc(connectorsText(t)) + '</small></button>').join("") + '</div>';
+  h += '<div class="menu">' + activeTypes().map(t => '<button data-pick="' + t.id + '">' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></button>').join("") + '</div>';
   openSheet(h);
   el("fCancel").onclick = closeSheet;
   document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
@@ -1065,7 +1073,7 @@ function screenArchive(){
   if (!list.length) h += '<div class="empty"><b>Nothing retired</b></div>';
   list.forEach(t => {
     h += '<div class="item retired"><span class="glyph">' + typeGlyph(t) + '</span>' +
-      '<span class="body"><span class="l1">' + esc(typeLead(t)) + '</span><span class="l2">' + esc(typeMeta(t)) + '</span></span>' +
+      '<span class="body"><span class="l1">' + esc(headline(t)) + '</span><span class="l2">' + esc(subtitle(t)) + '</span></span>' +
       '<button class="smallbtn" data-restore="' + t.id + '">Restore</button></div>';
   });
   el("view").innerHTML = h;
