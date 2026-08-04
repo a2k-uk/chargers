@@ -482,7 +482,7 @@
    "category": "adapter",
    "kind": "",
    "label": "Oblong",
-   "qty": 6,
+   "qty": 4,
    "ports": [
     "USB-A"
    ],
@@ -828,6 +828,18 @@
    "spotId": "fgrg8hi"
   },
   {
+   "id": "umt0zxi",
+   "typeId": "epy6ct7",
+   "roomId": "cora-bedroom",
+   "spotId": "rbttwml"
+  },
+  {
+   "id": "n1rf8zn",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
    "id": "7g65eti",
    "typeId": "i2bulzm",
    "roomId": "living-area",
@@ -849,18 +861,6 @@
    "id": "wgkce6x",
    "typeId": "i2bulzm",
    "roomId": "study-cupboard",
-   "spotId": null
-  },
-  {
-   "id": "umt0zxi",
-   "typeId": "epy6ct7",
-   "roomId": "cora-bedroom",
-   "spotId": "rbttwml"
-  },
-  {
-   "id": "n1rf8zn",
-   "typeId": "epy6ct7",
-   "roomId": "study-drawer",
    "spotId": null
   }
  ],
