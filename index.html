@@ -794,6 +794,7 @@ function typeComparator(catKey){
     typeLead(a).localeCompare(typeLead(b));
   if (catKey === "adapter") return (a,b) =>
     (maxWattage(b)||0) - (maxWattage(a)||0) ||
+    ownedQty(b.id) - ownedQty(a.id) ||
     connectorsText(a).localeCompare(connectorsText(b)) ||
     (a.brand||"").localeCompare(b.brand||"") ||
     typeLead(a).localeCompare(typeLead(b));
