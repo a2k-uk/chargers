@@ -211,14 +211,16 @@ td.n{font-family:var(--data);font-size:14px}
 .prow button.rm{flex:none;color:var(--thread);font-size:18px;padding:0 4px}
 .addrow{margin-top:8px}
 
-.portpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
-.portpick button{border:1px solid var(--rule);border-radius:2px;padding:6px 10px;font-family:var(--label);
-  text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;color:var(--mute);background:var(--card)}
+.portpick{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:2px}
+.portpick button{width:100%;min-width:0;overflow-wrap:break-word;border:1px solid var(--rule);border-radius:2px;
+  padding:6px 4px;font-family:var(--label);text-transform:uppercase;letter-spacing:.03em;font-size:10px;
+  font-weight:600;color:var(--mute);background:var(--card);text-align:center;line-height:1.25}
 .portpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 
-.colourpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
-.colourpick button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:2px;
-  padding:6px 10px 6px 6px;font-family:var(--label);text-transform:uppercase;letter-spacing:.06em;font-size:11px;
+.colourpick{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:2px}
+.colourpick button{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-width:0;
+  border:1px solid var(--rule);border-radius:2px;padding:6px 10px 6px 6px;font-family:var(--label);
+  text-transform:uppercase;letter-spacing:.06em;font-size:11px;
   font-weight:600;color:var(--mute);background:var(--card)}
 .colourpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 .colourpick .sw{width:13px;height:13px;flex:none;border-radius:1px;box-shadow:inset 0 0 0 1px rgba(128,128,128,.5)}
@@ -811,21 +813,23 @@ function renderTypeSheet(){
   h += '<div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>';
 
   const colourIsOther = draft._colourOther || (d.colour && !isKnownColour(d.colour));
-  h += '<div class="f"><label>Colour</label><div class="colourpick" id="d_colourpick">' +
+  const colourHTML = '<div class="f"><label>Colour</label><div class="colourpick" id="d_colourpick">' +
     COLOUR_SWATCHES.map(c => '<button aria-pressed="' + (d.colour===c.name) + '" data-colour="' + esc(c.name) + '"><span class="sw" style="' + colourSwatchStyle(c.hex) + '"></span>' + esc(c.name) + '</button>').join("") +
     '<button aria-pressed="' + colourIsOther + '" data-colour="__other">Other</button></div>' +
     (colourIsOther ? '<input id="d_colour_other" style="margin-top:8px" value="' + esc(d.colour) + '" placeholder="Custom colour">' : '') +
     '</div>';
 
   if (d.category === "cable"){
+    h += colourHTML;
     h += '<div class="f2"><div class="f"><label for="d_input">Input connector</label><select id="d_input">' +
       '<option value="">—</option>' + CONNECTORS.map(c => '<option value="' + c + '"' + (d.input===c?" selected":"") + '>' + c + '</option>').join("") + '</select></div>' +
       '<div class="f"><label>Length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div></div>';
     h += '<div class="f"><label>Output connector(s)</label><div class="portpick" id="d_outputs">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.outputs||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
   } else {
-    h += '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
+    const portsHTML = '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
+    h += '<div class="f2">' + colourHTML + portsHTML + '</div>';
     if (d.category === "laptop"){
       h += '<div class="f"><label>Cable length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div>';
     }
