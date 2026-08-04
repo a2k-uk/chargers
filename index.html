@@ -549,15 +549,11 @@ function plugIconSVG(t){
   }
   return '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + h + '</svg>';
 }
-/* Laptop charger icon: an angled brick with a cable snaking out of each side (mains lead
-   one way, laptop lead the other) — generic, not parameterised by ports like plugIconSVG,
-   since a brick-with-two-cables reads as "laptop charger" regardless of connector. */
+/* Laptop charger icon: a bolt inside a rounded square — symbolic rather than literal,
+   generic/unparameterised like the category itself (not tied to a specific connector). */
 function laptopChargerIconSVG(){
-  const h = '<g transform="rotate(-14 24 24)">' +
-    '<rect x="14" y="17" width="20" height="14" rx="3" stroke="currentColor" stroke-width="2.5" fill="none"/>' +
-    '<path d="M14 21 C9 22 10 27 5 29 C3 31 4 35 3 38" stroke="currentColor" stroke-width="2.25" fill="none" stroke-linecap="round"/>' +
-    '<path d="M34 27 C39 26 38 21 43 19 C45 17 44 13 45 10" stroke="currentColor" stroke-width="2.25" fill="none" stroke-linecap="round"/>' +
-    '</g>';
+  const h = '<rect x="12" y="12" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2.5" fill="none"/>' +
+    '<path d="M27 14 L17 27 L23 27 L21 35 L33 20 L26 20 Z" fill="currentColor"/>';
   return '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + h + '</svg>';
 }
 function glyphHTML(t){
