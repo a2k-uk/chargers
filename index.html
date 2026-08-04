@@ -521,14 +521,21 @@ function headline(t){
   bits.push(connectorsText(t));
   return bits.join(" · ");
 }
+/* The sheet header title: the same headline shown on the main screen, live as you edit,
+   falling back to a plain "Add/Edit item" label while there's nothing to show yet. */
+function sheetTitle(t){
+  const h = headline(t);
+  const blank = !h || h === "—" || h === "? → ?";
+  return blank ? (draft.isNew ? "Add item" : "Edit item") : h;
+}
 function subtitle(t){
   const bits = [];
   if (t.category === "other" && t.kind) bits.push(t.kind);
-  if (t.label) bits.push(t.label);
   if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
   if (t.material) bits.push(t.material);
   if (t.brand) bits.push(t.brand);
   if (t.colour) bits.push(t.colour);
+  if (t.label) bits.push(t.label);
   return bits.filter(Boolean).join(" · ");
 }
 function missingFields(t){
@@ -718,7 +725,7 @@ function openTypeSheet(id){
 }
 function renderTypeSheet(){
   const d = draft.type;
-  let h = '<div class="sheethead"><button class="cancel" id="tCancel">Cancel</button><h3>' + (draft.isNew ? "Add item" : "Edit item") + '</h3>' +
+  let h = '<div class="sheethead"><button class="cancel" id="tCancel">Cancel</button><h3 id="sheetTitle">' + esc(sheetTitle(d)) + '</h3>' +
     '<button class="done" id="tSave">Save</button></div>';
 
   h += '<div class="previewrow"><div class="iconpreview" id="iconPreview">' + previewHTML(d) + '</div>' +
@@ -729,9 +736,9 @@ function renderTypeSheet(){
 
   if (d.category === "other"){
     h += '<div class="f2"><div class="f"><label for="d_kind">Kind</label><input id="d_kind" value="' + esc(d.kind) + '" placeholder="e.g. Wireless Charging Stand"></div>' +
-      '<div class="f"><label for="d_label">Short name</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Long box shape"></div></div>';
+      '<div class="f"><label for="d_label">Distinguishing feature</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Long box shape"></div></div>';
   } else {
-    h += '<div class="f"><label for="d_label">Short name</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div>';
+    h += '<div class="f"><label for="d_label">Distinguishing feature</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div>';
   }
 
   h += '<div class="f"><label>How many do you have</label><div class="stepper lg" id="d_qtyStepper">' +
@@ -791,6 +798,10 @@ function refreshIconPreview(){
   const box = el("iconPreview");
   if (box) box.innerHTML = previewHTML(draft.type);
 }
+function refreshSheetTitle(){
+  const box = el("sheetTitle");
+  if (box) box.textContent = sheetTitle(draft.type);
+}
 function bindTypeSheet(){
   const d = draft.type;
   el("tCancel").onclick = closeSheet;
@@ -801,9 +812,9 @@ function bindTypeSheet(){
   };
   const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
   ["d_kind","d_label","d_brand","d_colour","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
-  const inp = el("d_input"); if (inp) inp.onchange = () => syncDraftFields();
+  const inp = el("d_input"); if (inp) inp.onchange = () => { syncDraftFields(); refreshSheetTitle(); };
   const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
-  const wat = el("d_watt"); if (wat) wat.oninput = () => syncDraftFields();
+  const wat = el("d_watt"); if (wat) wat.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const portsBox = el("d_ports") || el("d_outputs");
   if (portsBox) portsBox.querySelectorAll("[data-port]").forEach(b => b.onclick = () => {
     const key = el("d_ports") ? "ports" : "outputs";
@@ -812,6 +823,7 @@ function bindTypeSheet(){
     if (i > -1) arr.splice(i,1); else arr.push(c);
     b.setAttribute("aria-pressed", i === -1);
     if (key === "ports") refreshIconPreview();
+    refreshSheetTitle();
   });
   const styleBox = el("d_style");
   if (styleBox) styleBox.querySelectorAll("[data-style]").forEach(b => b.onclick = () => {
@@ -828,6 +840,7 @@ function bindTypeSheet(){
         const wEl = row.querySelector('[data-pf="w"]');
         if (wEl) wEl.value = prof.w;
       }
+      refreshSheetTitle();
     });
     row.querySelector("[data-prm]").onclick = () => { d.profiles.splice(i,1); renderTypeSheet(); };
   });
