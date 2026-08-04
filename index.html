@@ -536,14 +536,19 @@ function typeLead(t){
   if (t.category === "other" && t.kind) return t.kind;
   return catLabel(t.category);
 }
-/* Heading: cables lead with input -> output (collapsing 3+ tips to a count); everything
-   else leads with peak wattage then ports (collapsing 3+ to a count the same way).
-   Distinguishing feature follows for both. Full volt/amp/watt profiles live in the edit
-   sheet, not the list view. */
+/* Heading: cables lead with input -> output (collapsing 3+ tips to a count). Laptop
+   chargers lead with brand (usually blank, so usually skipped) then ports then wattage.
+   Everything else leads with peak wattage then ports. Distinguishing feature follows for
+   all three. Full volt/amp/watt profiles live in the edit sheet, not the list view. */
 function headline(t){
   const bits = [];
-  if (t.category === "cable") bits.push(cableConnectorSummary(t));
-  else {
+  if (t.category === "cable"){
+    bits.push(cableConnectorSummary(t));
+  } else if (t.category === "laptop"){
+    if (t.brand) bits.push(t.brand);
+    bits.push(connectorsText(t));
+    const w = maxWattage(t); if (w) bits.push(w + "W");
+  } else {
     const w = maxWattage(t); if (w) bits.push(w + "W");
     bits.push(connectorsText(t));
   }
@@ -559,16 +564,19 @@ function sheetTitle(t){
 }
 /* Sub-heading: kind (Other Hardware) or the category name otherwise — pass hideCategory
    when the surrounding view already makes the category obvious (By Type's section
-   headers), since repeating it on every row there is just noise. Then colour, length
-   (cables), brand. Ports/connector already live in the heading now, so they don't repeat
-   here. */
+   headers), since repeating it on every row there is just noise. Cables get colour/length/
+   brand; laptop chargers get colour/length (brand already in their heading); everything
+   else gets colour/brand. Ports/connector already live in the heading now, so they don't
+   repeat here. */
 function subtitle(t, hideCategory){
   const bits = [];
   if (t.category === "other" && t.kind) bits.push(t.kind);
   else if (!hideCategory) bits.push(catLabel(t.category));
   if (t.colour) bits.push(t.colour);
-  if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
-  if (t.brand) bits.push(t.brand);
+  if (t.category === "cable" || t.category === "laptop"){
+    if (t.length_m) bits.push(t.length_m + "m");
+  }
+  if (t.category !== "laptop" && t.brand) bits.push(t.brand);
   return bits.join(" · ");
 }
 function missingFields(t){
@@ -804,6 +812,9 @@ function renderTypeSheet(){
   } else {
     h += '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
+    if (d.category === "laptop"){
+      h += '<div class="f"><label>Cable length (m)</label><input id="d_len" type="number" step="0.1" value="' + (d.length_m==null?"":d.length_m) + '"></div>';
+    }
     h += '<div class="f"><label>Power profiles</label><div class="plist" id="proflist">' +
       (d.profiles||[]).map(profileRow).join("") + '</div>' +
       '<button class="smallbtn addrow" id="addProfile">+ Add profile</button>' +
@@ -855,7 +866,8 @@ function bindTypeSheet(){
     syncDraftFields(); renderTypeSheet();
   };
   const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
-  ["d_kind","d_brand","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  ["d_kind","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  const brandEl = el("d_brand"); if (brandEl) brandEl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const lbl = el("d_label"); if (lbl) lbl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const colourBox = el("d_colourpick");
   if (colourBox) colourBox.querySelectorAll("[data-colour]").forEach(b => b.onclick = () => {
@@ -939,9 +951,9 @@ function syncDraftFields(){
   d.photo = el("d_photo") ? el("d_photo").value : d.photo;
   d.brand = el("d_brand") ? el("d_brand").value : d.brand;
   d.notes = el("d_notes") ? el("d_notes").value : d.notes;
+  d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
   if (d.category === "cable"){
     d.input = el("d_input") ? el("d_input").value : d.input;
-    d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
     d.material = el("d_material") ? el("d_material").value : d.material;
     d.wattage = el("d_watt") && el("d_watt").value !== "" ? +el("d_watt").value : null;
   }
