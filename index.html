@@ -451,7 +451,6 @@ let rooms = [], spots = [], types = [], placements = [], kits = [], toFind = [],
 let ui = {
   screen:"items", navExpanded:false,
   groupView:"type",            // type | room
-  catFilter:"all",
   q:"", showFilters:false,
   filters:{ connector:[], room:[] },
   auditRoom:null
@@ -474,7 +473,9 @@ function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
 
 function connectorsText(t){
   if (t.category === "cable") return (t.input || "?") + " → " + (t.outputs && t.outputs.length ? t.outputs.join(" / ") : "?");
-  return (t.ports && t.ports.length) ? t.ports.join(" + ") : "—";
+  const ports = t.ports || [];
+  if (!ports.length) return "—";
+  return ports.length > 2 ? ports.length + " ports" : ports.join(" + ");
 }
 /* Cable heading uses this instead: three or more output tips collapse to a count
    rather than listing every one (e.g. "USB-A → 3 tips" for a 3-in-1 cable). */
@@ -538,13 +539,17 @@ function typeLead(t){
   if (t.category === "other" && t.kind) return t.kind;
   return catLabel(t.category);
 }
-/* Heading: cables lead with input -> output (collapsing 3+ tips to a count), everything
-   else leads with peak wattage; distinguishing feature follows for both. Full volt/amp/watt
-   profiles live in the edit sheet, not the list view. */
+/* Heading: cables lead with input -> output (collapsing 3+ tips to a count); everything
+   else leads with peak wattage then ports (collapsing 3+ to a count the same way).
+   Distinguishing feature follows for both. Full volt/amp/watt profiles live in the edit
+   sheet, not the list view. */
 function headline(t){
   const bits = [];
   if (t.category === "cable") bits.push(cableConnectorSummary(t));
-  else { const w = maxWattage(t); if (w) bits.push(w + "W"); }
+  else {
+    const w = maxWattage(t); if (w) bits.push(w + "W");
+    bits.push(connectorsText(t));
+  }
   if (t.label) bits.push(t.label);
   return bits.join(" · ");
 }
@@ -552,24 +557,21 @@ function headline(t){
    falling back to a plain "Add/Edit item" label while there's nothing to show yet. */
 function sheetTitle(t){
   const h = headline(t);
-  const blank = !h || h === "? → ?";
+  const blank = !h || h === "—" || h === "? → ?";
   return blank ? (draft.isNew ? "Add item" : "Edit item") : h;
 }
-/* Sub-heading: cables get colour/length/brand; everything else gets kind (Other Hardware
-   only) / colour / brand / ports — ports last, always shown so a missing connector is
-   visible rather than silently absent. */
-function subtitle(t){
+/* Sub-heading: kind (Other Hardware) or the category name otherwise — pass hideCategory
+   when the surrounding view already makes the category obvious (By Type's section
+   headers), since repeating it on every row there is just noise. Then colour, length
+   (cables), brand. Ports/connector already live in the heading now, so they don't repeat
+   here. */
+function subtitle(t, hideCategory){
   const bits = [];
-  if (t.category === "cable"){
-    if (t.colour) bits.push(t.colour);
-    if (t.length_m) bits.push(t.length_m + "m");
-    if (t.brand) bits.push(t.brand);
-    return bits.join(" · ");
-  }
   if (t.category === "other" && t.kind) bits.push(t.kind);
+  else if (!hideCategory) bits.push(catLabel(t.category));
   if (t.colour) bits.push(t.colour);
+  if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
   if (t.brand) bits.push(t.brand);
-  bits.push(connectorsText(t));
   return bits.join(" · ");
 }
 function missingFields(t){
@@ -585,10 +587,28 @@ function missingFields(t){
   else if (placed < owned) bits.push("location");
   return bits;
 }
+/* The red flag appended to a row's sub-heading. Missing structural data reads as
+   "Needs: connector"; unplaced units get their own count-based phrasing instead of just
+   the word "location". */
+function rowFlag(t){
+  const bits = [];
+  if (t.category === "cable"){
+    if (!t.input) bits.push("input connector");
+    if (!t.outputs || !t.outputs.length) bits.push("output connector");
+  } else if (!t.ports || !t.ports.length) bits.push("connector");
+  const owned = ownedQty(t.id), placed = placedQty(t.id);
+  if (owned <= 0) bits.push("quantity");
+  const parts = [];
+  if (bits.length) parts.push("Needs: " + bits.join(", "));
+  if (owned > 0 && placed < owned){
+    const n = owned - placed;
+    parts.push(n + " unknown location" + (n === 1 ? "" : "s"));
+  }
+  return parts.join(" · ");
+}
 
 /* ============================== search/filter ============================== */
 function typeMatches(t){
-  if (ui.catFilter !== "all" && t.category !== ui.catFilter) return false;
   if (ui.filters.connector.length){
     const tc = t.category === "cable" ? [t.input].concat(t.outputs||[]) : (t.ports||[]);
     if (!ui.filters.connector.some(c => tc.indexOf(c) > -1)) return false;
@@ -639,16 +659,7 @@ function closeSheet(){
 /* ============================== items screen ============================== */
 function screenItems(){
   let h = '<section>';
-  h += '<div class="eyebrow">Inventory</div>';
-  h += '<div class="chiprow">';
-  h += '<button class="chip' + (ui.catFilter==="all"?"":"") + '" aria-pressed="' + (ui.catFilter==="all") + '" data-cat="all">All<span class="n">' + types.length + '</span></button>';
-  categories.forEach(c => {
-    const n = types.filter(t => t.category === c.key).length;
-    h += '<button class="chip" aria-pressed="' + (ui.catFilter===c.key) + '" data-cat="' + c.key + '">' + esc(c.label) + '<span class="n">' + n + '</span></button>';
-  });
-  h += '</div>';
-
-  h += '<div class="toolbar">';
+  h += '<div class="toolbar" style="margin-top:0">';
   h += '<div class="seg"><button aria-pressed="' + (ui.groupView==="type") + '" data-view="type">By Type</button>' +
        '<button aria-pressed="' + (ui.groupView==="room") + '" data-view="room">By Room</button></div>';
   h += '<div class="right">';
@@ -678,7 +689,6 @@ function screenItems(){
   h += '</section>';
   el("view").innerHTML = h;
 
-  el("view").querySelectorAll("[data-cat]").forEach(b => b.onclick = () => { ui.catFilter = b.dataset.cat; render(); });
   el("view").querySelectorAll("[data-view]").forEach(b => b.onclick = () => { ui.groupView = b.dataset.view; render(); });
   el("filterToggle").onclick = () => { ui.showFilters = !ui.showFilters; render(); };
   const qb = el("qbox"); if (qb) qb.oninput = () => { ui.q = qb.value; renderListOnly(); };
@@ -706,11 +716,11 @@ function bindItemRows(){
   el("view").querySelectorAll("[data-type]").forEach(b => b.onclick = () => openTypeSheet(b.dataset.type));
 }
 function itemRow(t){
-  const gaps = missingFields(t);
+  const flag = rowFlag(t);
   return '<button class="item" data-type="' + t.id + '">' +
     '<span class="glyph">' + glyphHTML(t) + '</span>' +
     '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
-    '<span class="l2">' + esc(subtitle(t)) + (gaps.length ? ' <span class="flag">· Needs: ' + esc(gaps.join(", ")) + '</span>' : "") + '</span></span>' +
+    '<span class="l2">' + esc(subtitle(t, true)) + (flag ? ' <span class="flag">· ' + esc(flag) + '</span>' : "") + '</span></span>' +
     '<span class="qty">' + ownedQty(t.id) + '</span></button>';
 }
 function renderByType(list){
