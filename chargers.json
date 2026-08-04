@@ -93,7 +93,6 @@
   {"id": "p8", "typeId": "t4", "roomId": "study", "spotId": null, "qty": 1},
   {"id": "p9", "typeId": "t4", "roomId": "garage", "spotId": null, "qty": 1},
   {"id": "p10", "typeId": "t4", "roomId": "spare", "spotId": null, "qty": 1},
-  {"id": "p11", "typeId": "t4", "roomId": "committed", "spotId": null, "qty": 6, "committed": true},
   {"id": "p12", "typeId": "t5", "roomId": "kitchen", "spotId": "sp2", "qty": 1},
   {"id": "p13", "typeId": "t5", "roomId": "guest-room", "spotId": null, "qty": 1},
   {"id": "p14", "typeId": "t5", "roomId": "spare", "spotId": null, "qty": 1},
