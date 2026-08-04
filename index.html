@@ -1010,7 +1010,7 @@ function resolveSpot(p){
 function saveTypeSheet(){
   syncDraftFields();
   const d = draft.type;
-  if (!d.kind && !d.label){ toast("Give it at least a kind or a description"); return; }
+  if (d.category === "other" && !d.kind && !d.label){ toast("Give it at least a kind or a description"); return; }
   const idx = types.findIndex(t => t.id === d.id);
   if (idx > -1) types[idx] = d; else types.push(d);
   draft.plc.forEach(p => { p.spotId = resolveSpot(p); delete p._spotName; });
