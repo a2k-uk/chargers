@@ -809,6 +809,12 @@
    "typeId": "i2bulzm",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "wgkce6x",
+   "typeId": "i2bulzm",
+   "roomId": "study-cupboard",
+   "spotId": null
   }
  ],
  "kits": [],
