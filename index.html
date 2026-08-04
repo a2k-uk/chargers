@@ -607,7 +607,7 @@ function sheetTitle(t){
 /* Sub-heading: kind (Other Hardware) or the category name otherwise — pass hideCategory
    when the surrounding view already makes the category obvious (By Type's section
    headers), since repeating it on every row there is just noise. Cables get colour/length/
-   brand; laptop chargers get colour/length (brand already in their heading); everything
+   brand; laptop chargers get colour/length/year (brand already in their heading); everything
    else gets colour/brand. Ports/connector already live in the heading now, so they don't
    repeat here. */
 function subtitle(t, hideCategory){
@@ -619,6 +619,7 @@ function subtitle(t, hideCategory){
     if (t.length_m) bits.push(t.length_m + "m");
   }
   if (t.category !== "laptop" && t.brand) bits.push(t.brand);
+  if (t.category === "laptop" && t.year) bits.push(String(t.year));
   return bits.join(" · ");
 }
 function missingFields(t){
@@ -774,7 +775,10 @@ function renderByType(list){
   let h = '<div class="itemresults">';
   const cats = categories.filter(c => list.some(t => t.category === c.key));
   cats.forEach(c => {
-    const g = list.filter(t => t.category === c.key).sort((a,b) =>
+    const g = list.filter(t => t.category === c.key).sort(c.key === "laptop" ? (a,b) =>
+      (a.year||0) - (b.year||0) ||
+      (a.brand||"").localeCompare(b.brand||"") ||
+      typeLead(a).localeCompare(typeLead(b)) : (a,b) =>
       ownedQty(b.id) - ownedQty(a.id) ||
       (a.brand||"").localeCompare(b.brand||"") ||
       typeLead(a).localeCompare(typeLead(b)));
