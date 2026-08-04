@@ -189,36 +189,6 @@
  ],
  "types": [
   {
-   "id": "t1",
-   "category": "other",
-   "kind": "Wireless Charging Stand",
-   "label": "Long box shape, from old stands",
-   "qty": 6,
-   "ports": [
-    "USB-A"
-   ],
-   "profiles": [
-    {
-     "v": 5,
-     "a": 3,
-     "w": 15
-    },
-    {
-     "v": 9,
-     "a": 2,
-     "w": 18
-    },
-    {
-     "v": 12,
-     "a": 1,
-     "w": 18
-    }
-   ],
-   "brand": "",
-   "colour": "",
-   "notes": ""
-  },
-  {
    "id": "t4",
    "category": "adapter",
    "kind": "",
@@ -544,30 +514,6 @@
  ],
  "placements": [
   {
-   "id": "p1",
-   "typeId": "t1",
-   "roomId": "living-area",
-   "spotId": null
-  },
-  {
-   "id": "p2",
-   "typeId": "t1",
-   "roomId": "master-bedroom",
-   "spotId": "sp5"
-  },
-  {
-   "id": "p3",
-   "typeId": "t1",
-   "roomId": "andy-wardrobe",
-   "spotId": null
-  },
-  {
-   "id": "p4",
-   "typeId": "t1",
-   "roomId": "study",
-   "spotId": null
-  },
-  {
    "id": "p7",
    "typeId": "t4",
    "roomId": "kitchen",
@@ -743,20 +689,7 @@
   }
  ],
  "kits": [],
- "toFind": [
-  {
-   "id": "f1",
-   "typeId": "t1",
-   "note": "Last known at JPM (old office) — presumed missing",
-   "added": "2026-08-03"
-  },
-  {
-   "id": "f2",
-   "typeId": "t1",
-   "note": "Last known in spare stock — presumed missing",
-   "added": "2026-08-03"
-  }
- ],
+ "toFind": [],
  "audit": null,
  "history": [],
  "categories": [
