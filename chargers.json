@@ -189,31 +189,6 @@
  ],
  "types": [
   {
-   "id": "t4",
-   "category": "adapter",
-   "kind": "",
-   "label": "Apple Official",
-   "qty": 4,
-   "ports": [
-    "USB-C"
-   ],
-   "profiles": [
-    {
-     "v": 5,
-     "a": 3,
-     "w": 15
-    },
-    {
-     "v": 9,
-     "a": 2,
-     "w": 18
-    }
-   ],
-   "brand": "Apple",
-   "colour": "",
-   "notes": ""
-  },
-  {
    "id": "t6",
    "category": "laptop",
    "kind": "",
@@ -458,30 +433,6 @@
   }
  ],
  "placements": [
-  {
-   "id": "p7",
-   "typeId": "t4",
-   "roomId": "kitchen",
-   "spotId": "sp1"
-  },
-  {
-   "id": "p8",
-   "typeId": "t4",
-   "roomId": "study",
-   "spotId": null
-  },
-  {
-   "id": "p9",
-   "typeId": "t4",
-   "roomId": "garage",
-   "spotId": null
-  },
-  {
-   "id": "p10",
-   "typeId": "t4",
-   "roomId": "spare",
-   "spotId": null
-  },
   {
    "id": "p15",
    "typeId": "t7",
