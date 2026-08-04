@@ -220,6 +220,11 @@
    "id": "k7vykid",
    "roomId": "kitchen",
    "name": "Island"
+  },
+  {
+   "id": "r5zqo28",
+   "roomId": "study",
+   "name": "Desktop"
   }
  ],
  "types": [
@@ -263,8 +268,8 @@
    "id": "t11",
    "category": "cable",
    "kind": "",
-   "label": "3-in-1 coil cable",
-   "qty": 3,
+   "label": "Coil",
+   "qty": 6,
    "input": "USB-A",
    "outputs": [
     "Lightning",
@@ -272,9 +277,10 @@
     "Micro-USB"
    ],
    "length_m": 1.8,
-   "brand": "",
+   "brand": "Generic",
    "colour": "White",
-   "notes": "£2.69 each, marketed as \"66W Super Fast Charging T Type Spring Cable\"."
+   "notes": "",
+   "year": null
   },
   {
    "id": "t12",
@@ -578,24 +584,6 @@
    "spotId": null
   },
   {
-   "id": "p19-1",
-   "typeId": "t11",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p19-2",
-   "typeId": "t11",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p19-3",
-   "typeId": "t11",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
    "id": "p20-1",
    "typeId": "t12",
    "roomId": "unassigned",
@@ -708,6 +696,36 @@
    "typeId": "i2bulzm",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "p19-1",
+   "typeId": "t11",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "p19-2",
+   "typeId": "t11",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
+  },
+  {
+   "id": "p19-3",
+   "typeId": "t11",
+   "roomId": "kitchen",
+   "spotId": "k7vykid"
+  },
+  {
+   "id": "h31p47l",
+   "typeId": "t11",
+   "roomId": "living-area-foot-stools",
+   "spotId": null
+  },
+  {
+   "id": "xe4h5br",
+   "typeId": "t11",
+   "roomId": "living-area-foot-stools",
+   "spotId": null
   }
  ],
  "kits": [],
