@@ -430,10 +430,7 @@ const CABLE_STYLES = ["Coiled","Woven / braided","Flat","Plain"];
 /* Fixed palette rather than free text — avoids "Black" vs "Blak" fragmenting the data.
    "Other" reveals a plain text field underneath for anything genuinely uncommon. */
 const COLOUR_SWATCHES = [
-  {name:"Black", hex:"#1C1C1E"}, {name:"White", hex:"#F7F7F3"}, {name:"Grey", hex:"#9A9A9E"},
-  {name:"Silver", hex:"#C6C7CB"}, {name:"Gold", hex:"#C9A227"}, {name:"Blue", hex:"#4A6FA5"},
-  {name:"Red", hex:"#A63D3D"}, {name:"Green", hex:"#41654E"}, {name:"Pink", hex:"#C99AA0"},
-  {name:"Transparent", hex:""}
+  {name:"Black", hex:"#1C1C1E"}, {name:"White", hex:"#F7F7F3"}, {name:"Grey", hex:"#9A9A9E"}
 ];
 function colourSwatchStyle(hex){
   if (!hex) return "background-image:repeating-linear-gradient(45deg,var(--mute) 0 3px,transparent 3px 6px)";
