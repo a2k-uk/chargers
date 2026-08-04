@@ -854,12 +854,6 @@
    "spotId": "r5zqo28"
   },
   {
-   "id": "p19-2",
-   "typeId": "t11",
-   "roomId": "master-bedroom",
-   "spotId": "tl30d74"
-  },
-  {
    "id": "p19-3",
    "typeId": "t11",
    "roomId": "kitchen",
@@ -876,6 +870,12 @@
    "typeId": "t11",
    "roomId": "living-area-foot-stools",
    "spotId": null
+  },
+  {
+   "id": "zp07rq9",
+   "typeId": "t11",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
   }
  ],
  "kits": [],
