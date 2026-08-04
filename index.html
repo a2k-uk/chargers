@@ -225,13 +225,12 @@ td.n{font-family:var(--data);font-size:14px}
 .colourpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 .colourpick .sw{width:13px;height:13px;flex:none;border-radius:1px;box-shadow:inset 0 0 0 1px rgba(128,128,128,.5)}
 
-.previewrow{display:flex;gap:14px;align-items:flex-start;margin-top:14px}
-.previewrow .f{flex:1;margin-top:0}
-.iconpreview{width:68px;height:68px;flex:none;border:1px solid var(--rule);border-radius:2px;
+.previewrow{display:flex;gap:10px;align-items:flex-end;margin-top:14px}
+.previewrow .f{flex:1;margin-top:0;min-width:0}
+.iconpreview{width:52px;height:52px;flex:none;border:1px solid var(--rule);border-radius:2px;
   display:flex;align-items:center;justify-content:center;background:var(--card);overflow:hidden}
-.iconpreview svg{width:48px;height:48px;color:var(--ink)}
-.iconpreview img{width:100%;height:100%;object-fit:cover}
-.iconpreview .txt{font-family:var(--label);font-size:12px;font-weight:700;color:var(--mute)}
+.iconpreview svg{width:36px;height:36px;color:var(--ink)}
+.iconpreview .txt{font-family:var(--label);font-size:11px;font-weight:700;color:var(--mute)}
 
 .profrow{display:flex;gap:6px;align-items:center;padding:8px 0;border-bottom:1px dotted var(--rule-soft)}
 .profrow input{width:0;flex:1;min-width:0;background:var(--card);border:1px solid var(--rule-soft);
@@ -564,7 +563,6 @@ function glyphHTML(t){
 /* Larger preview for the edit sheet: a photo if one's set, else the same icon/badge
    used in the lists, just bigger. */
 function previewHTML(t){
-  if (t.photo) return '<img src="' + esc(t.photo) + '" alt="">';
   if (t.category === "adapter") return plugIconSVG(t);
   if (t.category === "laptop") return laptopChargerIconSVG();
   return '<span class="txt">' + esc(typeGlyph(t)) + '</span>';
@@ -808,7 +806,7 @@ function renderByRoom(list){
 /* ============================== type edit sheet ============================== */
 let draft = null; // {type:{...}, placements:[...], isNew:bool}
 function openTypeSheet(id){
-  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", photo:"", qty:0, ports:[], profiles:[],
+  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", qty:0, ports:[], profiles:[],
     input:"", outputs:[], length_m:null, brand:"", colour:"", notes:"" };
   draft = { type: Object.assign({}, t), plc: id ? placementsFor(id).map(p => Object.assign({}, p)) : [], isNew: !id };
   renderTypeSheet();
@@ -819,9 +817,7 @@ function renderTypeSheet(){
     '<button class="done" id="tSave">Save</button></div>';
 
   h += '<div class="previewrow"><div class="iconpreview" id="iconPreview">' + previewHTML(d) + '</div>' +
-    '<div class="f"><label for="d_photo">Photo URL (optional)</label><input id="d_photo" value="' + esc(d.photo||"") + '" placeholder="Paste an image link — leave blank to use the icon"></div></div>';
-
-  h += '<div class="f2"><div class="f"><label for="d_cat">Category</label><select id="d_cat">' +
+    '<div class="f"><label for="d_cat">Category</label><select id="d_cat">' +
     categories.map(c => '<option value="' + c.key + '"' + (d.category===c.key?" selected":"") + '>' + esc(c.label) + '</option>').join("") + '</select></div>' +
     '<div class="f"><label>Quantity</label><div class="stepper lg" id="d_qtyStepper">' +
     '<button data-qd="-1">−</button><span class="v" id="d_qtyVal">' + (d.qty||0) + '</span><button data-qd="1">+</button></div></div></div>';
@@ -906,7 +902,6 @@ function bindTypeSheet(){
     if (d.category !== "other") d.kind = "";
     syncDraftFields(); renderTypeSheet();
   };
-  const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
   ["d_kind","d_notes"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
   const brandEl = el("d_brand"); if (brandEl) brandEl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const lbl = el("d_label"); if (lbl) lbl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
@@ -984,7 +979,6 @@ function syncDraftFields(){
   const d = draft.type;
   d.kind = el("d_kind") ? el("d_kind").value : d.kind;
   d.label = el("d_label") ? el("d_label").value : d.label;
-  d.photo = el("d_photo") ? el("d_photo").value : d.photo;
   d.brand = el("d_brand") ? el("d_brand").value : d.brand;
   d.notes = el("d_notes") ? el("d_notes").value : d.notes;
   d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
