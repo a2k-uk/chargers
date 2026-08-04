@@ -431,6 +431,45 @@
    "brand": "",
    "colour": "",
    "notes": "See listing: https://www.amazon.co.uk/dp/B0CKYNQTBY"
+  },
+  {
+   "id": "sw27ein",
+   "category": "laptop",
+   "kind": "",
+   "label": "Kierra MacBook Pro",
+   "qty": 1,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 20.5,
+     "a": 4.7,
+     "w": 96.4
+    },
+    {
+     "v": 15,
+     "a": 3,
+     "w": 45
+    },
+    {
+     "v": 9,
+     "a": 3,
+     "w": 27
+    },
+    {
+     "v": 5.2,
+     "a": 3,
+     "w": 15.6
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": 2019,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": "Model A2166"
   }
  ],
  "placements": [
@@ -653,6 +692,12 @@
   {
    "id": "rctznfx",
    "typeId": "t6",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "ft7dits",
+   "typeId": "sw27ein",
    "roomId": "study-drawer",
    "spotId": null
   }
