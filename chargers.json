@@ -822,18 +822,6 @@
    "spotId": null
   },
   {
-   "id": "umt0zxi",
-   "typeId": "epy6ct7",
-   "roomId": "cora-bedroom",
-   "spotId": "rbttwml"
-  },
-  {
-   "id": "n1rf8zn",
-   "typeId": "epy6ct7",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
    "id": "snbva55",
    "typeId": "6x8z4nn",
    "roomId": "guest-room",
@@ -861,6 +849,18 @@
    "id": "wgkce6x",
    "typeId": "i2bulzm",
    "roomId": "study-cupboard",
+   "spotId": null
+  },
+  {
+   "id": "umt0zxi",
+   "typeId": "epy6ct7",
+   "roomId": "cora-bedroom",
+   "spotId": "rbttwml"
+  },
+  {
+   "id": "n1rf8zn",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
    "spotId": null
   }
  ],
