@@ -779,6 +779,7 @@ function renderByType(list){
   cats.forEach(c => {
     const g = list.filter(t => t.category === c.key).sort(c.key === "laptop" ? (a,b) =>
       (b.year||0) - (a.year||0) ||
+      (maxWattage(b)||0) - (maxWattage(a)||0) ||
       (a.brand||"").localeCompare(b.brand||"") ||
       typeLead(a).localeCompare(typeLead(b)) : (a,b) =>
       ownedQty(b.id) - ownedQty(a.id) ||
