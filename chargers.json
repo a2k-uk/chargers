@@ -750,12 +750,6 @@
    "spotId": null
   },
   {
-   "id": "snbva55",
-   "typeId": "6x8z4nn",
-   "roomId": "guest-room",
-   "spotId": "fgrg8hi"
-  },
-  {
    "id": "7g65eti",
    "typeId": "i2bulzm",
    "roomId": "living-area",
@@ -844,6 +838,12 @@
    "typeId": "t11",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "snbva55",
+   "typeId": "6x8z4nn",
+   "roomId": "guest-room",
+   "spotId": "fgrg8hi"
   }
  ],
  "kits": [],
