@@ -470,6 +470,30 @@
    "brand": "Apple",
    "colour": "White",
    "notes": "Model A2166"
+  },
+  {
+   "id": "xs30r19",
+   "category": "laptop",
+   "kind": "",
+   "label": "",
+   "qty": 1,
+   "ports": [
+    "MagSafe"
+   ],
+   "profiles": [
+    {
+     "v": 14.85,
+     "a": 3.05,
+     "w": 45
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": 2014,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": "Model A1436"
   }
  ],
  "placements": [
@@ -698,6 +722,12 @@
   {
    "id": "ft7dits",
    "typeId": "sw27ein",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "zyp3e1g",
+   "typeId": "xs30r19",
    "roomId": "study-drawer",
    "spotId": null
   }
