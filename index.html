@@ -107,7 +107,6 @@ section{padding:18px 0 4px}
   font-size:10.5px;color:var(--mute);margin-top:4px;font-weight:600}
 .item .qty{font-family:var(--data);font-size:17px;flex:none;padding-top:2px;min-width:22px;text-align:right}
 .flag{color:var(--thread)}
-.needsdata{color:var(--thread)}
 
 .note{font-size:12.5px;color:var(--mute);margin-top:10px;line-height:1.45}
 table{width:100%;border-collapse:collapse}
@@ -687,11 +686,11 @@ function bindItemRows(){
   el("view").querySelectorAll("[data-type]").forEach(b => b.onclick = () => openTypeSheet(b.dataset.type));
 }
 function itemRow(t){
-  const gap = missingFields(t).length > 0;
-  return '<button class="item' + (gap ? " needsdata" : "") + '" data-type="' + t.id + '">' +
+  const gaps = missingFields(t);
+  return '<button class="item" data-type="' + t.id + '">' +
     '<span class="glyph">' + glyphHTML(t) + '</span>' +
     '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
-    '<span class="l2">' + esc(subtitle(t)) + (gap ? " · Needs: " + esc(missingFields(t).join(", ")) : "") + '</span></span>' +
+    '<span class="l2">' + esc(subtitle(t)) + (gaps.length ? ' <span class="flag">· Needs: ' + esc(gaps.join(", ")) + '</span>' : "") + '</span></span>' +
     '<span class="qty">' + ownedQty(t.id) + '</span></button>';
 }
 function renderByType(list){
@@ -746,8 +745,10 @@ function renderTypeSheet(){
   h += '<div class="previewrow"><div class="iconpreview" id="iconPreview">' + previewHTML(d) + '</div>' +
     '<div class="f"><label for="d_photo">Photo URL (optional)</label><input id="d_photo" value="' + esc(d.photo||"") + '" placeholder="Paste an image link — leave blank to use the icon"></div></div>';
 
-  h += '<div class="f"><label for="d_cat">Category</label><select id="d_cat">' +
-    categories.map(c => '<option value="' + c.key + '"' + (d.category===c.key?" selected":"") + '>' + esc(c.label) + '</option>').join("") + '</select></div>';
+  h += '<div class="f2"><div class="f"><label for="d_cat">Category</label><select id="d_cat">' +
+    categories.map(c => '<option value="' + c.key + '"' + (d.category===c.key?" selected":"") + '>' + esc(c.label) + '</option>').join("") + '</select></div>' +
+    '<div class="f"><label>Quantity</label><div class="stepper lg" id="d_qtyStepper">' +
+    '<button data-qd="-1">−</button><span class="v" id="d_qtyVal">' + (d.qty||0) + '</span><button data-qd="1">+</button></div></div></div>';
 
   if (d.category === "other"){
     h += '<div class="f2"><div class="f"><label for="d_kind">Kind</label><input id="d_kind" value="' + esc(d.kind) + '" placeholder="e.g. Wireless Charging Stand"></div>' +
@@ -756,8 +757,8 @@ function renderTypeSheet(){
     h += '<div class="f"><label for="d_label">Distinguishing feature</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div>';
   }
 
-  h += '<div class="f"><label>How many do you have</label><div class="stepper lg" id="d_qtyStepper">' +
-    '<button data-qd="-1">−</button><span class="v" id="d_qtyVal">' + (d.qty||0) + '</span><button data-qd="1">+</button></div></div>';
+  h += '<div class="f2"><div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>' +
+    '<div class="f"><label>Colour</label><input id="d_colour" value="' + esc(d.colour) + '"></div></div>';
 
   if (d.category === "cable"){
     h += '<div class="f2"><div class="f"><label for="d_input">Input connector</label><select id="d_input">' +
@@ -778,8 +779,6 @@ function renderTypeSheet(){
       '<p class="hint">Watts fills in as V × A while you type, then stays editable — the number printed on the unit sometimes rounds slightly differently.</p></div>';
   }
 
-  h += '<div class="f2"><div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>' +
-    '<div class="f"><label>Colour</label><input id="d_colour" value="' + esc(d.colour) + '"></div></div>';
   h += '<div class="f"><label>Notes</label><textarea id="d_notes" rows="2">' + esc(d.notes) + '</textarea></div>';
 
   h += '<div class="subcard"><div class="eyebrow">Placements — where these currently are</div>' +
