@@ -543,6 +543,45 @@
    "brand": "HP",
    "colour": "Black",
    "notes": "Model N22270-013"
+  },
+  {
+   "id": "glj6grc",
+   "category": "laptop",
+   "kind": "",
+   "label": "",
+   "qty": 1,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 3,
+     "w": 27
+    },
+    {
+     "v": 15,
+     "a": 3,
+     "w": 45
+    },
+    {
+     "v": 20,
+     "a": 5,
+     "w": 100
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": 2025,
+   "brand": "Dell",
+   "colour": "Black",
+   "notes": "Model LA100PM220"
   }
  ],
  "placements": [
@@ -783,6 +822,12 @@
   {
    "id": "bj7ck6q",
    "typeId": "89fcby5",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "uw11rts",
+   "typeId": "glj6grc",
    "roomId": "study-drawer",
    "spotId": null
   }
