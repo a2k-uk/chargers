@@ -225,6 +225,11 @@
    "id": "r5zqo28",
    "roomId": "study",
    "name": "Desktop"
+  },
+  {
+   "id": "rbttwml",
+   "roomId": "cora-bedroom",
+   "name": "Shelf corner"
   }
  ],
  "types": [
@@ -627,6 +632,30 @@
    "brand": "Apple",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "epy6ct7",
+   "category": "adapter",
+   "kind": "",
+   "label": "Triangle",
+   "qty": 2,
+   "ports": [
+    "USB-A"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 1,
+     "w": 5
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": null,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -814,6 +843,18 @@
    "id": "wgkce6x",
    "typeId": "i2bulzm",
    "roomId": "study-cupboard",
+   "spotId": null
+  },
+  {
+   "id": "umt0zxi",
+   "typeId": "epy6ct7",
+   "roomId": "cora-bedroom",
+   "spotId": "rbttwml"
+  },
+  {
+   "id": "n1rf8zn",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
    "spotId": null
   }
  ],
