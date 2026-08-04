@@ -1,135 +1,693 @@
 {
  "v": 1,
- "categories": [
-  {"key": "adapter", "label": "Plug Adapters"},
-  {"key": "cable", "label": "Cables"},
-  {"key": "laptop", "label": "Laptop Chargers"},
-  {"key": "other", "label": "Other Hardware"}
- ],
  "rooms": [
-  {"id": "kitchen", "name": "Kitchen", "zone": "Downstairs"},
-  {"id": "living-area", "name": "Living Area", "zone": "Downstairs"},
-  {"id": "sitting-area", "name": "Sitting Area", "zone": "Downstairs"},
-  {"id": "tv-room", "name": "TV Room", "zone": "Downstairs"},
-  {"id": "playroom", "name": "Playroom", "zone": "Downstairs"},
-  {"id": "boot-room", "name": "Boot Room", "zone": "Downstairs"},
-  {"id": "hallway", "name": "Hallway", "zone": "Downstairs"},
-  {"id": "study", "name": "Study", "zone": "Downstairs"},
-  {"id": "boot-room-corridor", "name": "Boot Room & Corridor", "zone": "Downstairs"},
-  {"id": "shower-room", "name": "Shower Room", "zone": "Downstairs"},
-  {"id": "garage", "name": "Garage", "zone": "Downstairs"},
-  {"id": "master-bedroom", "name": "Master Bedroom", "zone": "Upstairs"},
-  {"id": "ensuite-bathroom", "name": "Ensuite Bathroom", "zone": "Upstairs"},
-  {"id": "andy-wardrobe", "name": "Andy Wardrobe", "zone": "Upstairs"},
-  {"id": "kierra-wardrobe", "name": "Kierra Wardrobe", "zone": "Upstairs"},
-  {"id": "landing", "name": "Landing", "zone": "Upstairs"},
-  {"id": "family-bathroom", "name": "Family Bathroom", "zone": "Upstairs"},
-  {"id": "casper-bedroom", "name": "Casper Bedroom", "zone": "Upstairs"},
-  {"id": "cora-bedroom", "name": "Cora Bedroom", "zone": "Upstairs"},
-  {"id": "guest-room", "name": "Guest Room", "zone": "Upstairs"},
-  {"id": "study-drawer", "name": "Study Drawer", "zone": "Storage"},
-  {"id": "study-cupboard", "name": "Study Cupboard", "zone": "Storage"},
-  {"id": "living-area-foot-stools", "name": "Living Area Foot Stools", "zone": "Storage"},
-  {"id": "tv-room-coffee-table", "name": "TV Room Coffee Table", "zone": "Storage"},
-  {"id": "hallway-drawer", "name": "Hallway Drawer", "zone": "Storage"},
-  {"id": "andy-rucksack", "name": "Andy Rucksack", "zone": "Portable"},
-  {"id": "kierra-rucksack", "name": "Kierra Rucksack", "zone": "Portable"},
-  {"id": "porsche-macan", "name": "Porsche Macan", "zone": "Portable"},
-  {"id": "spare", "name": "Spare Stock", "zone": "Other", "system": true},
-  {"id": "committed", "name": "Committed Elsewhere", "zone": "Other", "system": true},
-  {"id": "unassigned", "name": "Unconfirmed Location", "zone": "Other", "system": true}
+  {
+   "id": "kitchen",
+   "name": "Kitchen",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "living-area",
+   "name": "Living Area",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "sitting-area",
+   "name": "Sitting Area",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "tv-room",
+   "name": "TV Room",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "playroom",
+   "name": "Playroom",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "boot-room",
+   "name": "Boot Room",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "hallway",
+   "name": "Hallway",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "study",
+   "name": "Study",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "boot-room-corridor",
+   "name": "Boot Room & Corridor",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "shower-room",
+   "name": "Shower Room",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "garage",
+   "name": "Garage",
+   "zone": "Downstairs"
+  },
+  {
+   "id": "master-bedroom",
+   "name": "Master Bedroom",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "ensuite-bathroom",
+   "name": "Ensuite Bathroom",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "andy-wardrobe",
+   "name": "Andy Wardrobe",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "kierra-wardrobe",
+   "name": "Kierra Wardrobe",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "landing",
+   "name": "Landing",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "family-bathroom",
+   "name": "Family Bathroom",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "casper-bedroom",
+   "name": "Casper Bedroom",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "cora-bedroom",
+   "name": "Cora Bedroom",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "guest-room",
+   "name": "Guest Room",
+   "zone": "Upstairs"
+  },
+  {
+   "id": "study-drawer",
+   "name": "Study Drawer",
+   "zone": "Storage"
+  },
+  {
+   "id": "study-cupboard",
+   "name": "Study Cupboard",
+   "zone": "Storage"
+  },
+  {
+   "id": "living-area-foot-stools",
+   "name": "Living Area Foot Stools",
+   "zone": "Storage"
+  },
+  {
+   "id": "tv-room-coffee-table",
+   "name": "TV Room Coffee Table",
+   "zone": "Storage"
+  },
+  {
+   "id": "hallway-drawer",
+   "name": "Hallway Drawer",
+   "zone": "Storage"
+  },
+  {
+   "id": "andy-rucksack",
+   "name": "Andy Rucksack",
+   "zone": "Portable"
+  },
+  {
+   "id": "kierra-rucksack",
+   "name": "Kierra Rucksack",
+   "zone": "Portable"
+  },
+  {
+   "id": "porsche-macan",
+   "name": "Porsche Macan",
+   "zone": "Portable"
+  },
+  {
+   "id": "spare",
+   "name": "Spare Stock",
+   "zone": "Other",
+   "system": true
+  },
+  {
+   "id": "committed",
+   "name": "Committed Elsewhere",
+   "zone": "Other",
+   "system": true
+  },
+  {
+   "id": "unassigned",
+   "name": "Unconfirmed Location",
+   "zone": "Other",
+   "system": true
+  }
  ],
  "spots": [
-  {"id": "sp1", "roomId": "kitchen", "name": "Island 1"},
-  {"id": "sp2", "roomId": "kitchen", "name": "Island 2"},
-  {"id": "sp3", "roomId": "guest-room", "name": "Bed 1"},
-  {"id": "sp4", "roomId": "guest-room", "name": "Bed 2"},
-  {"id": "sp5", "roomId": "master-bedroom", "name": "Bedside"}
+  {
+   "id": "sp1",
+   "roomId": "kitchen",
+   "name": "Island 1"
+  },
+  {
+   "id": "sp2",
+   "roomId": "kitchen",
+   "name": "Island 2"
+  },
+  {
+   "id": "sp3",
+   "roomId": "guest-room",
+   "name": "Bed 1"
+  },
+  {
+   "id": "sp4",
+   "roomId": "guest-room",
+   "name": "Bed 2"
+  },
+  {
+   "id": "sp5",
+   "roomId": "master-bedroom",
+   "name": "Bedside"
+  }
  ],
  "types": [
-  {"id": "t1", "category": "other", "kind": "Wireless Charging Stand", "label": "Long box shape, from old stands", "qty": 6,
-   "ports": ["USB-A"], "profiles": [{"v":5,"a":3,"w":15},{"v":9,"a":2,"w":18},{"v":12,"a":1,"w":18}],
-   "brand": "", "colour": "", "notes": ""},
-  {"id": "t2", "category": "other", "kind": "Wireless Charging Stand", "label": "\"Wall charger\" printed on back", "qty": 2,
-   "ports": ["USB-C"], "profiles": [{"v":5,"a":3,"w":15},{"v":9,"a":2.22,"w":18},{"v":12,"a":1,"w":18}],
-   "brand": "", "colour": "", "notes": ""},
-  {"id": "t4", "category": "adapter", "kind": "", "label": "Apple Official", "qty": 4,
-   "ports": ["USB-C"], "profiles": [{"v":5,"a":3,"w":15},{"v":9,"a":2,"w":18}],
-   "brand": "Apple", "colour": "", "notes": ""},
-  {"id": "t5", "category": "adapter", "kind": "", "label": "", "qty": 3,
-   "ports": ["USB-A","USB-C"], "profiles": [{"v":5,"a":3,"w":15},{"v":9,"a":2.4,"w":22},{"v":12,"a":1.8,"w":22}],
-   "brand": "", "colour": "", "notes": ""},
-  {"id": "t6", "category": "laptop", "kind": "", "label": "Brick", "qty": 0,
-   "ports": ["USB-C"], "profiles": [{"v":5.2,"a":3,"w":16},{"v":9,"a":3,"w":27},{"v":15,"a":3,"w":45},{"v":20.3,"a":3.3,"w":67}],
-   "brand": "", "colour": "", "notes": "Quantity and location not recorded in the original spreadsheet."},
-  {"id": "t7", "category": "other", "kind": "Wireless iWatch Charger", "label": "Magnetic, portable, travel adapter", "qty": 1,
-   "ports": ["Wireless"], "profiles": [],
-   "brand": "", "colour": "White", "notes": "£1.95"},
-  {"id": "t8", "category": "other", "kind": "Unspecified", "label": "Needs details", "qty": 6,
-   "ports": [], "profiles": [],
-   "brand": "", "colour": "", "notes": "See listing: https://www.aliexpress.com/item/1005007714952535.html"},
-  {"id": "t9", "category": "adapter", "kind": "", "label": "Needs details", "qty": 3,
-   "ports": [], "profiles": [],
-   "brand": "", "colour": "", "notes": "See listing (Temu order, 3x)."},
-  {"id": "t10", "category": "adapter", "kind": "", "label": "Needs details", "qty": 2,
-   "ports": [], "profiles": [],
-   "brand": "", "colour": "", "notes": "See listing: https://www.amazon.co.uk/dp/B0D7Z97VTY"},
-  {"id": "t11", "category": "cable", "kind": "", "label": "3-in-1 coil cable", "qty": 3,
-   "input": "USB-A", "outputs": ["Lightning","USB-C","Micro-USB"], "length_m": 1.8,
-   "brand": "", "colour": "White", "notes": "£2.69 each, marketed as \"66W Super Fast Charging T Type Spring Cable\"."},
-  {"id": "t12", "category": "cable", "kind": "", "label": "Needs details", "qty": 2,
-   "input": "", "outputs": [], "length_m": null,
-   "brand": "", "colour": "", "notes": "See listing: https://www.amazon.co.uk/dp/B0CLNKJ5QX"},
-  {"id": "t13", "category": "cable", "kind": "", "label": "Needs details", "qty": 2,
-   "input": "", "outputs": [], "length_m": null,
-   "brand": "", "colour": "", "notes": "See listing: https://www.amazon.co.uk/dp/B0D263H8MW"},
-  {"id": "t14", "category": "cable", "kind": "", "label": "Needs details", "qty": 3,
-   "input": "", "outputs": [], "length_m": null,
-   "brand": "", "colour": "", "notes": "See listing: https://www.amazon.co.uk/dp/B0CKYNQTBY"}
+  {
+   "id": "t1",
+   "category": "other",
+   "kind": "Wireless Charging Stand",
+   "label": "Long box shape, from old stands",
+   "qty": 6,
+   "ports": [
+    "USB-A"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2,
+     "w": 18
+    },
+    {
+     "v": 12,
+     "a": 1,
+     "w": 18
+    }
+   ],
+   "brand": "",
+   "colour": "",
+   "notes": ""
+  },
+  {
+   "id": "t2",
+   "category": "other",
+   "kind": "Wireless Charging Stand",
+   "label": "\"Wall charger\" printed on back",
+   "qty": 2,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2.22,
+     "w": 18
+    },
+    {
+     "v": 12,
+     "a": 1,
+     "w": 18
+    }
+   ],
+   "brand": "",
+   "colour": "",
+   "notes": ""
+  },
+  {
+   "id": "t4",
+   "category": "adapter",
+   "kind": "",
+   "label": "Apple Official",
+   "qty": 4,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2,
+     "w": 18
+    }
+   ],
+   "brand": "Apple",
+   "colour": "",
+   "notes": ""
+  },
+  {
+   "id": "t5",
+   "category": "adapter",
+   "kind": "",
+   "label": "",
+   "qty": 3,
+   "ports": [
+    "USB-A",
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2.4,
+     "w": 22
+    },
+    {
+     "v": 12,
+     "a": 1.8,
+     "w": 22
+    }
+   ],
+   "brand": "",
+   "colour": "",
+   "notes": ""
+  },
+  {
+   "id": "t6",
+   "category": "laptop",
+   "kind": "",
+   "label": "",
+   "qty": 1,
+   "ports": [
+    "MagSafe"
+   ],
+   "profiles": [
+    {
+     "v": 16.5,
+     "a": 3.65,
+     "w": 60
+    }
+   ],
+   "brand": "Apple",
+   "colour": "White",
+   "notes": "",
+   "length_m": null,
+   "year": 2015
+  },
+  {
+   "id": "t7",
+   "category": "other",
+   "kind": "Wireless iWatch Charger",
+   "label": "Magnetic, portable, travel adapter",
+   "qty": 1,
+   "ports": [
+    "Wireless"
+   ],
+   "profiles": [],
+   "brand": "",
+   "colour": "White",
+   "notes": "£1.95"
+  },
+  {
+   "id": "t8",
+   "category": "other",
+   "kind": "Unspecified",
+   "label": "Needs details",
+   "qty": 6,
+   "ports": [],
+   "profiles": [],
+   "brand": "",
+   "colour": "",
+   "notes": "See listing: https://www.aliexpress.com/item/1005007714952535.html"
+  },
+  {
+   "id": "t9",
+   "category": "adapter",
+   "kind": "",
+   "label": "Needs details",
+   "qty": 3,
+   "ports": [],
+   "profiles": [],
+   "brand": "",
+   "colour": "",
+   "notes": "See listing (Temu order, 3x)."
+  },
+  {
+   "id": "t10",
+   "category": "adapter",
+   "kind": "",
+   "label": "Needs details",
+   "qty": 2,
+   "ports": [],
+   "profiles": [],
+   "brand": "",
+   "colour": "",
+   "notes": "See listing: https://www.amazon.co.uk/dp/B0D7Z97VTY"
+  },
+  {
+   "id": "t11",
+   "category": "cable",
+   "kind": "",
+   "label": "3-in-1 coil cable",
+   "qty": 3,
+   "input": "USB-A",
+   "outputs": [
+    "Lightning",
+    "USB-C",
+    "Micro-USB"
+   ],
+   "length_m": 1.8,
+   "brand": "",
+   "colour": "White",
+   "notes": "£2.69 each, marketed as \"66W Super Fast Charging T Type Spring Cable\"."
+  },
+  {
+   "id": "t12",
+   "category": "cable",
+   "kind": "",
+   "label": "Needs details",
+   "qty": 2,
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "brand": "",
+   "colour": "",
+   "notes": "See listing: https://www.amazon.co.uk/dp/B0CLNKJ5QX"
+  },
+  {
+   "id": "t13",
+   "category": "cable",
+   "kind": "",
+   "label": "Needs details",
+   "qty": 2,
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "brand": "",
+   "colour": "",
+   "notes": "See listing: https://www.amazon.co.uk/dp/B0D263H8MW"
+  },
+  {
+   "id": "t14",
+   "category": "cable",
+   "kind": "",
+   "label": "Needs details",
+   "qty": 3,
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "brand": "",
+   "colour": "",
+   "notes": "See listing: https://www.amazon.co.uk/dp/B0CKYNQTBY"
+  }
  ],
  "placements": [
-  {"id": "p1", "typeId": "t1", "roomId": "living-area", "spotId": null},
-  {"id": "p2", "typeId": "t1", "roomId": "master-bedroom", "spotId": "sp5"},
-  {"id": "p3", "typeId": "t1", "roomId": "andy-wardrobe", "spotId": null},
-  {"id": "p4", "typeId": "t1", "roomId": "study", "spotId": null},
-  {"id": "p5", "typeId": "t2", "roomId": "guest-room", "spotId": "sp3"},
-  {"id": "p6", "typeId": "t2", "roomId": "guest-room", "spotId": "sp4"},
-  {"id": "p7", "typeId": "t4", "roomId": "kitchen", "spotId": "sp1"},
-  {"id": "p8", "typeId": "t4", "roomId": "study", "spotId": null},
-  {"id": "p9", "typeId": "t4", "roomId": "garage", "spotId": null},
-  {"id": "p10", "typeId": "t4", "roomId": "spare", "spotId": null},
-  {"id": "p12", "typeId": "t5", "roomId": "kitchen", "spotId": "sp2"},
-  {"id": "p13", "typeId": "t5", "roomId": "guest-room", "spotId": null},
-  {"id": "p14", "typeId": "t5", "roomId": "spare", "spotId": null},
-  {"id": "p15", "typeId": "t7", "roomId": "unassigned", "spotId": null},
-  {"id": "p16-1", "typeId": "t8", "roomId": "unassigned", "spotId": null},
-  {"id": "p16-2", "typeId": "t8", "roomId": "unassigned", "spotId": null},
-  {"id": "p16-3", "typeId": "t8", "roomId": "unassigned", "spotId": null},
-  {"id": "p16-4", "typeId": "t8", "roomId": "unassigned", "spotId": null},
-  {"id": "p16-5", "typeId": "t8", "roomId": "unassigned", "spotId": null},
-  {"id": "p16-6", "typeId": "t8", "roomId": "unassigned", "spotId": null},
-  {"id": "p17-1", "typeId": "t9", "roomId": "unassigned", "spotId": null},
-  {"id": "p17-2", "typeId": "t9", "roomId": "unassigned", "spotId": null},
-  {"id": "p17-3", "typeId": "t9", "roomId": "unassigned", "spotId": null},
-  {"id": "p18-1", "typeId": "t10", "roomId": "unassigned", "spotId": null},
-  {"id": "p18-2", "typeId": "t10", "roomId": "unassigned", "spotId": null},
-  {"id": "p19-1", "typeId": "t11", "roomId": "unassigned", "spotId": null},
-  {"id": "p19-2", "typeId": "t11", "roomId": "unassigned", "spotId": null},
-  {"id": "p19-3", "typeId": "t11", "roomId": "unassigned", "spotId": null},
-  {"id": "p20-1", "typeId": "t12", "roomId": "unassigned", "spotId": null},
-  {"id": "p20-2", "typeId": "t12", "roomId": "unassigned", "spotId": null},
-  {"id": "p21-1", "typeId": "t13", "roomId": "unassigned", "spotId": null},
-  {"id": "p21-2", "typeId": "t13", "roomId": "unassigned", "spotId": null},
-  {"id": "p22-1", "typeId": "t14", "roomId": "unassigned", "spotId": null},
-  {"id": "p22-2", "typeId": "t14", "roomId": "unassigned", "spotId": null},
-  {"id": "p22-3", "typeId": "t14", "roomId": "unassigned", "spotId": null}
+  {
+   "id": "p1",
+   "typeId": "t1",
+   "roomId": "living-area",
+   "spotId": null
+  },
+  {
+   "id": "p2",
+   "typeId": "t1",
+   "roomId": "master-bedroom",
+   "spotId": "sp5"
+  },
+  {
+   "id": "p3",
+   "typeId": "t1",
+   "roomId": "andy-wardrobe",
+   "spotId": null
+  },
+  {
+   "id": "p4",
+   "typeId": "t1",
+   "roomId": "study",
+   "spotId": null
+  },
+  {
+   "id": "p5",
+   "typeId": "t2",
+   "roomId": "guest-room",
+   "spotId": "sp3"
+  },
+  {
+   "id": "p6",
+   "typeId": "t2",
+   "roomId": "guest-room",
+   "spotId": "sp4"
+  },
+  {
+   "id": "p7",
+   "typeId": "t4",
+   "roomId": "kitchen",
+   "spotId": "sp1"
+  },
+  {
+   "id": "p8",
+   "typeId": "t4",
+   "roomId": "study",
+   "spotId": null
+  },
+  {
+   "id": "p9",
+   "typeId": "t4",
+   "roomId": "garage",
+   "spotId": null
+  },
+  {
+   "id": "p10",
+   "typeId": "t4",
+   "roomId": "spare",
+   "spotId": null
+  },
+  {
+   "id": "p12",
+   "typeId": "t5",
+   "roomId": "kitchen",
+   "spotId": "sp2"
+  },
+  {
+   "id": "p13",
+   "typeId": "t5",
+   "roomId": "guest-room",
+   "spotId": null
+  },
+  {
+   "id": "p14",
+   "typeId": "t5",
+   "roomId": "spare",
+   "spotId": null
+  },
+  {
+   "id": "p15",
+   "typeId": "t7",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p16-1",
+   "typeId": "t8",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p16-2",
+   "typeId": "t8",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p16-3",
+   "typeId": "t8",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p16-4",
+   "typeId": "t8",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p16-5",
+   "typeId": "t8",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p16-6",
+   "typeId": "t8",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p17-1",
+   "typeId": "t9",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p17-2",
+   "typeId": "t9",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p17-3",
+   "typeId": "t9",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p18-1",
+   "typeId": "t10",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p18-2",
+   "typeId": "t10",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p19-1",
+   "typeId": "t11",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p19-2",
+   "typeId": "t11",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p19-3",
+   "typeId": "t11",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p20-1",
+   "typeId": "t12",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p20-2",
+   "typeId": "t12",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p21-1",
+   "typeId": "t13",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p21-2",
+   "typeId": "t13",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p22-1",
+   "typeId": "t14",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p22-2",
+   "typeId": "t14",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "p22-3",
+   "typeId": "t14",
+   "roomId": "unassigned",
+   "spotId": null
+  },
+  {
+   "id": "yoz8gs6",
+   "typeId": "t6",
+   "roomId": "study-drawer",
+   "spotId": null
+  }
  ],
  "kits": [],
  "toFind": [
-  {"id": "f1", "typeId": "t1", "note": "Last known at JPM (old office) — presumed missing", "added": "2026-08-03"},
-  {"id": "f2", "typeId": "t1", "note": "Last known in spare stock — presumed missing", "added": "2026-08-03"}
+  {
+   "id": "f1",
+   "typeId": "t1",
+   "note": "Last known at JPM (old office) — presumed missing",
+   "added": "2026-08-03"
+  },
+  {
+   "id": "f2",
+   "typeId": "t1",
+   "note": "Last known in spare stock — presumed missing",
+   "added": "2026-08-03"
+  }
  ],
  "audit": null,
  "history": [],
- "ui": {"tiers": [], "view": "list"}
+ "categories": [
+  {
+   "key": "adapter",
+   "label": "Plug Adapters"
+  },
+  {
+   "key": "cable",
+   "label": "Cables"
+  },
+  {
+   "key": "laptop",
+   "label": "Laptop Chargers"
+  },
+  {
+   "key": "other",
+   "label": "Other Hardware"
+  }
+ ],
+ "ui": {
+  "tiers": [],
+  "view": "type"
+ }
 }
