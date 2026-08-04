@@ -491,10 +491,10 @@ function connectorsText(t){
   return ports.length > 2 ? ports.length + " ports" : ports.join(" + ");
 }
 /* Cable heading uses this instead: three or more output tips collapse to a count
-   rather than listing every one (e.g. "USB-A → 3 tips" for a 3-in-1 cable). */
+   rather than listing every one (e.g. "USB-A → 3x Outputs" for a 3-in-1 cable). */
 function cableConnectorSummary(t){
   const outs = t.outputs || [];
-  const outText = outs.length > 2 ? outs.length + " tips" : (outs.length ? outs.join(" / ") : "?");
+  const outText = outs.length > 2 ? outs.length + "x Outputs" : (outs.length ? outs.join(" / ") : "?");
   return (t.input || "?") + " → " + outText;
 }
 function maxWattage(t){
