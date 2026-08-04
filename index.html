@@ -218,6 +218,20 @@ td.n{font-family:var(--data);font-size:14px}
   text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;color:var(--mute);background:var(--card)}
 .portpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 
+.previewrow{display:flex;gap:14px;align-items:flex-start;margin-top:14px}
+.previewrow .f{flex:1;margin-top:0}
+.iconpreview{width:68px;height:68px;flex:none;border:1px solid var(--rule);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;background:var(--card);overflow:hidden}
+.iconpreview svg{width:48px;height:48px;color:var(--ink)}
+.iconpreview img{width:100%;height:100%;object-fit:cover}
+.iconpreview .txt{font-family:var(--label);font-size:12px;font-weight:700;color:var(--mute)}
+
+.profrow{display:flex;gap:6px;align-items:center;padding:8px 0;border-bottom:1px dotted var(--rule-soft)}
+.profrow input{width:0;flex:1;min-width:0;background:var(--card);border:1px solid var(--rule-soft);
+  border-radius:2px;padding:8px;font-size:14px;font-family:var(--data)}
+.profrow .op{flex:none;font-family:var(--data);font-size:12px;color:var(--mute)}
+.profrow button.rm{flex:none;color:var(--thread);font-size:18px;padding:0 4px}
+
 .kitcard{border:1px solid var(--rule);border-radius:2px;padding:12px 13px;margin-top:10px;background:var(--card)}
 .kitcard h4{margin:0;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:13px}
 .kitcard .loc{font-family:var(--data);font-size:11.5px;color:var(--mute);margin-top:3px}
@@ -401,7 +415,7 @@ const DEFAULT_CATEGORIES = [
 let categories = [];
 function catLabel(k){ const c = categories.find(c => c.key === k); return c ? c.label : k; }
 function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") || uid(); }
-const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","MagSafe/Wireless","UK 3-Pin","Other"];
+const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","Wireless","Other"];
 const CABLE_STYLES = ["Coiled","Woven / braided","Flat","Plain"];
 const DEVICE_REF = [
   {device:"iPhone 15", note:"20W recommended / 27W max"},
@@ -478,15 +492,32 @@ function glyphHTML(t){
   if (t.category === "adapter" || t.category === "laptop") return plugIconSVG(t);
   return esc(typeGlyph(t));
 }
-function typeLead(t){ return (t.kind || catLabel(t.category)) + (t.label ? " — " + t.label : ""); }
-/* Headline: the primary at-a-glance metric — output connector + peak wattage.
+/* Larger preview for the edit sheet: a photo if one's set, else the same icon/badge
+   used in the lists, just bigger. */
+function previewHTML(t){
+  if (t.photo) return '<img src="' + esc(t.photo) + '" alt="">';
+  if (t.category === "adapter" || t.category === "laptop") return plugIconSVG(t);
+  return '<span class="txt">' + esc(typeGlyph(t)) + '</span>';
+}
+/* A short standalone identifier for contexts with no room for headline+subtitle
+   (e.g. the "needs details" list, where headline is often just "—"). */
+function typeLead(t){
+  if (t.label) return t.label;
+  if (t.category === "other" && t.kind) return t.kind;
+  return catLabel(t.category);
+}
+/* Headline: the primary at-a-glance metric — peak wattage, then output connector.
    Full volt/amp/watt profiles live in the edit sheet, not the list view. */
 function headline(t){
   const w = maxWattage(t);
-  return connectorsText(t) + (w ? " · " + w + "W" : "");
+  const bits = [];
+  if (w) bits.push(w + "W");
+  bits.push(connectorsText(t));
+  return bits.join(" · ");
 }
 function subtitle(t){
-  const bits = [t.kind || catLabel(t.category)];
+  const bits = [];
+  if (t.category === "other" && t.kind) bits.push(t.kind);
   if (t.label) bits.push(t.label);
   if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
   if (t.material) bits.push(t.material);
@@ -672,28 +703,28 @@ function renderByRoom(list){
 /* ============================== type edit sheet ============================== */
 let draft = null; // {type:{...}, placements:[...], isNew:bool}
 function openTypeSheet(id){
-  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", ports:[], profiles:[],
+  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", photo:"", ports:[], profiles:[],
     input:"", outputs:[], length_m:null, material:"", wattage:null, brand:"", colour:"", notes:"", retired:false };
   draft = { type: Object.assign({}, t), plc: id ? placementsFor(id).map(p => Object.assign({}, p)) : [], isNew: !id };
   renderTypeSheet();
-}
-function profilesToText(pf){ return (pf||[]).map(p => p.v + "V/" + p.a + "A/" + p.w + "W").join("\n"); }
-function textToProfiles(s){
-  return String(s||"").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
-    const m = l.match(/([\d.]+)\s*V\s*\/\s*([\d.]+)\s*A\s*\/\s*([\d.]+)\s*W/i);
-    return m ? {v:+m[1], a:+m[2], w:+m[3]} : null;
-  }).filter(Boolean);
 }
 function renderTypeSheet(){
   const d = draft.type;
   let h = '<div class="sheethead"><button class="cancel" id="tCancel">Cancel</button><h3>' + (draft.isNew ? "Add item" : "Edit item") + '</h3>' +
     '<button class="done" id="tSave">Save</button></div>';
 
+  h += '<div class="previewrow"><div class="iconpreview" id="iconPreview">' + previewHTML(d) + '</div>' +
+    '<div class="f"><label for="d_photo">Photo URL (optional)</label><input id="d_photo" value="' + esc(d.photo||"") + '" placeholder="Paste an image link — leave blank to use the icon"></div></div>';
+
   h += '<div class="f"><label for="d_cat">Category</label><select id="d_cat">' +
     categories.map(c => '<option value="' + c.key + '"' + (d.category===c.key?" selected":"") + '>' + esc(c.label) + '</option>').join("") + '</select></div>';
 
-  h += '<div class="f2"><div class="f"><label for="d_kind">Kind</label><input id="d_kind" value="' + esc(d.kind) + '" placeholder="e.g. Plug Adapter"></div>' +
-    '<div class="f"><label for="d_label">Distinguishing feature</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div></div>';
+  if (d.category === "other"){
+    h += '<div class="f2"><div class="f"><label for="d_kind">Kind</label><input id="d_kind" value="' + esc(d.kind) + '" placeholder="e.g. Wireless Charging Stand"></div>' +
+      '<div class="f"><label for="d_label">Short name</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Long box shape"></div></div>';
+  } else {
+    h += '<div class="f"><label for="d_label">Short name</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div>';
+  }
 
   if (d.category === "cable"){
     h += '<div class="f2"><div class="f"><label for="d_input">Input connector</label><select id="d_input">' +
@@ -708,7 +739,10 @@ function renderTypeSheet(){
   } else {
     h += '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
-    h += '<div class="f"><label for="d_profiles">Power profiles (one per line, e.g. 5V/3A/15W)</label><textarea id="d_profiles" rows="3">' + esc(profilesToText(d.profiles)) + '</textarea></div>';
+    h += '<div class="f"><label>Power profiles</label><div class="plist" id="proflist">' +
+      (d.profiles||[]).map(profileRow).join("") + '</div>' +
+      '<button class="smallbtn addrow" id="addProfile">+ Add profile</button>' +
+      '<p class="hint">Watts fills in as V × A while you type, then stays editable — the number printed on the unit sometimes rounds slightly differently.</p></div>';
   }
 
   h += '<div class="f2"><div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>' +
@@ -733,15 +767,33 @@ function placementRow(p, i){
     '<div class="stepper" data-st="1"><button data-d="-1">−</button><span class="v">' + p.qty + '</span><button data-d="1">+</button></div>' +
     '<button class="rm" data-rm="1">×</button></div>';
 }
+function profileRow(p, i){
+  return '<div class="profrow" data-pi="' + i + '">' +
+    '<input data-pf="v" type="number" step="0.1" inputmode="decimal" placeholder="V" value="' + (p.v==null?"":p.v) + '">' +
+    '<span class="op">V ×</span>' +
+    '<input data-pf="a" type="number" step="0.01" inputmode="decimal" placeholder="A" value="' + (p.a==null?"":p.a) + '">' +
+    '<span class="op">A =</span>' +
+    '<input data-pf="w" type="number" step="0.1" inputmode="decimal" placeholder="W" value="' + (p.w==null?"":p.w) + '">' +
+    '<span class="op">W</span>' +
+    '<button class="rm" data-prm="1">×</button></div>';
+}
+function refreshIconPreview(){
+  const box = el("iconPreview");
+  if (box) box.innerHTML = previewHTML(draft.type);
+}
 function bindTypeSheet(){
   const d = draft.type;
   el("tCancel").onclick = closeSheet;
-  el("d_cat").onchange = () => { d.category = el("d_cat").value; syncDraftFields(); renderTypeSheet(); };
+  el("d_cat").onchange = () => {
+    d.category = el("d_cat").value;
+    if (d.category !== "other") d.kind = "";
+    syncDraftFields(); renderTypeSheet();
+  };
+  const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
   ["d_kind","d_label","d_brand","d_colour","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
   const inp = el("d_input"); if (inp) inp.onchange = () => syncDraftFields();
   const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
   const wat = el("d_watt"); if (wat) wat.oninput = () => syncDraftFields();
-  const pf = el("d_profiles"); if (pf) pf.oninput = () => syncDraftFields();
   const portsBox = el("d_ports") || el("d_outputs");
   if (portsBox) portsBox.querySelectorAll("[data-port]").forEach(b => b.onclick = () => {
     const key = el("d_ports") ? "ports" : "outputs";
@@ -749,11 +801,28 @@ function bindTypeSheet(){
     const c = b.dataset.port, i = arr.indexOf(c);
     if (i > -1) arr.splice(i,1); else arr.push(c);
     b.setAttribute("aria-pressed", i === -1);
+    if (key === "ports") refreshIconPreview();
   });
   const styleBox = el("d_style");
   if (styleBox) styleBox.querySelectorAll("[data-style]").forEach(b => b.onclick = () => {
     el("d_material").value = b.dataset.style; syncDraftFields();
   });
+  const proflist = el("proflist");
+  if (proflist) proflist.querySelectorAll(".profrow").forEach(row => {
+    const i = +row.dataset.pi;
+    row.querySelectorAll("[data-pf]").forEach(inpEl => inpEl.oninput = () => {
+      const field = inpEl.dataset.pf, prof = d.profiles[i];
+      prof[field] = inpEl.value === "" ? null : +inpEl.value;
+      if ((field === "v" || field === "a") && prof.v != null && prof.a != null){
+        prof.w = Math.round(prof.v * prof.a * 10) / 10;
+        const wEl = row.querySelector('[data-pf="w"]');
+        if (wEl) wEl.value = prof.w;
+      }
+    });
+    row.querySelector("[data-prm]").onclick = () => { d.profiles.splice(i,1); renderTypeSheet(); };
+  });
+  const addProf = el("addProfile");
+  if (addProf) addProf.onclick = () => { d.profiles = d.profiles || []; d.profiles.push({v:null,a:null,w:null}); renderTypeSheet(); };
   el("plist").querySelectorAll(".prow").forEach(row => {
     const i = +row.dataset.i;
     row.querySelector('[data-f="roomId"]').onchange = e => { draft.plc[i].roomId = e.target.value; };
@@ -773,6 +842,7 @@ function syncDraftFields(){
   const d = draft.type;
   d.kind = el("d_kind") ? el("d_kind").value : d.kind;
   d.label = el("d_label") ? el("d_label").value : d.label;
+  d.photo = el("d_photo") ? el("d_photo").value : d.photo;
   d.brand = el("d_brand") ? el("d_brand").value : d.brand;
   d.colour = el("d_colour") ? el("d_colour").value : d.colour;
   d.notes = el("d_notes") ? el("d_notes").value : d.notes;
@@ -781,9 +851,8 @@ function syncDraftFields(){
     d.length_m = el("d_len") && el("d_len").value !== "" ? +el("d_len").value : null;
     d.material = el("d_material") ? el("d_material").value : d.material;
     d.wattage = el("d_watt") && el("d_watt").value !== "" ? +el("d_watt").value : null;
-  } else {
-    d.profiles = el("d_profiles") ? textToProfiles(el("d_profiles").value) : d.profiles;
   }
+  /* profiles are mutated directly by the profile-row handlers, not re-derived here */
 }
 function resolveSpot(p){
   if (p._spotName === undefined) return p.spotId;
