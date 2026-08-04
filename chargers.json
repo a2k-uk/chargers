@@ -219,36 +219,6 @@
    "notes": ""
   },
   {
-   "id": "t2",
-   "category": "other",
-   "kind": "Wireless Charging Stand",
-   "label": "\"Wall charger\" printed on back",
-   "qty": 2,
-   "ports": [
-    "USB-C"
-   ],
-   "profiles": [
-    {
-     "v": 5,
-     "a": 3,
-     "w": 15
-    },
-    {
-     "v": 9,
-     "a": 2.22,
-     "w": 18
-    },
-    {
-     "v": 12,
-     "a": 1,
-     "w": 18
-    }
-   ],
-   "brand": "",
-   "colour": "",
-   "notes": ""
-  },
-  {
    "id": "t4",
    "category": "adapter",
    "kind": "",
@@ -608,18 +578,6 @@
    "typeId": "t1",
    "roomId": "study",
    "spotId": null
-  },
-  {
-   "id": "p5",
-   "typeId": "t2",
-   "roomId": "guest-room",
-   "spotId": "sp3"
-  },
-  {
-   "id": "p6",
-   "typeId": "t2",
-   "roomId": "guest-room",
-   "spotId": "sp4"
   },
   {
    "id": "p7",
