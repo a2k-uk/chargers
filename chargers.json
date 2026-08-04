@@ -2,8 +2,8 @@
  "v": 1,
  "categories": [
   {"key": "adapter", "label": "Plug Adapters"},
-  {"key": "laptop", "label": "Laptop Chargers"},
   {"key": "cable", "label": "Cables"},
+  {"key": "laptop", "label": "Laptop Chargers"},
   {"key": "other", "label": "Other Hardware"}
  ],
  "rooms": [
