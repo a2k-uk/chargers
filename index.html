@@ -107,7 +107,6 @@ section{padding:18px 0 4px}
   font-size:10.5px;color:var(--mute);margin-top:4px;font-weight:600}
 .item .qty{font-family:var(--data);font-size:17px;flex:none;padding-top:2px;min-width:22px;text-align:right}
 .flag{color:var(--thread)}
-.retired .body,.retired .qty,.retired .glyph{opacity:.42}
 .needsdata{color:var(--thread)}
 
 .note{font-size:12.5px;color:var(--mute);margin-top:10px;line-height:1.45}
@@ -231,6 +230,11 @@ td.n{font-family:var(--data);font-size:14px}
   border-radius:2px;padding:8px;font-size:14px;font-family:var(--data)}
 .profrow .op{flex:none;font-family:var(--data);font-size:12px;color:var(--mute)}
 .profrow button.rm{flex:none;color:var(--thread);font-size:18px;padding:0 4px}
+
+.subcard{border:1px solid var(--rule);border-radius:2px;background:var(--card);padding:14px 14px 15px;margin-top:20px}
+.subcard .eyebrow{margin:0 0 10px}
+.placenote{font-size:12px;color:var(--mute);margin:10px 0 0}
+.placenote.warn{color:var(--thread)}
 
 .kitcard{border:1px solid var(--rule);border-radius:2px;padding:12px 13px;margin-top:10px;background:var(--card)}
 .kitcard h4{margin:0;font-family:var(--label);text-transform:uppercase;letter-spacing:.1em;font-size:13px}
@@ -441,9 +445,11 @@ function roomName(id){ const r = room(id); return r ? r.name : "—"; }
 function spot(id){ return spots.find(s => s.id === id); }
 function spotName(id){ const s = spot(id); return s ? s.name : ""; }
 function type(id){ return types.find(t => t.id === id); }
-function activeTypes(){ return types.filter(t => !t.retired); }
 function placementsFor(typeId){ return placements.filter(p => p.typeId === typeId); }
-function totalQty(typeId){ return placementsFor(typeId).reduce((s,p) => s + p.qty, 0); }
+/* placedQty: how many are currently allocated to a room. ownedQty: the authoritative
+   "how many do you have" figure — falls back to placedQty for records with no qty set yet. */
+function placedQty(typeId){ return placementsFor(typeId).reduce((s,p) => s + p.qty, 0); }
+function ownedQty(typeId){ const t = type(typeId); return (t && t.qty) ? t.qty : placedQty(typeId); }
 function realRooms(){ return rooms.filter(r => !r.system); }
 function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
 
@@ -533,7 +539,9 @@ function missingFields(t){
   } else {
     if (!t.ports || !t.ports.length) bits.push("connector");
   }
-  if (totalQty(t.id) <= 0) bits.push("location");
+  const owned = ownedQty(t.id), placed = placedQty(t.id);
+  if (owned <= 0) bits.push("quantity");
+  else if (placed < owned) bits.push("location");
   return bits;
 }
 
@@ -554,12 +562,12 @@ function typeMatches(t){
   }
   return true;
 }
-function filteredTypes(){ return activeTypes().filter(typeMatches); }
+function filteredTypes(){ return types.filter(typeMatches); }
 function filterCount(){ return ui.filters.connector.length + ui.filters.room.length + (ui.q ? 1 : 0); }
 
 /* ============================== nav ============================== */
 const SCREENS1 = [["items","Items"],["stocktake","Stocktake"],["kits","Kits"]];
-const SCREENS2 = [["tofind","To Find"],["rooms","Rooms"],["archive","Archive"],["data","Data"]];
+const SCREENS2 = [["tofind","To Find"],["rooms","Rooms"],["data","Data"]];
 function renderNav(){
   const mk = (key,label) => '<button class="nav' + (ui.screen === key ? " here" : "") + '" data-nav="' + key + '">' + esc(label) + '</button>';
   let h = '<div class="navrow-row"><div class="navstrip">' + SCREENS1.map(s => mk(s[0],s[1])).join("") + '</div>';
@@ -592,9 +600,9 @@ function screenItems(){
   let h = '<section>';
   h += '<div class="eyebrow">Inventory</div>';
   h += '<div class="chiprow">';
-  h += '<button class="chip' + (ui.catFilter==="all"?"":"") + '" aria-pressed="' + (ui.catFilter==="all") + '" data-cat="all">All<span class="n">' + activeTypes().length + '</span></button>';
+  h += '<button class="chip' + (ui.catFilter==="all"?"":"") + '" aria-pressed="' + (ui.catFilter==="all") + '" data-cat="all">All<span class="n">' + types.length + '</span></button>';
   categories.forEach(c => {
-    const n = activeTypes().filter(t => t.category === c.key).length;
+    const n = types.filter(t => t.category === c.key).length;
     h += '<button class="chip" aria-pressed="' + (ui.catFilter===c.key) + '" data-cat="' + c.key + '">' + esc(c.label) + '<span class="n">' + n + '</span></button>';
   });
   h += '</div>';
@@ -662,14 +670,14 @@ function itemRow(t){
     '<span class="glyph">' + glyphHTML(t) + '</span>' +
     '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
     '<span class="l2">' + esc(subtitle(t)) + (gap ? " · Needs: " + esc(missingFields(t).join(", ")) : "") + '</span></span>' +
-    '<span class="qty">' + totalQty(t.id) + '</span></button>';
+    '<span class="qty">' + ownedQty(t.id) + '</span></button>';
 }
 function renderByType(list){
   let h = '<div class="itemresults">';
   const cats = categories.filter(c => list.some(t => t.category === c.key));
   cats.forEach(c => {
     const g = list.filter(t => t.category === c.key).sort((a,b) => typeLead(a).localeCompare(typeLead(b)));
-    h += '<div class="g1"><h2>' + esc(c.label) + '</h2><span class="n">' + g.reduce((s,t)=>s+totalQty(t.id),0) + '</span></div>';
+    h += '<div class="g1"><h2>' + esc(c.label) + '</h2><span class="n">' + g.reduce((s,t)=>s+ownedQty(t.id),0) + '</span></div>';
     h += g.map(itemRow).join("");
   });
   h += '</div>';
@@ -703,8 +711,8 @@ function renderByRoom(list){
 /* ============================== type edit sheet ============================== */
 let draft = null; // {type:{...}, placements:[...], isNew:bool}
 function openTypeSheet(id){
-  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", photo:"", ports:[], profiles:[],
-    input:"", outputs:[], length_m:null, material:"", wattage:null, brand:"", colour:"", notes:"", retired:false };
+  const t = id ? type(id) : { id:uid(), category:"adapter", kind:"", label:"", photo:"", qty:0, ports:[], profiles:[],
+    input:"", outputs:[], length_m:null, material:"", wattage:null, brand:"", colour:"", notes:"" };
   draft = { type: Object.assign({}, t), plc: id ? placementsFor(id).map(p => Object.assign({}, p)) : [], isNew: !id };
   renderTypeSheet();
 }
@@ -725,6 +733,9 @@ function renderTypeSheet(){
   } else {
     h += '<div class="f"><label for="d_label">Short name</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div>';
   }
+
+  h += '<div class="f"><label>How many do you have</label><div class="stepper lg" id="d_qtyStepper">' +
+    '<button data-qd="-1">−</button><span class="v" id="d_qtyVal">' + (d.qty||0) + '</span><button data-qd="1">+</button></div></div>';
 
   if (d.category === "cable"){
     h += '<div class="f2"><div class="f"><label for="d_input">Input connector</label><select id="d_input">' +
@@ -749,11 +760,10 @@ function renderTypeSheet(){
     '<div class="f"><label>Colour</label><input id="d_colour" value="' + esc(d.colour) + '"></div></div>';
   h += '<div class="f"><label>Notes</label><textarea id="d_notes" rows="2">' + esc(d.notes) + '</textarea></div>';
 
-  h += '<div class="f"><label>Placements</label><div class="plist" id="plist">' + draft.plc.map(placementRow).join("") + '</div>' +
-    '<button class="smallbtn addrow" id="addPlacement">+ Add placement</button></div>';
-
-  h += '<div class="f"><label for="d_retired">Status</label><div class="seg"><button aria-pressed="' + (!d.retired) + '" data-ret="0">Active</button>' +
-    '<button aria-pressed="' + (!!d.retired) + '" data-ret="1">Retired</button></div></div>';
+  h += '<div class="subcard"><div class="eyebrow">Placements — where these currently are</div>' +
+    '<div class="plist" id="plist">' + draft.plc.map(placementRow).join("") + '</div>' +
+    '<button class="smallbtn addrow" id="addPlacement">+ Add placement</button>' +
+    '<p class="placenote" id="placeSummary"></p></div>';
 
   if (!draft.isNew) h += '<button class="ghostbtn danger" id="tDelete">Delete this item</button>';
   h += '<div style="height:14px"></div>';
@@ -823,20 +833,42 @@ function bindTypeSheet(){
   });
   const addProf = el("addProfile");
   if (addProf) addProf.onclick = () => { d.profiles = d.profiles || []; d.profiles.push({v:null,a:null,w:null}); renderTypeSheet(); };
+  const qtyBox = el("d_qtyStepper");
+  if (qtyBox) qtyBox.querySelectorAll("[data-qd]").forEach(b => b.onclick = () => {
+    d.qty = Math.max(0, (d.qty||0) + (+b.dataset.qd));
+    el("d_qtyVal").textContent = d.qty;
+    updatePlacementSummary();
+  });
   el("plist").querySelectorAll(".prow").forEach(row => {
     const i = +row.dataset.i;
     row.querySelector('[data-f="roomId"]').onchange = e => { draft.plc[i].roomId = e.target.value; };
     row.querySelector('[data-f="spot"]').oninput = e => { draft.plc[i]._spotName = e.target.value; draft.plc[i].spotId = null; };
     row.querySelectorAll("[data-d]").forEach(b => b.onclick = () => {
-      draft.plc[i].qty = Math.max(0, draft.plc[i].qty + (+b.dataset.d));
+      const delta = +b.dataset.d;
+      const placedTotal = draft.plc.reduce((s,p) => s + p.qty, 0);
+      if (delta > 0 && d.qty && placedTotal >= d.qty){ toast("All " + d.qty + " already placed — raise the quantity above first"); return; }
+      draft.plc[i].qty = Math.max(0, draft.plc[i].qty + delta);
       row.querySelector(".v").textContent = draft.plc[i].qty;
+      updatePlacementSummary();
     });
     row.querySelector("[data-rm]").onclick = () => { draft.plc.splice(i,1); renderTypeSheet(); };
   });
-  el("addPlacement").onclick = () => { draft.plc.push({id:uid(), typeId:d.id, roomId:rooms[0].id, spotId:null, qty:1}); renderTypeSheet(); };
-  el("view").querySelectorAll("[data-ret]").forEach(b => b.onclick = () => { d.retired = b.dataset.ret === "1"; renderTypeSheet(); });
+  el("addPlacement").onclick = () => { draft.plc.push({id:uid(), typeId:d.id, roomId:rooms[0].id, spotId:null, qty:0}); renderTypeSheet(); };
   el("tSave").onclick = saveTypeSheet;
   const del = el("tDelete"); if (del) del.onclick = deleteTypeSheet;
+  updatePlacementSummary();
+}
+function updatePlacementSummary(){
+  const box = el("placeSummary"); if (!box) return;
+  const placed = draft.plc.reduce((s,p) => s + p.qty, 0);
+  const owned = draft.type.qty || 0;
+  let text, warn = false;
+  if (!owned){ text = placed + " placed so far — set a quantity above to track what's left to place"; }
+  else if (placed < owned){ text = (owned - placed) + " of " + owned + " still unplaced"; warn = true; }
+  else if (placed > owned){ text = (placed - owned) + " more placed than you own — check the quantity above"; warn = true; }
+  else { text = "All " + owned + " placed"; }
+  box.textContent = text;
+  box.className = "placenote" + (warn ? " warn" : "");
 }
 function syncDraftFields(){
   const d = draft.type;
@@ -882,13 +914,8 @@ function deleteTypeSheet(){
 }
 
 /* ============================== stocktake ============================== */
-function auditBaseline(){
-  const b = {};
-  activeTypes().forEach(t => { b[t.id] = totalQty(t.id); });
-  return b;
-}
 function startAudit(){
-  audit = { started:new Date().toISOString(), roomsDone:[], baseline:auditBaseline() };
+  audit = { started:new Date().toISOString(), roomsDone:[] };
   ui.auditRoom = realRooms()[0] ? realRooms()[0].id : null;
   persist(); render();
 }
@@ -948,7 +975,7 @@ function screenStocktake(){
   el("stAbandon").onclick = () => { if (confirm("Abandon this stock-take? Counts already adjusted stay as they are.")){ audit = null; persist(); render(); } };
 }
 function openAuditAddSheet(roomId){
-  const candidates = activeTypes().filter(t => !placements.some(p => p.typeId === t.id && p.roomId === roomId));
+  const candidates = types.filter(t => !placements.some(p => p.typeId === t.id && p.roomId === roomId));
   let h = '<div class="sheethead"><button class="cancel" id="aaCancel">Cancel</button><h3>Found in ' + esc(roomName(roomId)) + '</h3></div>';
   if (!candidates.length){ h += '<p class="note">Every known item type already has a placement here — edit its count above, or add a brand new item from the Items screen.</p>'; }
   h += '<div class="menu">' + candidates.map(t => '<button data-pick="' + t.id + '">' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></button>').join("") + '</div>';
@@ -960,17 +987,15 @@ function openAuditAddSheet(roomId){
   });
 }
 function finishAudit(){
-  const before = audit.baseline;
-  const after = {};
-  activeTypes().forEach(t => { after[t.id] = totalQty(t.id); });
   const found = [];
-  Object.keys(before).forEach(tid => {
-    const drop = before[tid] - (after[tid] || 0);
-    if (drop > 0){
-      const t = type(tid);
-      const already = toFind.find(f => f.typeId === tid && !f.resolved);
-      if (!already) toFind.push({id:uid(), typeId:tid, note:"Count dropped by " + drop + " during the " + fmtDate(new Date()) + " stock-take", added:new Date().toISOString().slice(0,10)});
-      found.push((t ? typeLead(t) : tid) + " (−" + drop + ")");
+  let newlyAdded = 0;
+  types.forEach(t => {
+    const owned = ownedQty(t.id), placed = placedQty(t.id);
+    if (placed < owned){
+      const short = owned - placed;
+      const already = toFind.find(f => f.typeId === t.id && !f.resolved);
+      if (!already){ toFind.push({id:uid(), typeId:t.id, note:short + " of " + owned + " unplaced after the " + fmtDate(new Date()) + " stock-take", added:new Date().toISOString().slice(0,10)}); newlyAdded++; }
+      found.push(typeLead(t) + " (−" + short + ")");
     }
   });
   history.push({
@@ -980,7 +1005,8 @@ function finishAudit(){
   });
   audit = null; ui.auditRoom = null;
   persist(); render();
-  toast(found.length ? "Finished — " + found.length + " item(s) added to To Find" : "Finished — all accounted for");
+  toast(!found.length ? "Finished — all accounted for" :
+    "Finished — " + found.length + " item(s) short" + (newlyAdded ? " (" + newlyAdded + " new on To Find)" : ""));
 }
 function fmtDate(d){
   const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1030,7 +1056,7 @@ function renderKitSheet(id){
   h += '<div class="f2"><div class="f"><label>Room</label><select id="k_room">' +
     rooms.map(r => '<option value="' + r.id + '"' + (k.roomId===r.id?" selected":"") + '>' + esc(r.name) + '</option>').join("") + '</select></div>' +
     '<div class="f"><label>Spot (optional)</label><input id="k_spot" value="' + esc(k._spotName) + '"></div></div>';
-  h += '<div class="f"><label>Members</label><div class="menu">' + activeTypes().map(t =>
+  h += '<div class="f"><label>Members</label><div class="menu">' + types.map(t =>
     '<button data-member="' + t.id + '" style="display:flex;justify-content:space-between;align-items:center">' +
     '<span>' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></span>' +
     '<span>' + (k.typeIds.indexOf(t.id) > -1 ? "✓" : "") + '</span></button>'
@@ -1087,7 +1113,7 @@ function screenToFind(){
 }
 function openToFindAddSheet(){
   let h = '<div class="sheethead"><button class="cancel" id="fCancel">Cancel</button><h3>Add to To Find</h3></div>';
-  h += '<div class="menu">' + activeTypes().map(t => '<button data-pick="' + t.id + '">' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></button>').join("") + '</div>';
+  h += '<div class="menu">' + types.map(t => '<button data-pick="' + t.id + '">' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></button>').join("") + '</div>';
   openSheet(h);
   el("fCancel").onclick = closeSheet;
   document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
@@ -1166,22 +1192,6 @@ function screenRooms(){
   });
 }
 
-/* ============================== archive ============================== */
-function screenArchive(){
-  const list = types.filter(t => t.retired);
-  let h = "";
-  if (!list.length) h += '<div class="empty"><b>Nothing retired</b></div>';
-  list.forEach(t => {
-    h += '<div class="item retired"><span class="glyph">' + glyphHTML(t) + '</span>' +
-      '<span class="body"><span class="l1">' + esc(headline(t)) + '</span><span class="l2">' + esc(subtitle(t)) + '</span></span>' +
-      '<button class="smallbtn" data-restore="' + t.id + '">Restore</button></div>';
-  });
-  el("view").innerHTML = h;
-  el("view").querySelectorAll("[data-restore]").forEach(b => b.onclick = () => {
-    const t = type(b.dataset.restore); t.retired = false; persist(); render(); toast("Restored");
-  });
-}
-
 /* ============================== data screen ============================== */
 function screenData(){
   let h = '<div class="eyebrow">Cloud sync</div>';
@@ -1205,7 +1215,7 @@ function screenData(){
   h += '<button class="smallbtn addrow" id="addCat">+ Add category</button>';
 
   h += '<div class="eyebrow" style="margin-top:26px">Needs details</div>';
-  const gaps = activeTypes().filter(t => missingFields(t).length);
+  const gaps = types.filter(t => missingFields(t).length);
   if (!gaps.length) h += '<p class="note">Nothing missing.</p>';
   gaps.forEach(t => h += '<div class="arow"><span class="body"><span class="l1">' + esc(typeLead(t)) + '</span><span class="l2">Needs: ' + esc(missingFields(t).join(", ")) + '</span></span><button class="smallbtn" data-editgap="' + t.id + '">Edit</button></div>');
 
@@ -1260,13 +1270,12 @@ function screenData(){
 /* ============================== render ============================== */
 function render(){
   renderNav();
-  el("hdrCount").textContent = activeTypes().length + " types · " + activeTypes().reduce((s,t)=>s+totalQty(t.id),0) + " items";
+  el("hdrCount").textContent = types.length + " types · " + types.reduce((s,t)=>s+ownedQty(t.id),0) + " items";
   if (ui.screen === "items") screenItems();
   else if (ui.screen === "stocktake") screenStocktake();
   else if (ui.screen === "kits") screenKits();
   else if (ui.screen === "tofind") screenToFind();
   else if (ui.screen === "rooms") screenRooms();
-  else if (ui.screen === "archive") screenArchive();
   else if (ui.screen === "data") screenData();
 }
 
