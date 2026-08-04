@@ -1361,7 +1361,7 @@ function screenData(){
 /* ============================== render ============================== */
 function render(){
   renderNav();
-  el("hdrCount").textContent = types.length + " types · " + types.reduce((s,t)=>s+ownedQty(t.id),0) + " items";
+  el("hdrCount").textContent = types.reduce((s,t)=>s+ownedQty(t.id),0) + " items";
   if (ui.screen === "items") screenItems();
   else if (ui.screen === "stocktake") screenStocktake();
   else if (ui.screen === "kits") screenKits();
