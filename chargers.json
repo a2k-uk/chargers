@@ -29,14 +29,18 @@
   {"id": "guest-room", "name": "Guest Room", "zone": "Upstairs"},
   {"id": "spare", "name": "Spare Stock", "zone": "Other", "system": true},
   {"id": "committed", "name": "Committed Elsewhere", "zone": "Other", "system": true},
-  {"id": "unassigned", "name": "Unconfirmed Location", "zone": "Other", "system": true}
+  {"id": "unassigned", "name": "Unconfirmed Location", "zone": "Other", "system": true},
+  {"id": "andy-rucksack", "name": "Andy Rucksack", "zone": "Other"},
+  {"id": "kierra-rucksack", "name": "Kierra Rucksack", "zone": "Other"}
  ],
  "spots": [
   {"id": "sp1", "roomId": "kitchen", "name": "Island 1"},
   {"id": "sp2", "roomId": "kitchen", "name": "Island 2"},
   {"id": "sp3", "roomId": "guest-room", "name": "Bed 1"},
   {"id": "sp4", "roomId": "guest-room", "name": "Bed 2"},
-  {"id": "sp5", "roomId": "master-bedroom", "name": "Bedside"}
+  {"id": "sp5", "roomId": "master-bedroom", "name": "Bedside"},
+  {"id": "sp6", "roomId": "study", "name": "Drawer"},
+  {"id": "sp7", "roomId": "study", "name": "Cupboard"}
  ],
  "types": [
   {"id": "t1", "category": "other", "kind": "Wireless Charging Stand", "label": "Long box shape, from old stands", "qty": 6,
