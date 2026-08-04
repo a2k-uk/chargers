@@ -281,18 +281,6 @@
    "notes": "£1.95"
   },
   {
-   "id": "t9",
-   "category": "adapter",
-   "kind": "",
-   "label": "Needs details",
-   "qty": 3,
-   "ports": [],
-   "profiles": [],
-   "brand": "",
-   "colour": "",
-   "notes": "See listing (Temu order, 3x)."
-  },
-  {
    "id": "t10",
    "category": "adapter",
    "kind": "",
@@ -558,24 +546,6 @@
   {
    "id": "p15",
    "typeId": "t7",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p17-1",
-   "typeId": "t9",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p17-2",
-   "typeId": "t9",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p17-3",
-   "typeId": "t9",
    "roomId": "unassigned",
    "spotId": null
   },
