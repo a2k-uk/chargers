@@ -494,6 +494,55 @@
    "brand": "Apple",
    "colour": "White",
    "notes": "Model A1436"
+  },
+  {
+   "id": "89fcby5",
+   "category": "laptop",
+   "kind": "",
+   "label": "",
+   "qty": 1,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 3,
+     "w": 27
+    },
+    {
+     "v": 12,
+     "a": 5,
+     "w": 60
+    },
+    {
+     "v": 15,
+     "a": 5,
+     "w": 75
+    },
+    {
+     "v": 20,
+     "a": 5,
+     "w": 100
+    },
+    {
+     "v": 28,
+     "a": 5,
+     "w": 140
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": 2026,
+   "brand": "HO",
+   "colour": "Black",
+   "notes": "Model N22270-013"
   }
  ],
  "placements": [
@@ -728,6 +777,12 @@
   {
    "id": "zyp3e1g",
    "typeId": "xs30r19",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "bj7ck6q",
+   "typeId": "89fcby5",
    "roomId": "study-drawer",
    "spotId": null
   }
