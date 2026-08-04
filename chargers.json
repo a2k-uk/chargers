@@ -830,6 +830,24 @@
    "spotId": null
   },
   {
+   "id": "p22-1",
+   "typeId": "t14",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "p22-2",
+   "typeId": "t14",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
+  },
+  {
+   "id": "p22-3",
+   "typeId": "t14",
+   "roomId": "kierra-wardrobe",
+   "spotId": "0c1ge9g"
+  },
+  {
    "id": "p19-1",
    "typeId": "t11",
    "roomId": "study",
@@ -858,24 +876,6 @@
    "typeId": "t11",
    "roomId": "living-area-foot-stools",
    "spotId": null
-  },
-  {
-   "id": "p22-1",
-   "typeId": "t14",
-   "roomId": "study",
-   "spotId": "r5zqo28"
-  },
-  {
-   "id": "p22-2",
-   "typeId": "t14",
-   "roomId": "master-bedroom",
-   "spotId": "tl30d74"
-  },
-  {
-   "id": "p22-3",
-   "typeId": "t14",
-   "roomId": "kierra-wardrobe",
-   "spotId": "0c1ge9g"
   }
  ],
  "kits": [],
