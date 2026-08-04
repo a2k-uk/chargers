@@ -309,7 +309,7 @@
    "category": "laptop",
    "kind": "",
    "label": "",
-   "qty": 1,
+   "qty": 2,
    "ports": [
     "MagSafe"
    ],
@@ -322,7 +322,7 @@
    ],
    "brand": "Apple",
    "colour": "White",
-   "notes": "",
+   "notes": "Model A1435",
    "length_m": null,
    "year": 2015
   },
@@ -646,6 +646,12 @@
   },
   {
    "id": "yoz8gs6",
+   "typeId": "t6",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "rctznfx",
    "typeId": "t6",
    "roomId": "study-drawer",
    "spotId": null
