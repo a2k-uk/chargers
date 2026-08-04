@@ -200,6 +200,16 @@
    "id": "tl30d74",
    "roomId": "master-bedroom",
    "name": "Andy bedside"
+  },
+  {
+   "id": "fgrg8hi",
+   "roomId": "guest-room",
+   "name": "Left"
+  },
+  {
+   "id": "rgcbpau",
+   "roomId": "guest-room",
+   "name": "Right"
   }
  ],
  "types": [
@@ -479,6 +489,40 @@
    "brand": "Hynix",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "6x8z4nn",
+   "category": "adapter",
+   "kind": "",
+   "label": "Fixed Pins",
+   "qty": 2,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2,
+     "w": 18
+    },
+    {
+     "v": 12,
+     "a": 1,
+     "w": 12
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": null,
+   "brand": "Generic",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -601,6 +645,18 @@
    "typeId": "i2bulzm",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "uvx7hx4",
+   "typeId": "6x8z4nn",
+   "roomId": "guest-room",
+   "spotId": "fgrg8hi"
+  },
+  {
+   "id": "p77vwfl",
+   "typeId": "6x8z4nn",
+   "roomId": "guest-room",
+   "spotId": "rgcbpau"
   }
  ],
  "kits": [],
