@@ -311,18 +311,6 @@
    "notes": "£1.95"
   },
   {
-   "id": "t8",
-   "category": "other",
-   "kind": "Unspecified",
-   "label": "Needs details",
-   "qty": 6,
-   "ports": [],
-   "profiles": [],
-   "brand": "",
-   "colour": "",
-   "notes": "See listing: https://www.aliexpress.com/item/1005007714952535.html"
-  },
-  {
    "id": "t9",
    "category": "adapter",
    "kind": "",
@@ -624,42 +612,6 @@
   {
    "id": "p15",
    "typeId": "t7",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p16-1",
-   "typeId": "t8",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p16-2",
-   "typeId": "t8",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p16-3",
-   "typeId": "t8",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p16-4",
-   "typeId": "t8",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p16-5",
-   "typeId": "t8",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p16-6",
-   "typeId": "t8",
    "roomId": "unassigned",
    "spotId": null
   },
