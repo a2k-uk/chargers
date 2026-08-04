@@ -638,7 +638,7 @@
    "category": "adapter",
    "kind": "",
    "label": "Triangle",
-   "qty": 2,
+   "qty": 3,
    "ports": [
     "USB-A"
    ],
@@ -859,6 +859,12 @@
   },
   {
    "id": "n1rf8zn",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "j4upf25",
    "typeId": "epy6ct7",
    "roomId": "study-drawer",
    "spotId": null
