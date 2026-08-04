@@ -783,18 +783,30 @@ function itemRow(t){
     '<span class="l2">' + esc(subtitle(t, true)) + (flag ? ' <span class="flag">· ' + esc(flag) + '</span>' : "") + '</span></span>' +
     '<span class="qty">' + ownedQty(t.id) + '</span></button>';
 }
+/* Sort criteria vary by category to match how each heading actually reads (see headline()):
+   laptop leads with year then ports+wattage; adapters lead with wattage then ports; everything
+   else has no natural lead figure, so quantity-owned is the most useful default. */
+function typeComparator(catKey){
+  if (catKey === "laptop") return (a,b) =>
+    (b.year||0) - (a.year||0) ||
+    (maxWattage(b)||0) - (maxWattage(a)||0) ||
+    (a.brand||"").localeCompare(b.brand||"") ||
+    typeLead(a).localeCompare(typeLead(b));
+  if (catKey === "adapter") return (a,b) =>
+    (maxWattage(b)||0) - (maxWattage(a)||0) ||
+    connectorsText(a).localeCompare(connectorsText(b)) ||
+    (a.brand||"").localeCompare(b.brand||"") ||
+    typeLead(a).localeCompare(typeLead(b));
+  return (a,b) =>
+    ownedQty(b.id) - ownedQty(a.id) ||
+    (a.brand||"").localeCompare(b.brand||"") ||
+    typeLead(a).localeCompare(typeLead(b));
+}
 function renderByType(list){
   let h = '<div class="itemresults">';
   const cats = categories.filter(c => list.some(t => t.category === c.key));
   cats.forEach(c => {
-    const g = list.filter(t => t.category === c.key).sort(c.key === "laptop" ? (a,b) =>
-      (b.year||0) - (a.year||0) ||
-      (maxWattage(b)||0) - (maxWattage(a)||0) ||
-      (a.brand||"").localeCompare(b.brand||"") ||
-      typeLead(a).localeCompare(typeLead(b)) : (a,b) =>
-      ownedQty(b.id) - ownedQty(a.id) ||
-      (a.brand||"").localeCompare(b.brand||"") ||
-      typeLead(a).localeCompare(typeLead(b)));
+    const g = list.filter(t => t.category === c.key).sort(typeComparator(c.key));
     h += '<div class="g1"><h2>' + esc(c.label) + '</h2><span class="n">' + g.reduce((s,t)=>s+ownedQty(t.id),0) + '</span></div>';
     h += g.map(itemRow).join("");
   });
