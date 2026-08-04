@@ -185,6 +185,21 @@
    "id": "sp5",
    "roomId": "master-bedroom",
    "name": "Bedside"
+  },
+  {
+   "id": "icp9zxb",
+   "roomId": "living-area",
+   "name": "Plant corner"
+  },
+  {
+   "id": "nyhmjko",
+   "roomId": "andy-wardrobe",
+   "name": "Drawer unit"
+  },
+  {
+   "id": "tl30d74",
+   "roomId": "master-bedroom",
+   "name": "Andy bedside"
   }
  ],
  "types": [
@@ -430,6 +445,40 @@
    "brand": "Dell",
    "colour": "Black",
    "notes": "Model LA100PM220"
+  },
+  {
+   "id": "i2bulzm",
+   "category": "adapter",
+   "kind": "",
+   "label": "Oblong",
+   "qty": 6,
+   "ports": [
+    "USB-A"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2,
+     "w": 18
+    },
+    {
+     "v": 12,
+     "a": 1.5,
+     "w": 18
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": null,
+   "brand": "Hynix",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -534,6 +583,24 @@
    "typeId": "glj6grc",
    "roomId": "study-drawer",
    "spotId": null
+  },
+  {
+   "id": "7g65eti",
+   "typeId": "i2bulzm",
+   "roomId": "living-area",
+   "spotId": "icp9zxb"
+  },
+  {
+   "id": "ocf2ysk",
+   "typeId": "i2bulzm",
+   "roomId": "andy-wardrobe",
+   "spotId": "nyhmjko"
+  },
+  {
+   "id": "bjkc5fe",
+   "typeId": "i2bulzm",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
   }
  ],
  "kits": [],
