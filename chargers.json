@@ -822,6 +822,24 @@
    "spotId": null
   },
   {
+   "id": "umt0zxi",
+   "typeId": "epy6ct7",
+   "roomId": "cora-bedroom",
+   "spotId": "rbttwml"
+  },
+  {
+   "id": "n1rf8zn",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "snbva55",
+   "typeId": "6x8z4nn",
+   "roomId": "guest-room",
+   "spotId": "fgrg8hi"
+  },
+  {
    "id": "7g65eti",
    "typeId": "i2bulzm",
    "roomId": "living-area",
@@ -844,24 +862,6 @@
    "typeId": "i2bulzm",
    "roomId": "study-cupboard",
    "spotId": null
-  },
-  {
-   "id": "umt0zxi",
-   "typeId": "epy6ct7",
-   "roomId": "cora-bedroom",
-   "spotId": "rbttwml"
-  },
-  {
-   "id": "n1rf8zn",
-   "typeId": "epy6ct7",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "snbva55",
-   "typeId": "6x8z4nn",
-   "roomId": "guest-room",
-   "spotId": "fgrg8hi"
   }
  ],
  "kits": [],
