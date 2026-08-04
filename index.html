@@ -13,6 +13,7 @@
 <title>Chargers</title>
 <style>
 :root{
+  color-scheme: light;
   --paper:#ECEDEA; --card:#F6F6F4; --ink:#16181D; --mute:#7C8089;
   --rule:#D6D7D2; --rule-soft:#E3E4E0; --thread:#A63D3D;
   --sel:#16181D; --sel-ink:#ECEDEA; --go:#3F8F5F;
@@ -21,7 +22,8 @@
   --data:ui-monospace,'SF Mono',Menlo,'Roboto Mono',monospace;
 }
 @media (prefers-color-scheme: dark){
-  :root{--paper:#16181D;--card:#1D2026;--ink:#E7E8E4;--mute:#8B8F98;
+  :root{color-scheme: dark;
+    --paper:#16181D;--card:#1D2026;--ink:#E7E8E4;--mute:#8B8F98;
     --rule:#2C3038;--rule-soft:#23262D;--thread:#D97C7C;--sel:#E7E8E4;--sel-ink:#16181D;--go:#5FBF85}
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
