@@ -574,6 +574,30 @@
    "brand": "Generic",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "zgueayu",
+   "category": "adapter",
+   "kind": "",
+   "label": "Kierra Label",
+   "qty": 1,
+   "ports": [
+    "USB-A"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 1,
+     "w": 5
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": null,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -713,6 +737,12 @@
    "id": "xe4h5br",
    "typeId": "t11",
    "roomId": "living-area-foot-stools",
+   "spotId": null
+  },
+  {
+   "id": "pt1d084",
+   "typeId": "zgueayu",
+   "roomId": "hallway-drawer",
    "spotId": null
   }
  ],
