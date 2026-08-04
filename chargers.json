@@ -210,6 +210,16 @@
    "id": "rgcbpau",
    "roomId": "guest-room",
    "name": "Right"
+  },
+  {
+   "id": "tj3m3f8",
+   "roomId": "study",
+   "name": "Desk"
+  },
+  {
+   "id": "k7vykid",
+   "roomId": "kitchen",
+   "name": "Island"
   }
  ],
  "types": [
@@ -523,6 +533,41 @@
    "brand": "Generic",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "br97q9q",
+   "category": "adapter",
+   "kind": "",
+   "label": "Dual",
+   "qty": 3,
+   "ports": [
+    "USB-A",
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2.4,
+     "w": 22
+    },
+    {
+     "v": 12,
+     "a": 1.8,
+     "w": 22
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": null,
+   "brand": "Generic",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -657,6 +702,18 @@
    "typeId": "6x8z4nn",
    "roomId": "guest-room",
    "spotId": "rgcbpau"
+  },
+  {
+   "id": "dj7r1qs",
+   "typeId": "br97q9q",
+   "roomId": "study",
+   "spotId": "tj3m3f8"
+  },
+  {
+   "id": "uapiqbp",
+   "typeId": "br97q9q",
+   "roomId": "kitchen",
+   "spotId": "k7vykid"
   }
  ],
  "kits": [],
