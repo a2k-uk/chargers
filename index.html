@@ -457,6 +457,13 @@ function connectorsText(t){
   if (t.category === "cable") return (t.input || "?") + " → " + (t.outputs && t.outputs.length ? t.outputs.join(" / ") : "?");
   return (t.ports && t.ports.length) ? t.ports.join(" + ") : "—";
 }
+/* Cable heading uses this instead: three or more output tips collapse to a count
+   rather than listing every one (e.g. "USB-A → 3 tips" for a 3-in-1 cable). */
+function cableConnectorSummary(t){
+  const outs = t.outputs || [];
+  const outText = outs.length > 2 ? outs.length + " tips" : (outs.length ? outs.join(" / ") : "?");
+  return (t.input || "?") + " → " + outText;
+}
 function maxWattage(t){
   if (t.category === "cable") return t.wattage || null;
   const profs = t.profiles || [];
@@ -512,31 +519,39 @@ function typeLead(t){
   if (t.category === "other" && t.kind) return t.kind;
   return catLabel(t.category);
 }
-/* Headline: the primary at-a-glance metric — peak wattage, then output connector.
-   Full volt/amp/watt profiles live in the edit sheet, not the list view. */
+/* Heading: cables lead with input -> output (collapsing 3+ tips to a count), everything
+   else leads with peak wattage; distinguishing feature follows for both. Full volt/amp/watt
+   profiles live in the edit sheet, not the list view. */
 function headline(t){
-  const w = maxWattage(t);
   const bits = [];
-  if (w) bits.push(w + "W");
-  bits.push(connectorsText(t));
+  if (t.category === "cable") bits.push(cableConnectorSummary(t));
+  else { const w = maxWattage(t); if (w) bits.push(w + "W"); }
+  if (t.label) bits.push(t.label);
   return bits.join(" · ");
 }
-/* The sheet header title: the same headline shown on the main screen, live as you edit,
+/* The sheet header title: the same heading shown on the main screen, live as you edit,
    falling back to a plain "Add/Edit item" label while there's nothing to show yet. */
 function sheetTitle(t){
   const h = headline(t);
-  const blank = !h || h === "—" || h === "? → ?";
+  const blank = !h || h === "? → ?";
   return blank ? (draft.isNew ? "Add item" : "Edit item") : h;
 }
+/* Sub-heading: cables get colour/length/brand; everything else gets kind (Other Hardware
+   only) / colour / brand / ports — ports last, always shown so a missing connector is
+   visible rather than silently absent. */
 function subtitle(t){
   const bits = [];
+  if (t.category === "cable"){
+    if (t.colour) bits.push(t.colour);
+    if (t.length_m) bits.push(t.length_m + "m");
+    if (t.brand) bits.push(t.brand);
+    return bits.join(" · ");
+  }
   if (t.category === "other" && t.kind) bits.push(t.kind);
-  if (t.category === "cable" && t.length_m) bits.push(t.length_m + "m");
-  if (t.material) bits.push(t.material);
-  if (t.brand) bits.push(t.brand);
   if (t.colour) bits.push(t.colour);
-  if (t.label) bits.push(t.label);
-  return bits.filter(Boolean).join(" · ");
+  if (t.brand) bits.push(t.brand);
+  bits.push(connectorsText(t));
+  return bits.join(" · ");
 }
 function missingFields(t){
   const bits = [];
@@ -811,7 +826,8 @@ function bindTypeSheet(){
     syncDraftFields(); renderTypeSheet();
   };
   const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
-  ["d_kind","d_label","d_brand","d_colour","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  ["d_kind","d_brand","d_colour","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  const lbl = el("d_label"); if (lbl) lbl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
   const inp = el("d_input"); if (inp) inp.onchange = () => { syncDraftFields(); refreshSheetTitle(); };
   const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
   const wat = el("d_watt"); if (wat) wat.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
