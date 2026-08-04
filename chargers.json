@@ -296,7 +296,7 @@
    "id": "t12",
    "category": "cable",
    "kind": "",
-   "label": "6-in-1",
+   "label": "Forked",
    "qty": 1,
    "input": "USB-A",
    "outputs": [
@@ -836,12 +836,6 @@
    "spotId": "fgrg8hi"
   },
   {
-   "id": "68nbiou",
-   "typeId": "t12",
-   "roomId": "living-area-foot-stools",
-   "spotId": null
-  },
-  {
    "id": "p19-1",
    "typeId": "t11",
    "roomId": "study",
@@ -875,6 +869,12 @@
    "id": "sp3eti8",
    "typeId": "8d7px1h",
    "roomId": "andy-rucksack",
+   "spotId": null
+  },
+  {
+   "id": "68nbiou",
+   "typeId": "t12",
+   "roomId": "living-area-foot-stools",
    "spotId": null
   }
  ],
