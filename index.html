@@ -216,6 +216,13 @@ td.n{font-family:var(--data);font-size:14px}
   text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;color:var(--mute);background:var(--card)}
 .portpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 
+.colourpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.colourpick button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:2px;
+  padding:6px 10px 6px 6px;font-family:var(--label);text-transform:uppercase;letter-spacing:.06em;font-size:11px;
+  font-weight:600;color:var(--mute);background:var(--card)}
+.colourpick button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
+.colourpick .sw{width:13px;height:13px;flex:none;border-radius:1px;box-shadow:inset 0 0 0 1px rgba(128,128,128,.5)}
+
 .previewrow{display:flex;gap:14px;align-items:flex-start;margin-top:14px}
 .previewrow .f{flex:1;margin-top:0}
 .iconpreview{width:68px;height:68px;flex:none;border:1px solid var(--rule);border-radius:2px;
@@ -420,6 +427,19 @@ function catLabel(k){ const c = categories.find(c => c.key === k); return c ? c.
 function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") || uid(); }
 const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","Wireless","Other"];
 const CABLE_STYLES = ["Coiled","Woven / braided","Flat","Plain"];
+/* Fixed palette rather than free text — avoids "Black" vs "Blak" fragmenting the data.
+   "Other" reveals a plain text field underneath for anything genuinely uncommon. */
+const COLOUR_SWATCHES = [
+  {name:"Black", hex:"#1C1C1E"}, {name:"White", hex:"#F7F7F3"}, {name:"Grey", hex:"#9A9A9E"},
+  {name:"Silver", hex:"#C6C7CB"}, {name:"Gold", hex:"#C9A227"}, {name:"Blue", hex:"#4A6FA5"},
+  {name:"Red", hex:"#A63D3D"}, {name:"Green", hex:"#41654E"}, {name:"Pink", hex:"#C99AA0"},
+  {name:"Transparent", hex:""}
+];
+function colourSwatchStyle(hex){
+  if (!hex) return "background-image:repeating-linear-gradient(45deg,var(--mute) 0 3px,transparent 3px 6px)";
+  return "background-color:" + hex;
+}
+function isKnownColour(c){ return COLOUR_SWATCHES.some(s => s.name === c); }
 const DEVICE_REF = [
   {device:"iPhone 15", note:"20W recommended / 27W max"},
   {device:"iPhone 15 Pro", note:"20W recommended / 27W max"},
@@ -447,7 +467,7 @@ function type(id){ return types.find(t => t.id === id); }
 function placementsFor(typeId){ return placements.filter(p => p.typeId === typeId); }
 /* placedQty: how many are currently allocated to a room. ownedQty: the authoritative
    "how many do you have" figure — falls back to placedQty for records with no qty set yet. */
-function placedQty(typeId){ return placementsFor(typeId).reduce((s,p) => s + p.qty, 0); }
+function placedQty(typeId){ return placementsFor(typeId).length; }
 function ownedQty(typeId){ const t = type(typeId); return (t && t.qty) ? t.qty : placedQty(typeId); }
 function realRooms(){ return rooms.filter(r => !r.system); }
 function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
@@ -713,15 +733,13 @@ function renderByRoom(list){
     h += '<div class="g1"><h2>' + esc(zone) + '</h2></div>';
     zoneRooms.forEach(r => {
       const rp = placements.filter(p => p.roomId === r.id && ids.indexOf(p.typeId) > -1);
-      const total = rp.reduce((s,p)=>s+p.qty,0);
-      h += '<div class="g2"><h3>' + esc(r.name) + '</h3><span class="n">' + total + '</span></div>';
+      h += '<div class="g2"><h3>' + esc(r.name) + '</h3><span class="n">' + rp.length + '</span></div>';
       rp.forEach(p => {
         const t = type(p.typeId); if (!t) return;
         h += '<button class="item" data-type="' + t.id + '">' +
           '<span class="glyph">' + glyphHTML(t) + '</span>' +
           '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
-          '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span>' +
-          '<span class="qty">' + p.qty + '</span></button>';
+          '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span></button>';
       });
     });
   });
@@ -757,8 +775,14 @@ function renderTypeSheet(){
     h += '<div class="f"><label for="d_label">Distinguishing feature</label><input id="d_label" value="' + esc(d.label) + '" placeholder="e.g. Apple Official"></div>';
   }
 
-  h += '<div class="f2"><div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>' +
-    '<div class="f"><label>Colour</label><input id="d_colour" value="' + esc(d.colour) + '"></div></div>';
+  h += '<div class="f"><label>Brand</label><input id="d_brand" value="' + esc(d.brand) + '"></div>';
+
+  const colourIsOther = draft._colourOther || (d.colour && !isKnownColour(d.colour));
+  h += '<div class="f"><label>Colour</label><div class="colourpick" id="d_colourpick">' +
+    COLOUR_SWATCHES.map(c => '<button aria-pressed="' + (d.colour===c.name) + '" data-colour="' + esc(c.name) + '"><span class="sw" style="' + colourSwatchStyle(c.hex) + '"></span>' + esc(c.name) + '</button>').join("") +
+    '<button aria-pressed="' + colourIsOther + '" data-colour="__other">Other</button></div>' +
+    (colourIsOther ? '<input id="d_colour_other" style="margin-top:8px" value="' + esc(d.colour) + '" placeholder="Custom colour">' : '') +
+    '</div>';
 
   if (d.category === "cable"){
     h += '<div class="f2"><div class="f"><label for="d_input">Input connector</label><select id="d_input">' +
@@ -795,7 +819,6 @@ function placementRow(p, i){
   return '<div class="prow" data-i="' + i + '">' +
     '<select class="rsel" data-f="roomId">' + rooms.map(r => '<option value="' + r.id + '"' + (p.roomId===r.id?" selected":"") + '>' + esc(r.name) + '</option>').join("") + '</select>' +
     '<input class="ssel" data-f="spot" placeholder="Spot (optional)" value="' + esc(spotName(p.spotId) || p._spotName || "") + '">' +
-    '<div class="stepper" data-st="1"><button data-d="-1">−</button><span class="v">' + p.qty + '</span><button data-d="1">+</button></div>' +
     '<button class="rm" data-rm="1">×</button></div>';
 }
 function profileRow(p, i){
@@ -825,8 +848,16 @@ function bindTypeSheet(){
     syncDraftFields(); renderTypeSheet();
   };
   const photo = el("d_photo"); if (photo) photo.oninput = () => { d.photo = photo.value; refreshIconPreview(); };
-  ["d_kind","d_brand","d_colour","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
+  ["d_kind","d_brand","d_notes","d_material"].forEach(id => { const n=el(id); if(n) n.oninput = () => syncDraftFields(); });
   const lbl = el("d_label"); if (lbl) lbl.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
+  const colourBox = el("d_colourpick");
+  if (colourBox) colourBox.querySelectorAll("[data-colour]").forEach(b => b.onclick = () => {
+    const val = b.dataset.colour;
+    if (val === "__other"){ draft._colourOther = true; if (isKnownColour(d.colour)) d.colour = ""; }
+    else { draft._colourOther = false; d.colour = val; }
+    renderTypeSheet();
+  });
+  const colourOther = el("d_colour_other"); if (colourOther) colourOther.oninput = () => { d.colour = colourOther.value; };
   const inp = el("d_input"); if (inp) inp.onchange = () => { syncDraftFields(); refreshSheetTitle(); };
   const len = el("d_len"); if (len) len.oninput = () => syncDraftFields();
   const wat = el("d_watt"); if (wat) wat.oninput = () => { syncDraftFields(); refreshSheetTitle(); };
@@ -871,24 +902,20 @@ function bindTypeSheet(){
     const i = +row.dataset.i;
     row.querySelector('[data-f="roomId"]').onchange = e => { draft.plc[i].roomId = e.target.value; };
     row.querySelector('[data-f="spot"]').oninput = e => { draft.plc[i]._spotName = e.target.value; draft.plc[i].spotId = null; };
-    row.querySelectorAll("[data-d]").forEach(b => b.onclick = () => {
-      const delta = +b.dataset.d;
-      const placedTotal = draft.plc.reduce((s,p) => s + p.qty, 0);
-      if (delta > 0 && d.qty && placedTotal >= d.qty){ toast("All " + d.qty + " already placed — raise the quantity above first"); return; }
-      draft.plc[i].qty = Math.max(0, draft.plc[i].qty + delta);
-      row.querySelector(".v").textContent = draft.plc[i].qty;
-      updatePlacementSummary();
-    });
     row.querySelector("[data-rm]").onclick = () => { draft.plc.splice(i,1); renderTypeSheet(); };
   });
-  el("addPlacement").onclick = () => { draft.plc.push({id:uid(), typeId:d.id, roomId:rooms[0].id, spotId:null, qty:0}); renderTypeSheet(); };
+  el("addPlacement").onclick = () => {
+    if (d.qty && draft.plc.length >= d.qty){ toast("All " + d.qty + " already placed — raise the quantity above first"); return; }
+    draft.plc.push({id:uid(), typeId:d.id, roomId:rooms[0].id, spotId:null});
+    renderTypeSheet();
+  };
   el("tSave").onclick = saveTypeSheet;
   const del = el("tDelete"); if (del) del.onclick = deleteTypeSheet;
   updatePlacementSummary();
 }
 function updatePlacementSummary(){
   const box = el("placeSummary"); if (!box) return;
-  const placed = draft.plc.reduce((s,p) => s + p.qty, 0);
+  const placed = draft.plc.length;
   const owned = draft.type.qty || 0;
   let text, warn = false;
   if (!owned){ text = placed + " placed so far — set a quantity above to track what's left to place"; }
@@ -904,7 +931,6 @@ function syncDraftFields(){
   d.label = el("d_label") ? el("d_label").value : d.label;
   d.photo = el("d_photo") ? el("d_photo").value : d.photo;
   d.brand = el("d_brand") ? el("d_brand").value : d.brand;
-  d.colour = el("d_colour") ? el("d_colour").value : d.colour;
   d.notes = el("d_notes") ? el("d_notes").value : d.notes;
   if (d.category === "cable"){
     d.input = el("d_input") ? el("d_input").value : d.input;
@@ -929,7 +955,7 @@ function saveTypeSheet(){
   const idx = types.findIndex(t => t.id === d.id);
   if (idx > -1) types[idx] = d; else types.push(d);
   draft.plc.forEach(p => { p.spotId = resolveSpot(p); delete p._spotName; });
-  placements = placements.filter(p => p.typeId !== d.id).concat(draft.plc.filter(p => p.qty > 0));
+  placements = placements.filter(p => p.typeId !== d.id).concat(draft.plc);
   persist(); closeSheet(); render(); toast("Saved");
 }
 function deleteTypeSheet(){
@@ -975,7 +1001,7 @@ function screenStocktake(){
       const t = type(p.typeId); if (!t) return;
       h += '<div class="arow"><span class="body"><span class="l1">' + esc(headline(t)) + '</span>' +
         '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + '</span></span>' +
-        '<div class="stepper" data-pid="' + p.id + '"><button data-d="-1">−</button><span class="v">' + p.qty + '</span><button data-d="1">+</button></div></div>';
+        '<button class="smallbtn" data-notpresent="' + p.id + '">Not here</button></div>';
     });
     h += '<button class="smallbtn addrow" id="stAdd">+ Found something else here</button>';
     h += '<button class="ghostbtn" id="stMarkDone">' + (audit.roomsDone.indexOf(rid) > -1 ? "Marked checked ✓" : "Mark room checked") + '</button>';
@@ -986,13 +1012,10 @@ function screenStocktake(){
   el("view").innerHTML = h;
 
   el("view").querySelectorAll("[data-room]").forEach(b => b.onclick = () => { ui.auditRoom = b.dataset.room; render(); });
-  el("view").querySelectorAll("[data-pid]").forEach(box => {
-    box.querySelectorAll("[data-d]").forEach(b => b.onclick = () => {
-      const p = placements.find(x => x.id === box.dataset.pid); if (!p) return;
-      p.qty = Math.max(0, p.qty + (+b.dataset.d));
-      box.querySelector(".v").textContent = p.qty;
-      persist();
-    });
+  el("view").querySelectorAll("[data-notpresent]").forEach(b => b.onclick = () => {
+    placements = placements.filter(p => p.id !== b.dataset.notpresent);
+    persist(); render();
+    toast("Marked not here — it'll show as unplaced");
   });
   const add = el("stAdd"); if (add) add.onclick = () => openAuditAddSheet(rid);
   const md = el("stMarkDone"); if (md) md.onclick = () => {
@@ -1005,12 +1028,12 @@ function screenStocktake(){
 function openAuditAddSheet(roomId){
   const candidates = types.filter(t => !placements.some(p => p.typeId === t.id && p.roomId === roomId));
   let h = '<div class="sheethead"><button class="cancel" id="aaCancel">Cancel</button><h3>Found in ' + esc(roomName(roomId)) + '</h3></div>';
-  if (!candidates.length){ h += '<p class="note">Every known item type already has a placement here — edit its count above, or add a brand new item from the Items screen.</p>'; }
+  if (!candidates.length){ h += '<p class="note">Every known item type already has a placement here — add a brand new item from the Items screen if it\'s something else.</p>'; }
   h += '<div class="menu">' + candidates.map(t => '<button data-pick="' + t.id + '">' + esc(headline(t)) + '<small>' + esc(subtitle(t)) + '</small></button>').join("") + '</div>';
   openSheet(h);
   el("aaCancel").onclick = closeSheet;
   document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
-    placements.push({id:uid(), typeId:b.dataset.pick, roomId, spotId:null, qty:1});
+    placements.push({id:uid(), typeId:b.dataset.pick, roomId, spotId:null});
     persist(); closeSheet(); render();
   });
 }
@@ -1044,8 +1067,7 @@ function fmtDate(d){
 /* ============================== kits ============================== */
 function kitStatus(k){
   const missing = k.typeIds.filter(tid => {
-    const p = placements.find(p => p.typeId === tid && p.roomId === k.roomId && (!k.spotId || p.spotId === k.spotId));
-    return !p || p.qty <= 0;
+    return !placements.some(p => p.typeId === tid && p.roomId === k.roomId && (!k.spotId || p.spotId === k.spotId));
   });
   return missing;
 }
@@ -1159,8 +1181,7 @@ function openFoundSheet(id){
   el("gCancel").onclick = closeSheet;
   el("gSave").onclick = () => {
     const roomId = el("g_room").value;
-    const existing = placements.find(p => p.typeId === f.typeId && p.roomId === roomId && !p.spotId);
-    if (existing) existing.qty += 1; else placements.push({id:uid(), typeId:f.typeId, roomId, spotId:null, qty:1});
+    placements.push({id:uid(), typeId:f.typeId, roomId, spotId:null});
     toFind = toFind.filter(x => x.id !== id);
     persist(); closeSheet(); render(); toast("Back in the inventory");
   };
