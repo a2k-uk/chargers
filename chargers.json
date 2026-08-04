@@ -722,12 +722,6 @@
    "spotId": null
   },
   {
-   "id": "dj7r1qs",
-   "typeId": "br97q9q",
-   "roomId": "study",
-   "spotId": "tj3m3f8"
-  },
-  {
    "id": "pt1d084",
    "typeId": "zgueayu",
    "roomId": "hallway-drawer",
@@ -876,6 +870,12 @@
    "typeId": "t12",
    "roomId": "living-area-foot-stools",
    "spotId": null
+  },
+  {
+   "id": "dj7r1qs",
+   "typeId": "br97q9q",
+   "roomId": "study",
+   "spotId": "r5zqo28"
   }
  ],
  "kits": [],
@@ -902,6 +902,6 @@
  ],
  "ui": {
   "tiers": [],
-  "view": "type"
+  "view": "room"
  }
 }
