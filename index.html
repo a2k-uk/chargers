@@ -701,8 +701,13 @@ function toast(msg){
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), 2200);
 }
 function openSheet(html){
+  const wasOpen = el("sheet").classList.contains("on");
   el("sheet").innerHTML = html;
   el("scrim").classList.add("on"); el("sheet").classList.add("on");
+  /* Only reset scroll on a genuinely fresh open — sheets that re-render themselves while
+     already open (e.g. adding a profile row) call this again and should keep their
+     scroll position rather than jumping back to the top mid-edit. */
+  if (!wasOpen) el("sheet").scrollTop = 0;
   document.body.style.position = "fixed"; document.body.style.width = "100%";
   el("scrim").onclick = closeSheet;
 }
