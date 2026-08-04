@@ -27,20 +27,23 @@
   {"id": "casper-bedroom", "name": "Casper Bedroom", "zone": "Upstairs"},
   {"id": "cora-bedroom", "name": "Cora Bedroom", "zone": "Upstairs"},
   {"id": "guest-room", "name": "Guest Room", "zone": "Upstairs"},
+  {"id": "study-drawer", "name": "Study Drawer", "zone": "Storage"},
+  {"id": "study-cupboard", "name": "Study Cupboard", "zone": "Storage"},
+  {"id": "living-area-foot-stools", "name": "Living Area Foot Stools", "zone": "Storage"},
+  {"id": "tv-room-coffee-table", "name": "TV Room Coffee Table", "zone": "Storage"},
+  {"id": "andy-rucksack", "name": "Andy Rucksack", "zone": "Portable"},
+  {"id": "kierra-rucksack", "name": "Kierra Rucksack", "zone": "Portable"},
+  {"id": "porsche-macan", "name": "Porsche Macan", "zone": "Portable"},
   {"id": "spare", "name": "Spare Stock", "zone": "Other", "system": true},
   {"id": "committed", "name": "Committed Elsewhere", "zone": "Other", "system": true},
-  {"id": "unassigned", "name": "Unconfirmed Location", "zone": "Other", "system": true},
-  {"id": "andy-rucksack", "name": "Andy Rucksack", "zone": "Other"},
-  {"id": "kierra-rucksack", "name": "Kierra Rucksack", "zone": "Other"}
+  {"id": "unassigned", "name": "Unconfirmed Location", "zone": "Other", "system": true}
  ],
  "spots": [
   {"id": "sp1", "roomId": "kitchen", "name": "Island 1"},
   {"id": "sp2", "roomId": "kitchen", "name": "Island 2"},
   {"id": "sp3", "roomId": "guest-room", "name": "Bed 1"},
   {"id": "sp4", "roomId": "guest-room", "name": "Bed 2"},
-  {"id": "sp5", "roomId": "master-bedroom", "name": "Bedside"},
-  {"id": "sp6", "roomId": "study", "name": "Drawer"},
-  {"id": "sp7", "roomId": "study", "name": "Cupboard"}
+  {"id": "sp5", "roomId": "master-bedroom", "name": "Bedside"}
  ],
  "types": [
   {"id": "t1", "category": "other", "kind": "Wireless Charging Stand", "label": "Long box shape, from old stands", "qty": 6,

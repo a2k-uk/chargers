@@ -471,7 +471,7 @@ function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
    appear) — used everywhere a room picker groups rooms under a zone heading. */
 function zoneOrder(){
   const seen = [];
-  ["Downstairs","Upstairs"].forEach(z => { if (rooms.some(r => r.zone === z)) seen.push(z); });
+  ["Downstairs","Upstairs","Storage","Portable"].forEach(z => { if (rooms.some(r => r.zone === z)) seen.push(z); });
   rooms.forEach(r => { if (seen.indexOf(r.zone) < 0) seen.push(r.zone); });
   return seen;
 }
@@ -783,7 +783,7 @@ function renderByType(list){
 function renderByRoom(list){
   const ids = list.map(t => t.id);
   let h = '<div class="itemresults">';
-  ["Downstairs","Upstairs","Other"].forEach(zone => {
+  zoneOrder().forEach(zone => {
     const zoneRooms = rooms.filter(r => r.zone === zone && placements.some(p => ids.indexOf(p.typeId) > -1 && p.roomId === r.id));
     if (!zoneRooms.length) return;
     h += '<div class="g1"><h2>' + esc(zone) + '</h2></div>';
@@ -1241,7 +1241,7 @@ function openFoundSheet(id){
 /* ============================== rooms ============================== */
 function screenRooms(){
   let h = '<div class="toolbar"><div class="right" style="margin-left:0"><button class="chip" id="addRoom">+ Add room</button></div></div>';
-  ["Downstairs","Upstairs","Other"].forEach(zone => {
+  zoneOrder().forEach(zone => {
     const zr = rooms.filter(r => r.zone === zone);
     if (!zr.length) return;
     h += '<div class="roomgroup"><h3>' + esc(zone) + '</h3>';
