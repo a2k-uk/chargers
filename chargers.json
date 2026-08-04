@@ -214,37 +214,6 @@
    "notes": ""
   },
   {
-   "id": "t5",
-   "category": "adapter",
-   "kind": "",
-   "label": "",
-   "qty": 3,
-   "ports": [
-    "USB-A",
-    "USB-C"
-   ],
-   "profiles": [
-    {
-     "v": 5,
-     "a": 3,
-     "w": 15
-    },
-    {
-     "v": 9,
-     "a": 2.4,
-     "w": 22
-    },
-    {
-     "v": 12,
-     "a": 1.8,
-     "w": 22
-    }
-   ],
-   "brand": "",
-   "colour": "",
-   "notes": ""
-  },
-  {
    "id": "t6",
    "category": "laptop",
    "kind": "",
@@ -522,24 +491,6 @@
   {
    "id": "p10",
    "typeId": "t4",
-   "roomId": "spare",
-   "spotId": null
-  },
-  {
-   "id": "p12",
-   "typeId": "t5",
-   "roomId": "kitchen",
-   "spotId": "sp2"
-  },
-  {
-   "id": "p13",
-   "typeId": "t5",
-   "roomId": "guest-room",
-   "spotId": null
-  },
-  {
-   "id": "p14",
-   "typeId": "t5",
    "roomId": "spare",
    "spotId": null
   },
