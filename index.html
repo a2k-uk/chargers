@@ -477,7 +477,7 @@ function spotsIn(roomId){ return spots.filter(s => s.roomId === roomId); }
    appear) — used everywhere a room picker groups rooms under a zone heading. */
 function zoneOrder(){
   const seen = [];
-  ["Downstairs","Upstairs","Storage","Portable"].forEach(z => { if (rooms.some(r => r.zone === z)) seen.push(z); });
+  ["Downstairs","Upstairs","Portable","Storage"].forEach(z => { if (rooms.some(r => r.zone === z)) seen.push(z); });
   rooms.forEach(r => { if (seen.indexOf(r.zone) < 0) seen.push(r.zone); });
   return seen;
 }
