@@ -230,6 +230,11 @@
    "id": "rbttwml",
    "roomId": "cora-bedroom",
    "name": "Shelf corner"
+  },
+  {
+   "id": "0c1ge9g",
+   "roomId": "kierra-wardrobe",
+   "name": "Kierra Bedside"
   }
  ],
  "types": [
@@ -317,14 +322,17 @@
    "id": "t14",
    "category": "cable",
    "kind": "",
-   "label": "Needs details",
+   "label": "Woven",
    "qty": 3,
-   "input": "",
-   "outputs": [],
-   "length_m": null,
-   "brand": "",
-   "colour": "",
-   "notes": "See listing: https://www.amazon.co.uk/dp/B0CKYNQTBY"
+   "input": "USB-C",
+   "outputs": [
+    "USB-C"
+   ],
+   "length_m": 2,
+   "brand": "Generic",
+   "colour": "White",
+   "notes": "",
+   "year": null
   },
   {
    "id": "sw27ein",
@@ -690,24 +698,6 @@
    "spotId": null
   },
   {
-   "id": "p22-1",
-   "typeId": "t14",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p22-2",
-   "typeId": "t14",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
-   "id": "p22-3",
-   "typeId": "t14",
-   "roomId": "unassigned",
-   "spotId": null
-  },
-  {
    "id": "yoz8gs6",
    "typeId": "t6",
    "roomId": "study-drawer",
@@ -868,6 +858,24 @@
    "typeId": "t11",
    "roomId": "living-area-foot-stools",
    "spotId": null
+  },
+  {
+   "id": "p22-1",
+   "typeId": "t14",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "p22-2",
+   "typeId": "t14",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
+  },
+  {
+   "id": "p22-3",
+   "typeId": "t14",
+   "roomId": "kierra-wardrobe",
+   "spotId": "0c1ge9g"
   }
  ],
  "kits": [],
