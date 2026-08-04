@@ -598,6 +598,35 @@
    "brand": "Apple",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "rq085gl",
+   "category": "adapter",
+   "kind": "",
+   "label": "Folding Pins",
+   "qty": 6,
+   "ports": [
+    "USB-C"
+   ],
+   "profiles": [
+    {
+     "v": 5,
+     "a": 3,
+     "w": 15
+    },
+    {
+     "v": 9,
+     "a": 2.22,
+     "w": 20
+    }
+   ],
+   "input": "",
+   "outputs": [],
+   "length_m": null,
+   "year": null,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -743,6 +772,12 @@
    "id": "pt1d084",
    "typeId": "zgueayu",
    "roomId": "hallway-drawer",
+   "spotId": null
+  },
+  {
+   "id": "irdtffq",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
    "spotId": null
   }
  ],
