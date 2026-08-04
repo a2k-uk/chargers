@@ -503,8 +503,21 @@ function maxWattage(t){
   const profs = t.profiles || [];
   return profs.length ? Math.max.apply(null, profs.map(p => p.w)) : null;
 }
+const CONNECTOR_ABBREV = {"USB-A":"A", "USB-C":"C", "Lightning":"L", "Micro-USB":"M", "Wireless":"W", "Other":"?"};
+/* Compact input->output code for the cable glyph, e.g. "C→C" (USB-C to USB-C) or
+   "C→3x" (USB-C to a 3-in-1). Two-letter runs (no separator) for two outputs so it still
+   fits a 30px badge; three or more collapse to a count like the headline does. */
+function cableGlyphText(t){
+  const inp = t.input ? (CONNECTOR_ABBREV[t.input] || "?") : "?";
+  const outs = t.outputs || [];
+  let outText;
+  if (outs.length > 2) outText = outs.length + "x";
+  else if (outs.length) outText = outs.map(c => CONNECTOR_ABBREV[c] || "?").join("");
+  else outText = "?";
+  return inp + "→" + outText;
+}
 function typeGlyph(t){
-  if (t.category === "cable") return "CBL";
+  if (t.category === "cable") return cableGlyphText(t);
   if (t.kind && /wireless/i.test(t.kind)) return "WLS";
   return "ADP";
 }
@@ -521,15 +534,17 @@ function plugIconSVG(t){
     '<rect x="9" y="8" width="5" height="7" rx="1" fill="currentColor"/>' +
     '<rect x="34" y="8" width="5" height="7" rx="1" fill="currentColor"/>' +
     '<rect x="9" y="14" width="30" height="27" rx="3" stroke="currentColor" stroke-width="2.5" fill="none"/>';
+  const cavityMidY = 14 + 27 / 2;
   if (ports.length === 1){
-    const ph = 7, pw = 15, px = 24 - pw / 2, py = 30.5;
+    const ph = 7, pw = 15, px = 24 - pw / 2, py = cavityMidY - ph / 2;
     h += '<rect x="' + px + '" y="' + py + '" width="' + pw + '" height="' + ph + '" rx="' + connectorRadius(ports[0], ph) + '" stroke="currentColor" stroke-width="2.25" fill="none"/>';
-    if (ports[0] === "USB-A") h += '<rect x="' + (px + 4) + '" y="' + (py + 2.5) + '" width="' + (pw - 8) + '" height="2" rx="0.5" fill="currentColor"/>';
+    if (ports[0] === "USB-A") h += '<rect x="' + (px + 4) + '" y="' + (py + ph / 2 - 1) + '" width="' + (pw - 8) + '" height="2" rx="0.5" fill="currentColor"/>';
   } else {
-    const ph = 6.5, pw = 11, gap = 2.5, totalW = pw * 2 + gap, startX = 24 - totalW / 2;
+    const ph = 6, pw = 15, gap = 3, totalH = ph * 2 + gap, startY = cavityMidY - totalH / 2, px = 24 - pw / 2;
     ports.forEach((c, i) => {
-      const px = startX + i * (pw + gap), py = 30.5;
+      const py = startY + i * (ph + gap);
       h += '<rect x="' + px + '" y="' + py + '" width="' + pw + '" height="' + ph + '" rx="' + connectorRadius(c, ph) + '" stroke="currentColor" stroke-width="2" fill="none"/>';
+      if (c === "USB-A") h += '<rect x="' + (px + 4) + '" y="' + (py + ph / 2 - 1) + '" width="' + (pw - 8) + '" height="2" rx="0.5" fill="currentColor"/>';
     });
   }
   return '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + h + '</svg>';
