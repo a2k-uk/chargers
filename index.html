@@ -99,6 +99,7 @@ section{padding:18px 0 4px}
 .glyph{width:30px;height:30px;flex:none;border:1px solid var(--rule);border-radius:2px;margin-top:2px;
   display:flex;align-items:center;justify-content:center;font-family:var(--label);font-size:10px;
   font-weight:700;letter-spacing:0;color:var(--mute);background:var(--card)}
+.glyph svg{width:21px;height:21px;color:var(--ink)}
 .item .body{flex:1;min-width:0;display:block}
 .item .l1{display:block;font-size:15px;letter-spacing:-.01em}
 .item .l1 .lead{font-weight:600}
@@ -443,9 +444,39 @@ function maxWattage(t){
 }
 function typeGlyph(t){
   if (t.category === "cable") return "CBL";
-  if (t.category === "laptop") return "LAP";
   if (t.kind && /wireless/i.test(t.kind)) return "WLS";
   return "ADP";
+}
+/* Literal-plug icon (chosen direction): UK pins into the wall above, the
+   port(s) inset into the visible face below. Used for adapter/laptop types,
+   which are physically the same object — a wall plug with a USB port. */
+function connectorRadius(c, h){
+  if (c === "USB-C") return h / 2;
+  if (c === "USB-A") return 1;
+  return 2.5;
+}
+function plugIconSVG(t){
+  const ports = (t.ports && t.ports.length) ? t.ports.slice(0, 2) : ["Other"];
+  let h = '<rect x="21" y="4" width="6" height="11" rx="1" fill="currentColor"/>' +
+    '<rect x="9" y="8" width="5" height="7" rx="1" fill="currentColor"/>' +
+    '<rect x="34" y="8" width="5" height="7" rx="1" fill="currentColor"/>' +
+    '<rect x="9" y="14" width="30" height="27" rx="3" stroke="currentColor" stroke-width="2.5" fill="none"/>';
+  if (ports.length === 1){
+    const ph = 7, pw = 15, px = 24 - pw / 2, py = 30.5;
+    h += '<rect x="' + px + '" y="' + py + '" width="' + pw + '" height="' + ph + '" rx="' + connectorRadius(ports[0], ph) + '" stroke="currentColor" stroke-width="2.25" fill="none"/>';
+    if (ports[0] === "USB-A") h += '<rect x="' + (px + 4) + '" y="' + (py + 2.5) + '" width="' + (pw - 8) + '" height="2" rx="0.5" fill="currentColor"/>';
+  } else {
+    const ph = 6.5, pw = 11, gap = 2.5, totalW = pw * 2 + gap, startX = 24 - totalW / 2;
+    ports.forEach((c, i) => {
+      const px = startX + i * (pw + gap), py = 30.5;
+      h += '<rect x="' + px + '" y="' + py + '" width="' + pw + '" height="' + ph + '" rx="' + connectorRadius(c, ph) + '" stroke="currentColor" stroke-width="2" fill="none"/>';
+    });
+  }
+  return '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + h + '</svg>';
+}
+function glyphHTML(t){
+  if (t.category === "adapter" || t.category === "laptop") return plugIconSVG(t);
+  return esc(typeGlyph(t));
 }
 function typeLead(t){ return (t.kind || catLabel(t.category)) + (t.label ? " — " + t.label : ""); }
 /* Headline: the primary at-a-glance metric — output connector + peak wattage.
@@ -597,7 +628,7 @@ function bindItemRows(){
 function itemRow(t){
   const gap = missingFields(t).length > 0;
   return '<button class="item' + (gap ? " needsdata" : "") + '" data-type="' + t.id + '">' +
-    '<span class="glyph">' + typeGlyph(t) + '</span>' +
+    '<span class="glyph">' + glyphHTML(t) + '</span>' +
     '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
     '<span class="l2">' + esc(subtitle(t)) + (gap ? " · Needs: " + esc(missingFields(t).join(", ")) : "") + '</span></span>' +
     '<span class="qty">' + totalQty(t.id) + '</span></button>';
@@ -627,7 +658,7 @@ function renderByRoom(list){
       rp.forEach(p => {
         const t = type(p.typeId); if (!t) return;
         h += '<button class="item" data-type="' + t.id + '">' +
-          '<span class="glyph">' + typeGlyph(t) + '</span>' +
+          '<span class="glyph">' + glyphHTML(t) + '</span>' +
           '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
           '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span>' +
           '<span class="qty">' + p.qty + '</span></button>';
@@ -1072,7 +1103,7 @@ function screenArchive(){
   let h = "";
   if (!list.length) h += '<div class="empty"><b>Nothing retired</b></div>';
   list.forEach(t => {
-    h += '<div class="item retired"><span class="glyph">' + typeGlyph(t) + '</span>' +
+    h += '<div class="item retired"><span class="glyph">' + glyphHTML(t) + '</span>' +
       '<span class="body"><span class="l1">' + esc(headline(t)) + '</span><span class="l2">' + esc(subtitle(t)) + '</span></span>' +
       '<button class="smallbtn" data-restore="' + t.id + '">Restore</button></div>';
   });
