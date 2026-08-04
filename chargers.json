@@ -31,6 +31,7 @@
   {"id": "study-cupboard", "name": "Study Cupboard", "zone": "Storage"},
   {"id": "living-area-foot-stools", "name": "Living Area Foot Stools", "zone": "Storage"},
   {"id": "tv-room-coffee-table", "name": "TV Room Coffee Table", "zone": "Storage"},
+  {"id": "hallway-drawer", "name": "Hallway Drawer", "zone": "Storage"},
   {"id": "andy-rucksack", "name": "Andy Rucksack", "zone": "Portable"},
   {"id": "kierra-rucksack", "name": "Kierra Rucksack", "zone": "Portable"},
   {"id": "porsche-macan", "name": "Porsche Macan", "zone": "Portable"},
