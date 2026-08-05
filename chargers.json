@@ -222,6 +222,11 @@
    "id": "vl25i0r",
    "roomId": "andy-wardrobe",
    "name": "Dresser"
+  },
+  {
+   "id": "dppq556",
+   "roomId": "kierra-wardrobe",
+   "name": "Desktop"
   }
  ],
  "types": [
@@ -825,12 +830,6 @@
    "spotId": null
   },
   {
-   "id": "dj7r1qs",
-   "typeId": "br97q9q",
-   "roomId": "study",
-   "spotId": "r5zqo28"
-  },
-  {
    "id": "p22-1",
    "typeId": "t14",
    "roomId": "study",
@@ -919,6 +918,18 @@
    "typeId": "41arnax",
    "roomId": "living-area",
    "spotId": "icp9zxb"
+  },
+  {
+   "id": "dj7r1qs",
+   "typeId": "br97q9q",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "he1dkzy",
+   "typeId": "br97q9q",
+   "roomId": "kierra-wardrobe",
+   "spotId": "dppq556"
   }
  ],
  "kits": [],
