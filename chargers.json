@@ -275,7 +275,7 @@
    "id": "t11",
    "category": "cable",
    "kind": "",
-   "label": "Coil",
+   "label": "Coiled",
    "qty": 6,
    "input": "USB-A",
    "outputs": [
@@ -811,36 +811,6 @@
    "spotId": "fgrg8hi"
   },
   {
-   "id": "p19-1",
-   "typeId": "t11",
-   "roomId": "study",
-   "spotId": "r5zqo28"
-  },
-  {
-   "id": "p19-3",
-   "typeId": "t11",
-   "roomId": "kitchen",
-   "spotId": "k7vykid"
-  },
-  {
-   "id": "h31p47l",
-   "typeId": "t11",
-   "roomId": "living-area-foot-stools",
-   "spotId": null
-  },
-  {
-   "id": "xe4h5br",
-   "typeId": "t11",
-   "roomId": "living-area-foot-stools",
-   "spotId": null
-  },
-  {
-   "id": "zp07rq9",
-   "typeId": "t11",
-   "roomId": "master-bedroom",
-   "spotId": "tl30d74"
-  },
-  {
    "id": "sp3eti8",
    "typeId": "8d7px1h",
    "roomId": "andy-rucksack",
@@ -957,6 +927,36 @@
   {
    "id": "p22-2",
    "typeId": "t14",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
+  },
+  {
+   "id": "p19-1",
+   "typeId": "t11",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "p19-3",
+   "typeId": "t11",
+   "roomId": "kitchen",
+   "spotId": "k7vykid"
+  },
+  {
+   "id": "h31p47l",
+   "typeId": "t11",
+   "roomId": "living-area-foot-stools",
+   "spotId": null
+  },
+  {
+   "id": "xe4h5br",
+   "typeId": "t11",
+   "roomId": "living-area-foot-stools",
+   "spotId": null
+  },
+  {
+   "id": "zp07rq9",
+   "typeId": "t11",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
   }
