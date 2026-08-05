@@ -832,6 +832,10 @@ function renderByType(list){
   h += '</div>';
   return h;
 }
+/* Groups a room's placements by type — most types only have 1-2 units per room, so a
+   third heading tier just for that would be overkill. Instead, same-type placements
+   collapse into a single row with a trailing count badge (matching the qty badge already
+   used in By Type), and their spot names merge into the sub-heading. */
 function renderByRoom(list){
   const ids = list.map(t => t.id);
   let h = '<div class="itemresults">';
@@ -842,12 +846,21 @@ function renderByRoom(list){
     zoneRooms.forEach(r => {
       const rp = placements.filter(p => p.roomId === r.id && ids.indexOf(p.typeId) > -1);
       h += '<div class="g2"><h3>' + esc(r.name) + '</h3><span class="n">' + rp.length + '</span></div>';
+      const groups = [];
       rp.forEach(p => {
-        const t = type(p.typeId); if (!t) return;
+        let g = groups.find(g => g.typeId === p.typeId);
+        if (!g){ g = {typeId:p.typeId, placements:[]}; groups.push(g); }
+        g.placements.push(p);
+      });
+      groups.forEach(g => {
+        const t = type(g.typeId); if (!t) return;
+        const spotNames = g.placements.map(p => spotName(p.spotId)).filter(Boolean);
+        const uniqueSpots = spotNames.filter((s,i) => spotNames.indexOf(s) === i);
         h += '<button class="item" data-type="' + t.id + '">' +
           '<span class="glyph">' + glyphHTML(t) + '</span>' +
           '<span class="body"><span class="l1"><span class="lead">' + esc(headline(t)) + '</span></span>' +
-          '<span class="l2">' + esc(subtitle(t)) + (p.spotId ? " · " + esc(spotName(p.spotId)) : "") + (p.committed ? " · Committed" : "") + '</span></span></button>';
+          '<span class="l2">' + esc(subtitle(t)) + (uniqueSpots.length ? " · " + esc(uniqueSpots.join(", ")) : "") + '</span></span>' +
+          '<span class="qty">' + g.placements.length + '</span></button>';
       });
     });
   });

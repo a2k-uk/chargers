@@ -140,24 +140,6 @@
    "id": "porsche-macan",
    "name": "Porsche Macan",
    "zone": "Portable"
-  },
-  {
-   "id": "spare",
-   "name": "Spare Stock",
-   "zone": "Other",
-   "system": true
-  },
-  {
-   "id": "committed",
-   "name": "Committed Elsewhere",
-   "zone": "Other",
-   "system": true
-  },
-  {
-   "id": "unassigned",
-   "name": "Unconfirmed Location",
-   "zone": "Other",
-   "system": true
   }
  ],
  "spots": [
@@ -710,12 +692,6 @@
   }
  ],
  "placements": [
-  {
-   "id": "p15",
-   "typeId": "t7",
-   "roomId": "unassigned",
-   "spotId": null
-  },
   {
    "id": "yoz8gs6",
    "typeId": "t6",
