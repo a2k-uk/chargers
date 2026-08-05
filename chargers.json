@@ -904,36 +904,6 @@
    "spotId": "rgcbpau"
   },
   {
-   "id": "2bv5h2f",
-   "typeId": "41arnax",
-   "roomId": "guest-room",
-   "spotId": "fgrg8hi"
-  },
-  {
-   "id": "91e4nzl",
-   "typeId": "41arnax",
-   "roomId": "guest-room",
-   "spotId": "rgcbpau"
-  },
-  {
-   "id": "95iq80t",
-   "typeId": "41arnax",
-   "roomId": "andy-wardrobe",
-   "spotId": "vl25i0r"
-  },
-  {
-   "id": "uiidi51",
-   "typeId": "41arnax",
-   "roomId": "master-bedroom",
-   "spotId": "tl30d74"
-  },
-  {
-   "id": "w7rh885",
-   "typeId": "41arnax",
-   "roomId": "living-area",
-   "spotId": "icp9zxb"
-  },
-  {
    "id": "0d08s82",
    "typeId": "bdz6l1c",
    "roomId": "kierra-wardrobe",
@@ -962,6 +932,36 @@
    "typeId": "6x8z4nn",
    "roomId": "guest-room",
    "spotId": "rgcbpau"
+  },
+  {
+   "id": "2bv5h2f",
+   "typeId": "41arnax",
+   "roomId": "guest-room",
+   "spotId": "fgrg8hi"
+  },
+  {
+   "id": "91e4nzl",
+   "typeId": "41arnax",
+   "roomId": "guest-room",
+   "spotId": "rgcbpau"
+  },
+  {
+   "id": "95iq80t",
+   "typeId": "41arnax",
+   "roomId": "andy-wardrobe",
+   "spotId": "vl25i0r"
+  },
+  {
+   "id": "uiidi51",
+   "typeId": "41arnax",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
+  },
+  {
+   "id": "w7rh885",
+   "typeId": "41arnax",
+   "roomId": "living-area",
+   "spotId": "icp9zxb"
   }
  ],
  "kits": [],
