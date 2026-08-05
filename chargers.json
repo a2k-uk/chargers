@@ -861,12 +861,6 @@
    "spotId": null
   },
   {
-   "id": "68nbiou",
-   "typeId": "t12",
-   "roomId": "living-area-foot-stools",
-   "spotId": null
-  },
-  {
    "id": "irdtffq",
    "typeId": "rq085gl",
    "roomId": "study-drawer",
@@ -991,6 +985,12 @@
    "typeId": "w2swkj2",
    "roomId": "kierra-wardrobe",
    "spotId": "tensidn"
+  },
+  {
+   "id": "68nbiou",
+   "typeId": "t12",
+   "roomId": "living-area-foot-stools",
+   "spotId": null
   }
  ],
  "kits": [],
