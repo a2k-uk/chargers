@@ -609,7 +609,7 @@
    "category": "adapter",
    "kind": "",
    "label": "Folding Pins",
-   "qty": 6,
+   "qty": 7,
    "ports": [
     "USB-C"
    ],
@@ -728,42 +728,6 @@
    "spotId": null
   },
   {
-   "id": "irdtffq",
-   "typeId": "rq085gl",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "2kx8kdk",
-   "typeId": "rq085gl",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "jimxtec",
-   "typeId": "rq085gl",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "wyc8szk",
-   "typeId": "rq085gl",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "4c6f59b",
-   "typeId": "rq085gl",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "qd7k195",
-   "typeId": "rq085gl",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
    "id": "7g65eti",
    "typeId": "i2bulzm",
    "roomId": "living-area",
@@ -876,6 +840,48 @@
    "typeId": "t14",
    "roomId": "master-bedroom",
    "spotId": "0c1ge9g"
+  },
+  {
+   "id": "irdtffq",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "2kx8kdk",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "jimxtec",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "wyc8szk",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "4c6f59b",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "qd7k195",
+   "typeId": "rq085gl",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "os93ace",
+   "typeId": "rq085gl",
+   "roomId": "guest-room",
+   "spotId": "rgcbpau"
   }
  ],
  "kits": [],
@@ -902,6 +908,6 @@
  ],
  "ui": {
   "tiers": [],
-  "view": "room"
+  "view": "type"
  }
 }
