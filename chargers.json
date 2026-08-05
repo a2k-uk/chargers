@@ -227,6 +227,11 @@
    "id": "tensidn",
    "roomId": "kierra-wardrobe",
    "name": "Desktop"
+  },
+  {
+   "id": "k7xietl",
+   "roomId": "master-bedroom",
+   "name": "Kierra Bedside"
   }
  ],
  "types": [
@@ -714,6 +719,24 @@
    "brand": "Generic",
    "colour": "Black",
    "notes": ""
+  },
+  {
+   "id": "w2swkj2",
+   "category": "cable",
+   "kind": "",
+   "label": "2M",
+   "qty": 2,
+   "ports": [],
+   "profiles": [],
+   "input": "USB-C",
+   "outputs": [
+    "USB-C"
+   ],
+   "length_m": 2,
+   "year": null,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -956,6 +979,18 @@
    "typeId": "t14",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "rg048sy",
+   "typeId": "w2swkj2",
+   "roomId": "master-bedroom",
+   "spotId": "k7xietl"
+  },
+  {
+   "id": "k4wna34",
+   "typeId": "w2swkj2",
+   "roomId": "kierra-wardrobe",
+   "spotId": "tensidn"
   }
  ],
  "kits": [],
