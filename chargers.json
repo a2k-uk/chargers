@@ -227,6 +227,11 @@
    "id": "dppq556",
    "roomId": "kierra-wardrobe",
    "name": "Desktop"
+  },
+  {
+   "id": "x65udyc",
+   "roomId": "master-bedroom",
+   "name": "Kierra Bedside"
   }
  ],
  "types": [
@@ -694,6 +699,24 @@
    "brand": "Qi2",
    "colour": "White",
    "notes": ""
+  },
+  {
+   "id": "l7u1056",
+   "category": "cable",
+   "kind": "",
+   "label": "Non-Woven",
+   "qty": 2,
+   "ports": [],
+   "profiles": [],
+   "input": "USB-C",
+   "outputs": [
+    "USB-C"
+   ],
+   "length_m": 2,
+   "year": null,
+   "brand": "Apple",
+   "colour": "White",
+   "notes": ""
   }
  ],
  "placements": [
@@ -924,6 +947,18 @@
    "typeId": "t14",
    "roomId": "master-bedroom",
    "spotId": "tl30d74"
+  },
+  {
+   "id": "v93y7ud",
+   "typeId": "l7u1056",
+   "roomId": "master-bedroom",
+   "spotId": "x65udyc"
+  },
+  {
+   "id": "lxdy6x3",
+   "typeId": "l7u1056",
+   "roomId": "kierra-wardrobe",
+   "spotId": "dppq556"
   }
  ],
  "kits": [],
