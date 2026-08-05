@@ -306,8 +306,8 @@
    "id": "t14",
    "category": "cable",
    "kind": "",
-   "label": "Woven",
-   "qty": 3,
+   "label": "Braided",
+   "qty": 2,
    "input": "USB-C",
    "outputs": [
     "USB-C"
@@ -844,24 +844,6 @@
    "spotId": null
   },
   {
-   "id": "p22-1",
-   "typeId": "t14",
-   "roomId": "study",
-   "spotId": "r5zqo28"
-  },
-  {
-   "id": "p22-2",
-   "typeId": "t14",
-   "roomId": "master-bedroom",
-   "spotId": "tl30d74"
-  },
-  {
-   "id": "p22-3",
-   "typeId": "t14",
-   "roomId": "master-bedroom",
-   "spotId": "0c1ge9g"
-  },
-  {
    "id": "irdtffq",
    "typeId": "rq085gl",
    "roomId": "study-drawer",
@@ -962,6 +944,18 @@
    "typeId": "41arnax",
    "roomId": "living-area",
    "spotId": "icp9zxb"
+  },
+  {
+   "id": "p22-1",
+   "typeId": "t14",
+   "roomId": "study",
+   "spotId": "r5zqo28"
+  },
+  {
+   "id": "p22-2",
+   "typeId": "t14",
+   "roomId": "master-bedroom",
+   "spotId": "tl30d74"
   }
  ],
  "kits": [],
