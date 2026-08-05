@@ -427,6 +427,7 @@ function uid(){ return Math.random().toString(36).slice(2,9); }
 const DEFAULT_CATEGORIES = [
   {key:"adapter", label:"Plug Adapters"},
   {key:"cable", label:"Cables"},
+  {key:"wireless", label:"Wireless Chargers"},
   {key:"laptop", label:"Laptop Chargers"},
   {key:"other", label:"Other Hardware"}
 ];
@@ -437,7 +438,12 @@ const CONNECTORS = ["USB-A","USB-C","Lightning","Micro-USB","Wireless","Other"];
 /* Laptop chargers have their own port shapes — Thunderbolt charging is physically a
    USB-C connector so it isn't listed separately. */
 const LAPTOP_PORTS = ["USB-C","MagSafe","DC Barrel","Other"];
-const ALL_CONNECTORS = CONNECTORS.concat(LAPTOP_PORTS.filter(c => CONNECTORS.indexOf(c) === -1));
+/* Wireless chargers have no physical output connector — this is what device(s) they're
+   built to charge instead, reusing the same "ports" field/picker mechanism. */
+const CHARGE_POINTS = ["Phone","Earphones","Watch","Other"];
+const ALL_CONNECTORS = CONNECTORS
+  .concat(LAPTOP_PORTS.filter(c => CONNECTORS.indexOf(c) === -1))
+  .concat(CHARGE_POINTS.filter(c => CONNECTORS.indexOf(c) === -1 && LAPTOP_PORTS.indexOf(c) === -1));
 /* Fixed palette rather than free text — avoids "Black" vs "Blak" fragmenting the data.
    "Other" reveals a plain text field underneath for anything genuinely uncommon. */
 const COLOUR_SWATCHES = [
@@ -566,9 +572,19 @@ function laptopChargerIconSVG(){
     '<path d="M27 14 L17 27 L23 27 L21 35 L33 20 L26 20 Z" fill="currentColor"/>';
   return '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + h + '</svg>';
 }
+/* Wireless charger icon: a charging pad with radiating waves — symbolic like the laptop
+   bolt-in-square, not tied to a specific charging point. */
+function wirelessChargerIconSVG(){
+  const h = '<rect x="10" y="30" width="28" height="8" rx="4" stroke="currentColor" stroke-width="2.5" fill="none"/>' +
+    '<path d="M17 25 Q24 20 31 25" stroke="currentColor" stroke-width="2.25" fill="none" stroke-linecap="round"/>' +
+    '<path d="M12 19 Q24 10 36 19" stroke="currentColor" stroke-width="2.25" fill="none" stroke-linecap="round"/>' +
+    '<path d="M7 13 Q24 0 41 13" stroke="currentColor" stroke-width="2.25" fill="none" stroke-linecap="round"/>';
+  return '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + h + '</svg>';
+}
 function glyphHTML(t){
   if (t.category === "adapter") return plugIconSVG(t);
   if (t.category === "laptop") return laptopChargerIconSVG();
+  if (t.category === "wireless") return wirelessChargerIconSVG();
   return esc(typeGlyph(t));
 }
 /* Larger preview for the edit sheet: a photo if one's set, else the same icon/badge
@@ -576,6 +592,7 @@ function glyphHTML(t){
 function previewHTML(t){
   if (t.category === "adapter") return plugIconSVG(t);
   if (t.category === "laptop") return laptopChargerIconSVG();
+  if (t.category === "wireless") return wirelessChargerIconSVG();
   return '<span class="txt">' + esc(typeGlyph(t)) + '</span>';
 }
 /* A short standalone identifier for contexts with no room for headline+subtitle
@@ -784,15 +801,16 @@ function itemRow(t){
     '<span class="qty">' + ownedQty(t.id) + '</span></button>';
 }
 /* Sort criteria vary by category to match how each heading actually reads (see headline()):
-   laptop leads with year then ports+wattage; adapters lead with wattage then ports; everything
-   else has no natural lead figure, so quantity-owned is the most useful default. */
+   laptop leads with year then ports+wattage; adapters and wireless chargers lead with
+   wattage then ports; everything else has no natural lead figure, so quantity-owned is
+   the most useful default. */
 function typeComparator(catKey){
   if (catKey === "laptop") return (a,b) =>
     (b.year||0) - (a.year||0) ||
     (maxWattage(b)||0) - (maxWattage(a)||0) ||
     (a.brand||"").localeCompare(b.brand||"") ||
     typeLead(a).localeCompare(typeLead(b));
-  if (catKey === "adapter") return (a,b) =>
+  if (catKey === "adapter" || catKey === "wireless") return (a,b) =>
     (maxWattage(b)||0) - (maxWattage(a)||0) ||
     ownedQty(b.id) - ownedQty(a.id) ||
     connectorsText(a).localeCompare(connectorsText(b)) ||
@@ -880,8 +898,9 @@ function renderTypeSheet(){
     h += '<div class="f"><label>Output connector(s)</label><div class="portpick" id="d_outputs">' +
       CONNECTORS.map(c => '<button aria-pressed="' + ((d.outputs||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
   } else {
-    const portList = d.category === "laptop" ? LAPTOP_PORTS : CONNECTORS;
-    const portsHTML = '<div class="f"><label>Ports</label><div class="portpick" id="d_ports">' +
+    const portList = d.category === "laptop" ? LAPTOP_PORTS : d.category === "wireless" ? CHARGE_POINTS : CONNECTORS;
+    const portLabel = d.category === "wireless" ? "Charging points" : "Ports";
+    const portsHTML = '<div class="f"><label>' + portLabel + '</label><div class="portpick" id="d_ports">' +
       portList.map(c => '<button aria-pressed="' + ((d.ports||[]).indexOf(c)>-1) + '" data-port="' + c + '">' + c + '</button>').join("") + '</div></div>';
     h += '<div class="f2">' + colourHTML + portsHTML + '</div>';
     if (d.category === "laptop"){

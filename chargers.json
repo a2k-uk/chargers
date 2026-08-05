@@ -898,6 +898,10 @@
    "label": "Cables"
   },
   {
+   "key": "wireless",
+   "label": "Wireless Chargers"
+  },
+  {
    "key": "laptop",
    "label": "Laptop Chargers"
   },
