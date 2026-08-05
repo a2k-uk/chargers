@@ -807,24 +807,6 @@
    "spotId": null
   },
   {
-   "id": "umt0zxi",
-   "typeId": "epy6ct7",
-   "roomId": "cora-bedroom",
-   "spotId": "rbttwml"
-  },
-  {
-   "id": "n1rf8zn",
-   "typeId": "epy6ct7",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
-   "id": "j4upf25",
-   "typeId": "epy6ct7",
-   "roomId": "study-drawer",
-   "spotId": null
-  },
-  {
    "id": "p19-1",
    "typeId": "t11",
    "roomId": "study",
@@ -990,6 +972,24 @@
    "id": "68nbiou",
    "typeId": "t12",
    "roomId": "living-area-foot-stools",
+   "spotId": null
+  },
+  {
+   "id": "umt0zxi",
+   "typeId": "epy6ct7",
+   "roomId": "cora-bedroom",
+   "spotId": "rbttwml"
+  },
+  {
+   "id": "n1rf8zn",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
+   "spotId": null
+  },
+  {
+   "id": "j4upf25",
+   "typeId": "epy6ct7",
+   "roomId": "study-drawer",
    "spotId": null
   }
  ],
