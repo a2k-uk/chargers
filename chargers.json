@@ -802,12 +802,6 @@
    "spotId": null
   },
   {
-   "id": "snbva55",
-   "typeId": "6x8z4nn",
-   "roomId": "guest-room",
-   "spotId": "fgrg8hi"
-  },
-  {
    "id": "p19-1",
    "typeId": "t11",
    "roomId": "study",
@@ -956,6 +950,18 @@
    "typeId": "br97q9q",
    "roomId": "kierra-wardrobe",
    "spotId": "tensidn"
+  },
+  {
+   "id": "snbva55",
+   "typeId": "6x8z4nn",
+   "roomId": "guest-room",
+   "spotId": "fgrg8hi"
+  },
+  {
+   "id": "ids2bea",
+   "typeId": "6x8z4nn",
+   "roomId": "guest-room",
+   "spotId": "rgcbpau"
   }
  ],
  "kits": [],
